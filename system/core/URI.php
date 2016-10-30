@@ -176,7 +176,8 @@ class CI_URI {
 
 				if ($val !== '')
 				{
-					$this->segments[] = $val;
+					//$this->segments[] = $val;
+					$this->segments[] = urldecode($val);
 				}
 			}
 

@@ -39,12 +39,15 @@
 			switch(strtolower($nameType)){
 				case 'jquery':
 					$path .= 'jquery/';
-					return $assetUrl .= '<script src="'.$path.'jquery-11.0.min.js" type="text/javascript"></script>';
+					$assetUrl .= '<script src="'.$path.'jquery-11.0.min.js" type="text/javascript"></script>';
+					$assetUrl .= '<link href="'.$path.'jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" type="text/css">';
+					$assetUrl .= '<script src="'.$path.'jquery-ui-1.12.1.custom/jquery-ui.js" type="text/javascript"></script>';
+					return $assetUrl;
 					break;
 				case 'bootstrap':
 					$path .= 'bootstrap/';
-					$assetUrl .= '<script src="'.$path.'js/bootstrap.min.js" type="text/javascript"></script>';
 					$assetUrl .= '<link href="'.$path.'css/bootstrap.css" rel="stylesheet" type="text/css">';
+					$assetUrl .= '<script src="'.$path.'js/bootstrap.min.js" type="text/javascript"></script>';
 					return $assetUrl;
 					break;
 				case 'fontawesome':
