@@ -32,6 +32,13 @@
 					$path .= 'angularjs/app/'.$nameFile;
 					return $assetUrl .= '<script src="'.$path.'" type="text/javascript"></script>';
 					break;
+				case 'fullcalendar':
+					$path .= 'fullcalendar/'.$nameFile;
+					if($typeFile == 'js')
+						return $assetUrl .= '<script src="'.$path.'" type="text/javascript"></script>';
+					else if($typeFile == 'css')
+						return $assetUrl .= '<link href="'.$path.'" rel="stylesheet" type="text/css">';
+					break;
 				default:
 					return false;
 			}
@@ -42,6 +49,8 @@
 					$assetUrl .= '<script src="'.$path.'jquery-11.0.min.js" type="text/javascript"></script>';
 					$assetUrl .= '<link href="'.$path.'jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" type="text/css">';
 					$assetUrl .= '<script src="'.$path.'jquery-ui-1.12.1.custom/jquery-ui.js" type="text/javascript"></script>';
+					$assetUrl .= '<link href="'.$path.'jquery-ui-1.12.1.custom/jquery-ui-timepicker-addon.css" rel="stylesheet" type="text/css">';
+					$assetUrl .= '<script src="'.$path.'jquery-ui-1.12.1.custom/jquery-ui-timepicker-addon.js" type="text/javascript"></script>';
 					return $assetUrl;
 					break;
 				case 'bootstrap':
@@ -73,6 +82,12 @@
 					$assetUrl .= '<script src="'.$path.'directive.js" type="text/javascript"></script>';
 					$assetUrl .= '<script src="'.$path.'factory.js" type="text/javascript"></script>';
 					$assetUrl .= '<script src="'.$path.'route.js" type="text/javascript"></script>';
+					return $assetUrl;
+					break;
+				case 'fullcalendar':
+					$path .= 'fullcalendar/';
+					$assetUrl .= '<link href="'.$path.'fullcalendar.css" rel="stylesheet" type="text/css">';
+					$assetUrl .= '<script src="'.$path.'fullcalendar.js" type="text/javascript"></script>';
 					return $assetUrl;
 					break;
 				default:

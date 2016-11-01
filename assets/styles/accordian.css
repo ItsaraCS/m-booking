@@ -4,7 +4,7 @@
   	color: #FFFFFF;
 }
 #accordian h3{
-  	background: #4CAF50;
+  	background-color: #4CAF50;
   	cursor: pointer;
   	font-size: 16px;
   	line-height: 40px;
@@ -46,4 +46,10 @@
 #accordian h3{
   	margin-top: 0;
     margin-bottom: 0;
+}
+.activeMenu{
+  background-color: #F68002 !important;
+}
+.activeSubMenu{
+  background-color: #CCCCCC !important;
 }

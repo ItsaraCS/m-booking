@@ -7,7 +7,7 @@
 			<i class="fa fa-bars text-indent"></i> ค้นหาข้อมูลการจองห้องประชุม
 		</div>
 		<div class="panel-body margin-top">
-			<div class="col-md-6 form-group col-block">
+			<div class="col-md-6 form-group col-inline">
 				<div class="input-group">
 				  	<span class="input-group-addon">ห้องประชุม</span>
 				  	<select class="form-control">
@@ -18,7 +18,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="col-md-6 form-group col-block">
+			<div class="col-md-6 form-group col-inline">
 				<div class="input-group">
 				  	<span class="input-group-addon">สถานะ</span>
 				  	<select class="form-control">
@@ -27,10 +27,11 @@
 					    <option>อนุมัติ</option>
 					    <option>ไม่อนุมัติ</option>
 					    <option>ยกเลิกการจอง</option>
+					    <option>แสดงทุกสถานะ</option>
 					</select>
 				</div>
 			</div>
-			<div class="col-md-6 form-group col-block">
+			<div class="col-md-6 form-group col-inline">
 				<div class="input-group">
 				  	<span class="input-group-addon">จากวันที่</span>
 				  	<input type="text" class="form-control datepicker" placeholder="เลือกวันที่">
@@ -41,7 +42,7 @@
 			      	</span>
 				</div>
 			</div>
-			<div class="col-md-6 form-group col-block">
+			<div class="col-md-6 form-group col-inline">
 				<div class="input-group">
 				  	<span class="input-group-addon">ถึงวันที่</span>
 				  	<input type="text" class="form-control datepicker" placeholder="เลือกวันที่">
@@ -52,7 +53,7 @@
 			      	</span>
 				</div>
 			</div>
-			<div class="col-md-6 form-group">
+			<div class="col-md-12 form-group text-right">
 				<button class="btn btn-search" type="button">
 	        		<i class="fa fa-search text-indent"></i> ค้นหา
 	        	</button>

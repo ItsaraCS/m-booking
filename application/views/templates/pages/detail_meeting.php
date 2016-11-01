@@ -12,7 +12,7 @@
 					<div class="panel-body">
 						<div class="col-md-4">
 							<div class="thumbnail center-block no-margin-bottom" style="width: 280px; height: 215px;">
-								<img src="<?php echo image_asset('logo.png'); ?>" class="img-responsive" style="width: 100%; height: 100%;">
+								<img src="<?php echo image_asset('meeting.jpg'); ?>" class="img-responsive" style="width: 100%; height: 100%;">
 							</div>
 						</div>
 						<div class="col-md-8">
@@ -30,7 +30,7 @@
 										</tr>
 										<tr>
 											<td class="text-nowrap"><i class="fa fa-caret-right text-indent"></i> ความจุ</td>
-											<td>50</td>
+											<td>20</td>
 										</tr>
 										<tr>
 											<td class="text-nowrap"><i class="fa fa-caret-right text-indent"></i> อุปกรณ์</td>
@@ -38,7 +38,7 @@
 										</tr>
 										<tr>
 											<td class="text-nowrap"><i class="fa fa-caret-right text-indent"></i> รายละเอียดเพิ่มเติม</td>
-											<td>ตั้งอยู่ตึกสำนักงานมหาวิทยาลัย หน้าห้องประชาสัมพันธ์ กองกลาง สำนักงานหาวิทยาลัย</td>
+											<td>ตั้งอยู่ริเวณชั้นบนของโรงงาน</td>
 										</tr>
 									</tbody>
 								</table>

@@ -40,8 +40,9 @@
 						<div class="row text-right">
 							<p class="no-margin-bottom">
 								<i class="fa fa-user text-indent"></i> เข้าสู่ระบบโดย<i class="text-indent"></i>
-								<i class="fa fa-angle-double-right text-indent"></i> Admin
+								<i class="fa fa-angle-double-right text-indent"></i> Admin<i class="text-indent"></i>
 							</p>
+							<a class="btn btn-logout logout-btn" title="ออกจากระบบ"><i class="fa fa-power-off"></i></a>
 						</div>
 					</div>
 				</div>
@@ -59,7 +60,8 @@
 					      		<h3><span class="fa fa-user-circle"></span>สมาชิก</h3>
 						      	<ul>
 							        <li active-menu><a data-ui-sref="เข้าสู่ระบบ"><i class="fa fa-lock text-indent"></i> เข้าสู่ระบบ</a></li>
-							        <li active-menu><a data-ui-sref="สมัครสมาชิกใหม่"><i class="fa fa-user text-indent"></i> สมัครสมาชิกใหม่</a></li>
+							        <li active-menu><a data-ui-sref="สมัครสมาชิกใหม่"><i class="fa fa-refresh text-indent"></i> สมัครสมาชิกใหม่</a></li>
+							        <li active-menu><a data-ui-sref="ข้อมูลส่วนตัว"><i class="fa fa-user text-indent"></i> ข้อมูลส่วนตัว</a></li>
 							        <li active-menu><a data-ui-sref="ออกจากระบบ"><i class="fa fa-power-off text-indent"></i> ออกจากระบบ</a></li>
 						      	</ul>
 					    	</li>
@@ -107,7 +109,8 @@
 									</a>
 									<ul class="dropdown-menu">
 										<li><a data-ui-sref="เข้าสู่ระบบ"><i class="fa fa-lock text-indent"></i> เข้าสู่ระบบ</a></li>
-										<li><a data-ui-sref="สมัครสมาชิกใหม่"><i class="fa fa-user text-indent"></i> สมัครสมาชิกใหม่</a></li>
+										<li><a data-ui-sref="สมัครสมาชิกใหม่"><i class="fa fa-refresh text-indent"></i> สมัครสมาชิกใหม่</a></li>
+										<li><a data-ui-sref="ข้อมูลส่วนตัว"><i class="fa fa-user text-indent"></i> ข้อมูลส่วนตัว</a></li>
 										<li><a data-ui-sref="ออกจากระบบ"><i class="fa fa-power-off text-indent"></i> ออกจากระบบ</a></li>
 									</ul>
 								</li>

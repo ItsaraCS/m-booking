@@ -1,6 +1,7 @@
 angular.module('mainApp')
-.controller('meetingBookingController', function($scope){
-	console.log('This is Ctrl of page: meetingBookingController');
+.controller('searchBookingController', function($scope, initService){
+	console.log('This is Ctrl of page: searchBookingController');
+	initService.activeMenu();
 
 	$(document).ready(function(){
 		//--Datepicker
