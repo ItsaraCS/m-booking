@@ -2,21 +2,33 @@ angular.module('mainApp')
 .factory('initService', function($location){
 	var initService = {};
 
-	initService.activeMenu = function(){
-		var selectorMenu = '';
-    	var selectorSubMenu = '';
-    	var element = $('#accordian ul li');
+    initService.activeMenu = function(){
+		function setActiveMenu(state){
+            var selectorMenu = '';
+            var selectorSubMenu = '';
+            var element ='';
 
-    	function setActiveMenu(state){
-    		//$('#accordian').children('ul').find('li').removeClass('active');
-    		$('#accordian').find('h3').removeClass('activeMenu');
-    		$('#accordian').children('ul').find('li ul li').removeClass('activeSubMenu');
+            if($('.aside').is(':visible')){
+                $('#accordian').find('h3').removeClass('activeMenu');
+                $('#accordian').children('ul').find('li ul li').removeClass('activeSubMenu');
 
-    		selectorSubMenu = $(element).find('a[data-ui-sref="'+ state +'"]').parent('li');
-    		selectorMenu = selectorSubMenu.closest('ul').parent('li').find('h3');
-			selectorSubMenu.closest('ul').parent('li').addClass('active');
-			selectorSubMenu.addClass('activeSubMenu');
-			selectorMenu.addClass('activeMenu');
+                element = $('#accordian ul li');
+                selectorSubMenu = $(element).find('a[data-ui-sref="'+ state +'"]').parent('li');
+                selectorMenu = selectorSubMenu.closest('ul').parent('li').find('h3');
+                selectorSubMenu.closest('ul').parent('li').addClass('active');
+                selectorSubMenu.addClass('activeSubMenu');
+                selectorMenu.addClass('activeMenu');
+            }else if($('.aside-resize').is(':visible')){
+                $('#accordian-resize').find('li').removeClass('active');
+                $('#accordian-resize').children('ul').find('li ul li').removeClass('active');
+
+                element = $('#accordian-resize ul li');
+                selectorSubMenu = $(element).find('a[data-ui-sref="'+ state +'"]').parent('li');
+                selectorMenu = selectorSubMenu.closest('ul').parent('li').find('h3');
+                selectorSubMenu.closest('ul').parent('li').addClass('active');
+                selectorSubMenu.addClass('active');
+                selectorMenu.addClass('active');
+            }
     	}
 
     	switch($location.path()){

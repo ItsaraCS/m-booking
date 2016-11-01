@@ -11,8 +11,8 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="col-md-4">
-							<div class="thumbnail center-block no-margin-bottom" style="width: 280px; height: 215px;">
-								<img src="<?php echo image_asset('meeting.jpg'); ?>" class="img-responsive" style="width: 100%; height: 100%;">
+							<div class="thumbnail center-block no-margin-bottom">
+								<img src="<?php echo image_asset('meeting.jpg'); ?>" class="img-responsive" style="width: 100%; height: 200px;">
 							</div>
 						</div>
 						<div class="col-md-8">

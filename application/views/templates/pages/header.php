@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="title" content="ระบบจองห้องประชุมออนไลน์ (m-Booking)">
-	<title>ระบบจองห้องประชุมออนไลน์ (m-Booking)</title>
+	<meta name="title" content="ระบบจองห้องประชุมออนไลน์ EIAMHENG">
+	<title>ระบบจองห้องประชุมออนไลน์ EIAMHENG</title>
 	<!--<base href="<?php echo base_url(); ?>">-->
 	<!--Bootstrap CSS File-->
 	<?php echo library_asset('bootstrap', 'bootstrap.css'); ?>
@@ -16,7 +16,7 @@
 	<?php echo file_asset('accordian.css'); ?>
 </head>
 <body>
-	<div class="container-fluid">
+	<div class="container-fluid" data-ng-controller="mainController as mainCtrl">
 		<div class="row header">
 			<div class="col-md-12">
 				<div class="row">
@@ -30,7 +30,7 @@
 							<div class="col-md-11 header-title">
 								<div class="row">
 									<p class="no-margin-bottom">
-										ระบบจองห้องประชุมออนไลน์ (m-Booking)
+										ระบบจองห้องประชุมออนไลน์ EIAMHENG
 									</p>
 								</div>
 							</div>
@@ -52,7 +52,7 @@
 			</div>
 		</div>
 		<div class="row content">
-			<div class="col-md-2 aside">
+			<div class="col-md-3 col-lg-2 aside">
 				<div class="row">
 					<div id="accordian">
 					  	<ul>
@@ -88,20 +88,20 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-2 aside-resize">
+			<div class="col-md-3 col-lg-2 aside-resize">
 				<div class="row">
 					<nav class="navbar navbar-default">
 						<div class="container-fluid">
 							<div class="navbar-header">
 							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
-								data-target="#menu-resize">
+								data-target="#accordian-resize">
 						        <span class="sr-only">Toggle navigation</span>
 						        <span class="icon-bar"></span>
 						        <span class="icon-bar"></span>
 						        <span class="icon-bar"></span>
 						 	</button>
 					    </div>
-					    <div class="collapse navbar-collapse" id="menu-resize">
+					    <div class="collapse navbar-collapse" id="accordian-resize">
 					      	<ul class="nav navbar-nav">
 					        	<li class="active dropdown">
 									<a href="" class="dropdown-toggle" data-toggle="dropdown">
@@ -142,6 +142,6 @@
 					</nav>
 				</div>
 			</div>
-			<div class="col-md-10 section">
+			<div class="col-md-9 col-lg-10 section">
 				<div class="row">
 					<span data-ui-view>
