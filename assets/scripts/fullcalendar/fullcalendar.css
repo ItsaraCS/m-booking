@@ -50,7 +50,7 @@ body .fc { /* extra precedence to overcome jqui */
 }
 
 .fc-unthemed .fc-today {
-	background: #f9f3bd;
+	background: #fcf9de;
 }
 
 .fc-highlight { /* when user is selecting cells */
@@ -374,19 +374,21 @@ hr.fc-divider {
 	font-size: 1em; /* normalize cross-browser */
 }
 
-.fc th {
-	text-align: center;
-	padding: 5px;
-	background-color: #E6E6E6;
-	color: #333;
-}
-
 .fc th,
 .fc td {
 	border-style: solid;
 	border-width: 1px;
-	/*padding: 0;
-	vertical-align: top;*/
+}
+
+.fc th {
+	text-align: center;
+	padding: 10px;
+	background-color: #919191;
+	color: #FFFFFF;
+}
+
+.fc td {
+	background-color: #F5F5F5;
 }
 
 .fc td.fc-today {

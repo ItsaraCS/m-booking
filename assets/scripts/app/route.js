@@ -2,14 +2,59 @@
 .config(function($stateProvider, $urlRouterProvider, $locationProvider){
 	$locationProvider.html5Mode(false);
 
-	$urlRouterProvider.otherwise('/main');
+	$urlRouterProvider.otherwise('/schedule_meeting_use');
 	$stateProvider
-		.state('เข้าสู่ระบบ', {
+		//--เมนู : รายการจองห้องประชุม
+        .state('ปฏิทินการใช้ห้องประชุม', {
+            url: '/schedule_meeting_use',
+            controller: 'scheduleMeetingUseController',
+            templateUrl: 'templates/schedule_meeting_use.php'
+        })
+        .state('จองห้องประชุม', {
+            url: '/booking_add',
+            controller: 'bookingController',
+            templateUrl: 'templates/booking.php'
+        })
+        .state('ยกเลิกการจอง', {
+            url: '/cancel_booking',
+            controller: 'bookingController',
+            templateUrl: 'templates/cancel_booking.php'
+        })
+        .state('ค้นหาข้อมูลการจอง', {
+            url: '/search_booking',
+            controller: 'searchBookingController',
+            templateUrl: 'templates/search_booking.php'
+        })
+        .state('จัดการสถานะการจอง', {
+            url: '/booking_status_manage',
+            controller: 'bookingStatusManageController',
+            templateUrl: 'templates/booking_status_manage.php'
+        })
+        
+        //--เมนู : เกี่ยวกับห้องประชุม
+        .state('รายละเอียดห้องประชุม', {
+            url: '/meeting_detail',
+            controller: 'meetingDetailController',
+            templateUrl: 'templates/meeting_detail.php'
+        })
+        .state('รายงานการจอง', {
+            url: '/report',
+            controller: 'reportController',
+            templateUrl: 'templates/report.php'
+        })
+        .state('คำแนะนำการใช้งานระบบ', {
+            url: '/instructions',
+            controller: 'instructionsController',
+            templateUrl: 'templates/instructions.php'
+        })
+
+        //--เมนู : ผู้ใช้ระบบ
+        .state('เข้าสู่ระบบ', {
             url: '/login',
-            controller: 'userController',
+            controller: 'mainController',
             templateUrl: 'templates/login.php'
         })
-        .state('สมัครสมาชิกใหม่', {
+        .state('สมัครสมาชิก', {
             url: '/register',
             controller: 'userController',
             templateUrl: 'templates/register.php'
@@ -19,53 +64,41 @@
             controller: 'userController',
             templateUrl: 'templates/userinfo.php'
         })
-        .state('ออกจากระบบ', {
-            url: '/logout',
-            controller: 'userController'
+        .state('ตั้งค่าสิทธิ์การใช้งาน', {
+            url: '/permission',
+            controller: 'userController',
+            templateUrl: 'templates/permission.php'
         })
-        .state('หน้าแรก', {
-            url: '/main',
-            controller: 'scheduleMeetingUseController',
-            templateUrl: 'templates/schedule_meeting_use.php'
+        
+        //--เมนูการทำงาน
+        .state('จัดการยกเลิกการจอง', {
+            url: '/cancel_booking/:waitStatus',
+            controller: 'bookingController',
+            templateUrl: 'templates/booking_show.php'
         })
-        .state('คำแนะการการใช้งานระบบ', {
-            url: '/instructions',
-            controller: 'mainController',
-            templateUrl: 'templates/instructions.php'
+        .state('ดูข้อมูลรายการจอง', {
+            url: '/booking_show',
+            controller: 'bookingController',
+            templateUrl: 'templates/booking_show.php'
         })
-        .state('จองห้องประชุม', {
-            url: '/booking',
+        .state('เพิ่มรายการจอง', {
+            url: '/booking_add',
             controller: 'bookingController',
             templateUrl: 'templates/booking.php'
         })
-        .state('ตารางห้องประชุมวันนี้', {
-            url: '/schedule_today',
-            controller: 'scheduleTodayController',
-            templateUrl: 'templates/schedule_today.php'
+        .state('แก้ไขรายการจอง', {
+            url: '/booking_edit',
+            controller: 'bookingController',
+            templateUrl: 'templates/booking.php'
         })
-        .state('ปฏิทินการใช้ห้องประชุม', {
-            url: '/schedule_meeting_use',
-            controller: 'scheduleMeetingUseController',
-            templateUrl: 'templates/schedule_meeting_use.php'
+        .state('จัดการสถานะที่รอให้ดำเนินการ', {
+            url: '/booking_show/:waitStatus',
+            controller: 'bookingController',
+            templateUrl: 'templates/booking_show.php'
         })
-        .state('ค้นหาข้อมูลการจอง', {
-            url: '/search_booking',
-            controller: 'searchBookingController',
-            templateUrl: 'templates/search_booking.php'
-        })
-        .state('รายละเอียดห้องประชุม', {
-            url: '/detail_meeting',
-            controller: 'detailMeetingController',
-            templateUrl: 'templates/detail_meeting.php'
-        })
-        .state('สถิติแยกตามห้องประชุม', {
-            url: '/statistic_by_meeting',
-            controller: 'detailMeetingController',
-            templateUrl: 'templates/statistic_by_meeting.php'
-        })
-        .state('สถิติแยกตามหน่วยงาน', {
-            url: '/statistic_by_department',
-            controller: 'detailMeetingController',
-            templateUrl: 'templates/statistic_by_department.php'
+        .state('จัดการตั้งค่าสิทธิ์การใช้งาน', {
+            url: '/permission_manage',
+            controller: 'userController',
+            templateUrl: 'templates/permission_manage.php'
         });
 });

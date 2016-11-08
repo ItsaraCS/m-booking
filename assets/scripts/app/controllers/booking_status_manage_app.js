@@ -1,11 +1,11 @@
 angular.module('mainApp')
-.controller('searchBookingController', function($scope, $location, initService, connectDBService, dataService){
+.controller('bookingStatusManageController', function($scope, $location, initService, connectDBService, dataService){
 	//--Set initials
-	console.log('This is Ctrl of page: searchBookingController');
+	console.log('This is Ctrl of page: bookingStatusManageController');
 	initService.activeMenu();
 
 	//--Declar variables
-	var ajaxUrl = 'search_booking_ctrl';
+	var ajaxUrl = 'booking_status_manage_ctrl';
 	var param = {
 		'funcName': '',
 		'param': ''
@@ -21,11 +21,21 @@ angular.module('mainApp')
 	$scope.getDropdownList = function(){
 		//--Get default dropdown list
 		$scope.meetingRoomList = [];
-		$scope.bookingStatusList = [];
 		dataService.getDropdownList($scope, [
-			'meetingRoomList',
-			'bookingStatusList'
+			'meetingRoomList'
 		]);
+
+		//--Get custom dropdown list
+		$scope.bookingStatusList = [];
+		param['funcName'] = 'getDropdownList';
+
+		connectDBService.query(ajaxUrl, param).success(function(response){
+			if(response != "" && response != undefined){
+				var itemList = response;
+				$scope.bookingStatusList = [];
+				angular.copy(itemList['bookingStatusList'], $scope.bookingStatusList);
+			}
+		});
 	}
 	$scope.getDropdownList();
 

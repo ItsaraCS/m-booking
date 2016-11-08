@@ -1,11 +1,10 @@
 <div class="col-md-12 section-instructions">
 	<div class="well well-sm well-default">
-		<p><i class="fa fa-question-circle text-indent"></i> คำแนะการการใช้งานระบบ</p>
+		<p><i class="fa fa-question-circle text-indent"></i> คำแนะนำการใช้งานระบบ</p>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<i class="fa fa-bars text-indent"></i>
-			คำแนะนำการใช้งานระบบจองห้องประชุมออนไลน์
+			<i class="fa fa-bars text-indent"></i> คำแนะนำการใช้งานระบบ
 		</div>
 		<div class="panel-body margin-top">
 			<div class="col-md-12">

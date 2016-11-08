@@ -1,8 +1,68 @@
 angular.module('mainApp')
-.controller('bookingController', function($scope, initService){
+.controller('bookingController', function($scope, $location, $stateParams, initService, connectDBService, dataService){
+	//--Set initials
 	console.log('This is Ctrl of page: bookingController');
-	initService.activeMenu();
+	initService.activeMenu($stateParams);
+	initService.setResizePage();
 
+	//--Declar variables
+	var ajaxUrl = 'booking_ctrl';
+	var param = {
+		'funcName': '',
+		'param': ''
+	};
+	$scope.entryBooking = {
+		'meeting_room_id': '',
+		'meeting_type_id': '',
+		'start_date': '',
+		'end_date': '',
+		'start_time': '',
+		'end_time': '',
+		'meeting_topic': '',
+		'meeting_number': '',
+		'meeting_detail': '',
+		'department_id': '',
+		'meeting_table_type_id': '',
+		'meeting_required_id': '',
+		'budget_type_id': '',
+		'equipment_list': []
+	};
+	$scope.currentLocation = $location.path();
+	$scope.stateParams = $stateParams;
+
+	//-Function
+	$scope.getDropdownList = function(){
+		//--Get default dropdown list
+		$scope.meetingRoomList = [];
+		$scope.meetingTypeList = [];
+		$scope.meetingTableTypeList = []; 
+		$scope.meetingRequiredList = [];
+		$scope.departmentList = []; 
+		$scope.budgetTypeList = []; 
+		$scope.equipmentList = [];
+		$scope.bookingStatusList = [];
+		dataService.getDropdownList($scope, [
+			'meetingRoomList',
+			'meetingTypeList',
+			'meetingTableTypeList',
+			'meetingRequiredList',
+			'departmentList',
+			'budgetTypeList',
+			'equipmentList',
+			'bookingStatusList'
+		]);
+	}
+	$scope.getDropdownList();
+
+	$scope.insertData = function(){
+		console.log($scope.entryBooking);
+	}
+
+	$scope.resetEntry = function(entry){
+        $scope[entry] = {};
+    }
+
+    //--Function, Event on page load
 	$(document).ready(function(){
 		//--Datepicker
 		$('.datepicker').datepicker({ 
@@ -32,15 +92,8 @@ angular.module('mainApp')
 		});
 
 		//--Set element on load and resize page
-		setResizePage();
 		$(window).on('resize', function(e){
-			setResizePage();
+			initService.setResizePage();
 		});
-
-		function setResizePage(){
-			var sizeInputGroupAddon = $('.section-booking').find('.col-inline span.input-group-addon').outerWidth();
-			var sizeInputGroupAddonFluid = $('.section-booking').find('.col-inline .input-group-addon-fluid');
-			$(sizeInputGroupAddonFluid).css({ 'width': sizeInputGroupAddon });
-		}
 	});
 });

@@ -1,8 +1,10 @@
 angular.module('mainApp')
-.controller('scheduleMeetingUseController', function($scope, initService, dataService){
+.controller('scheduleMeetingUseController', function($scope, $location, initService, dataService, connectDBService){
+	//--Set initials
 	console.log('This is Ctrl of page: scheduleMeetingUseController');
 	initService.activeMenu();
 
+	//--Function, Event on page load
 	$(document).ready(function(){
 		//--Schedule of booking
 		$scope.today = dataService.getCurrentDate();

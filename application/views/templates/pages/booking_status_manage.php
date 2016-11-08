@@ -1,10 +1,10 @@
-<div class="col-md-12 section-search-booking">
+<div class="col-md-12 section-booking-status-manage">
 	<div class="well well-sm well-default">
-		<p><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</p>
+		<p><i class="fa fa-toggle-on text-indent"></i> จัดการสถานะการจอง</p>
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<i class="fa fa-bars text-indent"></i> ค้นหาข้อมูลการจอง
+			<i class="fa fa-bars text-indent"></i> จัดการสถานะการจอง
 		</div>
 		<div class="panel-body margin-top">
 			<!--Main content-->
@@ -47,7 +47,6 @@
 							  		<option value="" selected disabled>เลือกสถานะ</option>
 								    <option data-ng-repeat="item in bookingStatusList"
 								    	value="{{ item.booking_status_id }}">{{ item.booking_status_name }}</option>
-								    <option value="booking_status_all">ทุกสถานะ</option>
 								</select>
 							</div>
 						</div>
@@ -64,20 +63,22 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12 form-group text-right">
+				<div class="col-md-12 form-group text-right no-margin-bottom">
 					<span class="info booking-info"></span>
 					<button class="btn btn-search" type="button" 
 						data-ng-disabled="searchBookingForm.$invalid"
 						data-ng-click="searchBooking()">
 						<i class="fa fa-search text-indent"></i> ค้นหา
 					</button>
-					<a class="btn btn-success" data-ui-sref="เพิ่มรายการจอง">
-						<i class="fa fa-plus-square text-indent"></i> เพิ่มรายการจอง
-					</a>
 				</div>
 			</form>
 			
 			<!--Sub content-->
+			<div class="col-md-12">
+				<div class="label-warning">
+					<i class="fa fa-exclamation-circle text-indent"></i> แสดงเฉพาะรายการที่รออนุมัติ และรอยกเลิกเท่านั้น
+				</div>
+			</div>
 			<form name="bookingForm" novalidate>
 				<div class="col-md-12">
 					<div class="table-responsive">
@@ -92,28 +93,6 @@
 								<!--<tr data-ng-repeat="item in bookingDetailData">-->
 								<tr>
 									<td class="col-md-2 vertical-center">
-										<div class="status status-approve">อนุมัติ</div>
-									</td>
-									<td class="col-md-4 vertical-center">
-										จาก 01-11-59 (08:00) ถีง 01-11-59 (16:00)
-									</td>
-									<td class="col-md-4 vertical-center">ห้องประชุม</td>
-									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
-											<i class="glyphicon glyphicon-eye-open"></i>
-										</a>
-										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
-											<i class="glyphicon glyphicon-edit"></i>
-										</a>
-										<button class="btn btn-sm btn-cancel" type="button" title="ลบ">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
-											<i class="glyphicon glyphicon-trash"></i>
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td class="col-md-2 vertical-center">
 										<div class="status status-waitapprove">รออนุมัติ</div>
 									</td>
 									<td class="col-md-4 vertical-center">
@@ -124,34 +103,10 @@
 										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
 											<i class="glyphicon glyphicon-eye-open"></i>
 										</a>
-										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
-											<i class="glyphicon glyphicon-edit"></i>
+										<a class="btn btn-sm btn-success" title="จัดการสถานะ" href="#/booking_show/waitapprove">
+											<i class="glyphicon glyphicon-check"></i>
 										</a>
 										<button class="btn btn-sm btn-cancel" type="button" title="ลบ">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
-											<i class="glyphicon glyphicon-trash"></i>
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td class="col-md-2 vertical-center">
-										<div class="status status-cancel">ยกเลิก</div>
-									</td>
-									<td class="col-md-4 vertical-center vertical-center">
-										จาก 01-11-59 (08:00) ถีง 01-11-59 (16:00)
-									</td>
-									<td class="col-md-4 vertical-center">ห้องประชุม</td>
-									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
-											<i class="glyphicon glyphicon-eye-open"></i>
-										</a>
-										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
-											<i class="glyphicon glyphicon-edit"></i>
-										</a>
-										<button class="btn btn-sm btn-cancel" type="button" title="ลบ">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
 									</td>
@@ -168,34 +123,10 @@
 										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
 											<i class="glyphicon glyphicon-eye-open"></i>
 										</a>
-										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
-											<i class="glyphicon glyphicon-edit"></i>
+										<a class="btn btn-sm btn-success" title="จัดการสถานะ" href="#/booking_show/waitcancel">
+											<i class="glyphicon glyphicon-check"></i>
 										</a>
 										<button class="btn btn-sm btn-cancel" type="button" title="ลบ">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
-											<i class="glyphicon glyphicon-trash"></i>
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td class="col-md-2 vertical-center">
-										<div class="status status-notapprove">ไม่อนุมัติ</div>
-									</td>
-									<td class="col-md-4 vertical-center vertical-center">
-										จาก 01-11-59 (08:00) ถีง 01-11-59 (16:00)
-									</td>
-									<td class="col-md-4 vertical-center">ห้องประชุม</td>
-									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
-											<i class="glyphicon glyphicon-eye-open"></i>
-										</a>
-										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
-											<i class="glyphicon glyphicon-edit"></i>
-										</a>
-										<button class="btn btn-sm btn-cancel" type="button" title="ลบ">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
 									</td>
