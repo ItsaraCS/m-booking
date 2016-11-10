@@ -65,7 +65,7 @@
             templateUrl: 'templates/userinfo.php'
         })
         .state('ตั้งค่าสิทธิ์การใช้งาน', {
-            url: '/permission',
+            url: '/permission/?permissionPage?firstname?email',
             controller: 'userController',
             templateUrl: 'templates/permission.php'
         })
@@ -97,7 +97,7 @@
             templateUrl: 'templates/booking_show.php'
         })
         .state('จัดการตั้งค่าสิทธิ์การใช้งาน', {
-            url: '/permission_manage',
+            url: '/permission_manage/:userID',
             controller: 'userController',
             templateUrl: 'templates/permission_manage.php'
         });

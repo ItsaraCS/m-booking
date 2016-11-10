@@ -73,19 +73,23 @@
 				<div class="row">
 					<div id="accordian">
 					  	<ul>
-					    	<li class="active">
+					    	<li class="active" data-ng-show="(userPermissionData[0].perm_status != 'DN') ||
+					    		(userPermissionData[1].perm_status != 'DN') ||
+					    		(userPermissionData[2].perm_status != 'DN') ||
+					    		(userPermissionData[3].perm_status != 'DN') ||
+					    		(userPermissionData[4].perm_status != 'DN')">
 					      		<h3><span class="fa fa-address-book"></span>รายการจองห้องประชุม</h3>
 					      		<ul>
-							        <li active-menu>
+							        <li active-menu data-ng-show="userPermissionData[0].perm_status != 'DN'">
 							        	<a data-ui-sref="ปฏิทินการใช้ห้องประชุม" data-menu-index="0"><i class="fa fa-calendar text-indent"></i> ปฏิทินการใช้ห้องประชุม</a>
 							        </li>
-							        <li active-menu data-ng-show="entryUser.user_id">
+							        <li active-menu data-ng-show="entryUser.user_id && (userPermissionData[1].perm_status != 'DN')">
 							        	<a data-ui-sref="จองห้องประชุม" data-menu-index="1"><i class="fa fa-plus-square text-indent"></i> จองห้องประชุม</a>
 							        </li>
-							        <li active-menu data-ng-show="entryUser.user_id">
+							        <li active-menu data-ng-show="entryUser.user_id && (userPermissionData[2].perm_status != 'DN')">
 							        	<a data-ui-sref="ยกเลิกการจอง" data-menu-index="2"><i class="fa fa-ban text-indent"></i> ยกเลิกการจอง</a>
 							        </li>
-							        <li active-menu>
+							        <li active-menu data-ng-show="userPermissionData[3].perm_status != 'DN'">
 							        	<a data-ui-sref="ค้นหาข้อมูลการจอง" data-menu-index="3"><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</a>
 							        </li>
 							        <li active-menu data-ng-show="entryUser.user_id && (userPermissionData[4].perm_status == 'R/W')">
@@ -93,30 +97,35 @@
 							        </li>
 					      		</ul>
 					    	</li>
-					    	<li>
+					    	<li data-ng-show="(userPermissionData[5].perm_status != 'DN') ||
+					    		(userPermissionData[6].perm_status != 'DN') ||
+					    		(userPermissionData[7].perm_status != 'DN')">
 					      		<h3><span class="fa fa-book"></span>เกี่ยวกับห้องประชุม</h3>
 						      	<ul>
-							        <li active-menu>
+							        <li active-menu data-ng-show="userPermissionData[5].perm_status != 'DN'">
 							        	<a data-ui-sref="รายละเอียดห้องประชุม" data-menu-index="5"><i class="fa fa-eye text-indent"></i> รายละเอียดห้องประชุม</a>
 							        </li>
-							        <li active-menu data-ng-show="entryUser.user_id">
+							        <li active-menu data-ng-show="entryUser.user_id && (userPermissionData[6].perm_status != 'DN')">
 							        	<a data-ui-sref="รายงานการจอง" data-menu-index="6"><i class="fa fa-bar-chart text-indent"></i> รายงานการจอง</a>
 							        </li>
-							        <li active-menu>
+							        <li active-menu data-ng-show="userPermissionData[7].perm_status != 'DN'">
 							        	<a data-ui-sref="คำแนะนำการใช้งานระบบ" data-menu-index="7"><i class="fa fa-question-circle text-indent"></i> คำแนะนำการใช้งานระบบ</a>
 							        </li>
 						      	</ul>
 					    	</li>
-					    	<li>
+					    	<li data-ng-show="(userPermissionData[8].perm_status != 'DN') ||
+					    		(userPermissionData[9].perm_status != 'DN') ||
+					    		(userPermissionData[10].perm_status != 'DN') ||
+					    		(userPermissionData[11].perm_status != 'DN')">
 					      		<h3><span class="fa fa-user-circle"></span>ผู้ใช้ระบบ</h3>
 						      	<ul>
-							        <li active-menu data-ng-show="!entryUser.user_id">
+							        <li active-menu data-ng-show="!entryUser.user_id && (userPermissionData[8].perm_status != 'DN')">
 							        	<a data-ui-sref="เข้าสู่ระบบ" data-menu-index="8"><i class="fa fa-lock text-indent"></i> เข้าสู่ระบบ</a>
 							        </li>
-							        <li active-menu data-ng-show="!entryUser.user_id">
+							        <li active-menu data-ng-show="!entryUser.user_id && (userPermissionData[9].perm_status != 'DN')">
 							        	<a data-ui-sref="สมัครสมาชิก" data-menu-index="9"><i class="fa fa-refresh text-indent"></i> สมัครสมาชิก</a>
 							        </li>
-							        <li active-menu data-ng-show="entryUser.user_id">
+							        <li active-menu data-ng-show="entryUser.user_id && (userPermissionData[10].perm_status != 'DN')">
 							        	<a data-ui-sref="ข้อมูลส่วนตัว" data-menu-index="10"><i class="fa fa-user text-indent"></i> ข้อมูลส่วนตัว</a>
 							        </li>
 							        <li active-menu data-ng-show="entryUser.user_id && (userPermissionData[4].perm_status == 'R/W')">

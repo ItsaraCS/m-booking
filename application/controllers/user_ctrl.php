@@ -74,7 +74,70 @@
 			$sqlCmd .= "WHERE firstname LIKE '%$firstname%' ";
 			$sqlCmd .= "OR email = '$email' ";
 			$sqlCmd .= "ORDER BY user_id";
-			$itemList = $this->dbservice_model->getListObj($sqlCmd);
+			$itemList['userData'] = $this->dbservice_model->getListObj($sqlCmd);
+
+			$item = count($itemList['userData']);
+			$perPage = 3;
+			$itemList['totalPage'] = ceil($item / $perPage);
+
+
+			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
+		}
+
+		public function getUserPermissionDataForManage($userID){
+			$itemList = array();
+
+			$sqlCmd = "SELECT user_id, email, firstname, lastname, ";
+			$sqlCmd .= "d.department_name, position, phone, local_phone ";
+			$sqlCmd .= "FROM user u ";
+			$sqlCmd .= "INNER JOIN department d ";
+			$sqlCmd .= "ON u.department_id = d.department_id ";
+			$sqlCmd .= "WHERE user_id = '$userID' ";
+			$sqlCmd .= "ORDER BY user_id";
+			$itemList['userData'] = $this->dbservice_model->getObj($sqlCmd);
+
+			$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, ";
+			$sqlCmd .= "m.menu_name, ms.menu_sub_name, ps.permission_status_code AS perm_status ";
+			$sqlCmd .= "FROM permission p ";
+			$sqlCmd .= "INNER JOIN menu_sub ms ";
+			$sqlCmd .= "ON p.menu_sub_id = ms.menu_sub_id ";
+			$sqlCmd .= "INNER JOIN menu m ";
+			$sqlCmd .= "ON ms.menu_id = m.menu_id ";
+			$sqlCmd .= "INNER JOIN permission_status ps ";
+			$sqlCmd .= "ON p.permission_status_id = ps.permission_status_id ";
+			$sqlCmd .= "WHERE p.user_id = '".$userID."' ";
+			$sqlCmd .= "ORDER BY permission_id";
+			$itemList['userPermissionData'] = $this->dbservice_model->getListObj($sqlCmd);
+
+			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
+		}
+
+		public function updateUserPermission($param){
+			$itemList = array();
+			$status = false;
+
+			$tblName = $param['tblName'];
+			$dataList = $param['data'];
+			$userID = $param['userID'];
+			$status = $this->dbservice_model->updateData($tblName, $dataList);
+
+			if($status){
+				$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, ";
+				$sqlCmd .= "m.menu_name, ms.menu_sub_name, ps.permission_status_code AS perm_status ";
+				$sqlCmd .= "FROM permission p ";
+				$sqlCmd .= "INNER JOIN menu_sub ms ";
+				$sqlCmd .= "ON p.menu_sub_id = ms.menu_sub_id ";
+				$sqlCmd .= "INNER JOIN menu m ";
+				$sqlCmd .= "ON ms.menu_id = m.menu_id ";
+				$sqlCmd .= "INNER JOIN permission_status ps ";
+				$sqlCmd .= "ON p.permission_status_id = ps.permission_status_id ";
+				$sqlCmd .= "WHERE p.user_id = '".$userID."' ";
+				$sqlCmd .= "ORDER BY permission_id";
+				$itemList['userPermissionData'] = $this->dbservice_model->getListObj($sqlCmd);
+
+				$itemList['statusData'] = $this->dbservice_model->messageInfo('successUpdate');
+			}else
+				$itemList['statusData'] = $this->dbservice_model->messageInfo('errorUpdate');
 
 			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
 		}

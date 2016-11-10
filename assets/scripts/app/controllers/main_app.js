@@ -5,7 +5,7 @@ angular.module('mainApp')
 	//--Set initials
 	console.log('This is Ctrl of page: mainController');
 	initService.activeMenu();
-
+	
 	//--Declar variables
 	var ajaxUrl = 'dbservice_ctrl';
 	var param = {
@@ -40,9 +40,7 @@ angular.module('mainApp')
 				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined){
 					angular.copy(sessionData, $rootScope.entryUser);
 					$scope.getUserPermissionData();
-					console.log($rootScope.entryUser);
-				}else
-					$location.path("/login");
+				}
 			}
 		});
 	}
@@ -57,7 +55,6 @@ angular.module('mainApp')
 		
 		connectDBService.query(ajaxUrl, param).success(function(response){
 			angular.copy(response, $rootScope.userPermissionData);
-			console.log($rootScope.userPermissionData);
 		});
 	}
 
@@ -69,12 +66,19 @@ angular.module('mainApp')
 				'param': $scope.entryLogin
 			};
 
+			$rootScope.userPermissionData = [];
+			for(var i=1; i<12; i++){
+				$rootScope.userPermissionData.push({
+					'perm_status': 'DN'
+				});
+			}
+
 			connectDBService.query(ajaxUrl, param).success(function(response){
 				if(response != "" && response != undefined){
 					var statusData = response;
 
 					$scope.resetEntry('entryLogin', 'loginForm');
-
+					
 					if(statusData['status']){
 						$scope.getSession();
 						$location.path('/schedule_meeting_use');
@@ -113,6 +117,31 @@ angular.module('mainApp')
 		//--Active menu on window resize
     	$(window).on('resize', function(e){
 			initService.activeMenu();
+			initService.setResizePage();
+		});
+
+    	//--Set autofocus for 'email' input
+		$('form[name="loginForm"] input[name="email"]').focus();
+
+		//--Set initial for 'password' input
+    	$(document).on('focus', 'form[name="loginForm"] input[name="password"]', function(e){
+			$(this).prop('type', 'text');
+		});
+
+		$(document).on('blur', 'form[name="loginForm"] input[name="password"]', function(e){
+			if($(this).val() != '')
+				$(this).prop('type', 'password');
+		});
+
+		//--Call 'login' function when press enter key
+		$(window).on('keypress', function(e){
+			if(e.keyCode == 13){
+				var selectorEmail = $('form[name="loginForm"] input[name="email"]');
+				var selectorPassword = $('form[name="loginForm"] input[name="password"]');
+
+				if(selectorEmail.val() != '' && selectorPassword.val() != '')
+					$scope.login();
+			}
 		});
     });
 });

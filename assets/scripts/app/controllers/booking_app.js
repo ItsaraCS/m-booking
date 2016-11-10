@@ -1,8 +1,8 @@
 angular.module('mainApp')
-.controller('bookingController', function($scope, $location, $stateParams, initService, connectDBService, dataService){
+.controller('bookingController', function($scope, $rootScope, $location, $stateParams, initService, connectDBService, dataService){
 	//--Set initials
 	console.log('This is Ctrl of page: bookingController');
-	initService.activeMenu($stateParams);
+	initService.activeMenu();
 	initService.setResizePage();
 
 	//--Declar variables
@@ -31,6 +31,39 @@ angular.module('mainApp')
 	$scope.stateParams = $stateParams;
 
 	//-Function
+	$scope.getSession = function(){
+		ajaxUrl = 'dbservice_ctrl';
+		param = {
+			'funcName': 'getSession',
+			'param': ''
+		};
+
+		connectDBService.query(ajaxUrl, param).success(function(response){
+			if(response != '' && response != undefined){
+				var sessionData = response;
+
+				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined){
+					angular.copy(sessionData, $rootScope.entryUser);
+					$scope.getUserPermissionData();
+				}else
+					$location.path('/login');
+			}
+		});
+	}
+	$scope.getSession();
+
+	$scope.getUserPermissionData = function(){
+		ajaxUrl = 'dbservice_ctrl';
+		param = {
+			'funcName': 'getUserPermissionData',
+			'param': $rootScope.entryUser['user_id']
+		};
+		
+		connectDBService.query(ajaxUrl, param).success(function(response){
+			angular.copy(response, $rootScope.userPermissionData);
+		});
+	}
+	
 	$scope.getDropdownList = function(){
 		//--Get default dropdown list
 		$scope.meetingRoomList = [];

@@ -1,4 +1,4 @@
-<div class="col-md-12 section-booking-show">
+<div class="col-md-12 section-booking-show" data-ng-show="entryUser.user_id">
 	<div class="well well-sm well-default">
 		<ol class="breadcrumb" data-ng-if="stateParams.waitStatus == undefined">
 			<li>

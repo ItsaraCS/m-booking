@@ -189,6 +189,27 @@ angular.module('mainApp')
 		}
 	}
 })
+.directive('activePagination', function($stateParams){
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs, ngModel){
+			element.bind('click', function(){
+				$(element).closest('ul').find('li').removeClass('disabled active');
+				
+				if(attrs.value == 1)
+					$(element).addClass('active').prev().addClass('disabled');
+				else if(attrs.value == scope.totalPage)
+					$(element).addClass('active').next().addClass('disabled');
+				else if(attrs.value == 'prev')
+					$(element).addClass('disabled').next().addClass('active');
+				else if(attrs.value == 'next')
+					$(element).addClass('disabled').prev().addClass('active');
+				else
+					$(element).addClass('active');
+			});
+		}
+	}
+})
 .directive('panelGroupCollapse', function(initService){
 	return {
 		restrict: 'A',

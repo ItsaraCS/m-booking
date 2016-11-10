@@ -1,4 +1,4 @@
-<div class="col-md-12 section-booking">
+<div class="col-md-12 section-booking" data-ng-show="entryUser.user_id">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-plus-square text-indent"></i> จองห้องประชุม</p>
 	</div>

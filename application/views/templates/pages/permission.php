@@ -1,4 +1,4 @@
-<div class="col-md-12 section-permission">
+<div class="col-md-12 section-permission" data-ng-show="entryUser.user_id">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-cog text-indent"></i> ตั้งค่าสิทธิ์การใช้งาน</p>
 	</div>
@@ -40,7 +40,7 @@
 			<form name="userForm" novalidate>
 				<div class="col-md-12">
 					<div class="table-responsive">
-						<table class="table table-striped table-bordered">
+						<table class="table table-striped table-bordered no-margin-bottom">
 							<thead class="table-head-color">
 								<th class="text-center text-nowrap">ชื่อ - นามสกุล</th>
 								<th class="text-center text-nowrap">อีเมล์</th>
@@ -53,7 +53,8 @@
 									<td class="col-md-4 vertical-center">{{ item.email }}</td>
 									<td class="col-md-3 vertical-center">{{ item.department_name }}</td>
 									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-permission" title="จัดการตั้งค่าสิทธิ์การใช้งาน" data-ui-sref="จัดการตั้งค่าสิทธิ์การใช้งาน">
+										<a class="btn btn-sm btn-permission" title="จัดการตั้งค่าสิทธิ์การใช้งาน" 
+											href="#/permission_manage/{{ item.user_id }}">
 											<i class="glyphicon glyphicon-cog"></i>
 										</a>
 										<button class="btn btn-sm btn-cancel" type="button" title="ลบ">
@@ -64,6 +65,31 @@
 							</tbody>
 						</table>
 					</div>
+				</div>
+				<div class="col-md-12" data-ng-if="searchUserData.length">
+					<nav class="text-right">
+					  	<ul class="pagination margin-top no-margin-bottom">
+						    <li active-pagination value="prev">
+						      	<a data-ng-click="getUserDataPerPage(1)" aria-label="Previous">
+						        	<span aria-hidden="true">&laquo;</span>
+						      	</a>
+						    </li>
+							<li data-ng-repeat="item in totalPageList" active-pagination value="{{ item.permissionPage }}" 
+								data-ng-class="item.permissionPage == permissionPage ? 'active' : ''">
+						    	<a data-ui-sref="ตั้งค่าสิทธิ์การใช้งาน({ 
+						    		'permissionPage': '{{ item.permissionPage }}', 
+						    		'firstname': '{{ item.firstname }}', 
+						    		'email': '{{ item.email }}' })">
+						    		{{ item.permissionPage }}
+						    	</a>
+						    </li>
+						    <li active-pagination value="next">
+						      	<a data-ng-click="getUserDataPerPage(totalPage)" aria-label="Next">
+						        	<span aria-hidden="true">&raquo;</span>
+						      	</a>
+						    </li>
+					  	</ul>
+					</nav>
 				</div>
 			</form>
 		</div>

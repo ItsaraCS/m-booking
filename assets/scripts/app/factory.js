@@ -1,5 +1,5 @@
 angular.module('mainApp')
-.factory('initService', function($location, connectDBService){
+.factory('initService', function($rootScope, $location, $stateParams, connectDBService){
 	var initService = {};
 
     initService.setResizePage = function(){
@@ -24,7 +24,7 @@ angular.module('mainApp')
         $(sizePanelGroupAddonRightSub).css({ 'width': (sizePanelGroupAddonSub - sizeInputGroupAddonSub) });
     }
 
-    initService.activeMenu = function(stateParams = {}){
+    initService.activeMenu = function(){
         function setActiveMenu(state){
             var selectorMenu = '';
             var selectorSubMenu = '';
@@ -66,14 +66,15 @@ angular.module('mainApp')
             case '/login': setActiveMenu('เข้าสู่ระบบ'); break;
             case '/register': setActiveMenu('สมัครสมาชิก'); break;
             case '/userinfo': setActiveMenu('ข้อมูลส่วนตัว'); break;
-    		case '/permission': setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break;
+            case '/permission': setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break;
+    		case '/permission/': setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break;
 
             //--Menu for working
-            case '/cancel_booking/' + stateParams['waitStatus']: setActiveMenu('ยกเลิกการจอง'); break; //--จัดการยกเลิกการจอง
+            case '/cancel_booking/'+ $stateParams['waitStatus']: setActiveMenu('ยกเลิกการจอง'); break; //--จัดการยกเลิกการจอง
             case '/booking_show': setActiveMenu('ค้นหาข้อมูลการจอง'); break; //--ดูข้อมูลรายการจอง
             case '/booking_edit': setActiveMenu('จองห้องประชุม'); break; //--แก้ไขรายการจอง
-            case '/booking_show/' + stateParams['waitStatus']: setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
-            case '/permission_manage': setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break; //--จัดการตั้งค่าสิทธิ์การใช้งาน
+            case '/booking_show/'+ $stateParams['waitStatus']: setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
+            case '/permission_manage/'+ $stateParams['userID']: setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break; //--จัดการตั้งค่าสิทธิ์การใช้งาน
             default: setActiveMenu('ปฏิทินการใช้ห้องประชุม');
     	}
 	}
@@ -144,6 +145,106 @@ angular.module('mainApp')
                 }
             });
         }
+    }
+
+    dataService.filterObjUsed = function(obj, filterKey){
+        var newObj = {};
+
+        $.each(obj, function(key, value){
+            if($.inArray(key, filterKey) != -1)
+                newObj[key] = value;
+        });
+
+        return newObj;
+    }
+
+    dataService.filterObjNoUsed = function(obj, filterKey){
+        var newObj = {};
+
+        $.each(obj, function(key, value){
+            if($.inArray(key, filterKey) == -1)
+                newObj[key] = value;
+        });
+
+        return newObj;
+    }
+
+    dataService.filterArrUsed = function(array, filterKey){
+        var newObj = {};
+        var newArr = [];
+
+        $.each(array, function(index, item){
+            newObj = {};
+            $.each(item, function(key, value){
+                if($.inArray(key, filterKey) != -1)
+                    newObj[key] = value;
+            });
+            newArr.push(newObj);
+        });
+
+        return newArr;
+    }
+
+    dataService.filterArrNoUsed = function(array, filterKey){
+        var newObj = {};
+        var newArr = [];
+
+        $.each(array, function(index, item){
+            newObj = {};
+            $.each(item, function(key, value){
+                if($.inArray(key, filterKey) == -1)
+                    newObj[key] = value;
+            });
+            newArr.push(newObj);
+        });
+
+        return newArr;
+    }
+
+    dataService.getDataObjChange = function(originData, updateData, primaryKey){
+        var dataObjChange = {};
+
+        $.each(originData, function(keyOrigin, valOrigin){
+            $.each(updateData, function(keyUpdate, valUpdate){
+                if(keyOrigin == keyUpdate){
+                    if(valOrigin != valUpdate){
+                        if(primaryKey != "" && primaryKey != undefined)
+                            dataObjChange["condition"] = primaryKey +" = '"+ updateData[primaryKey] +"'";
+
+                        dataObjChange[keyUpdate] = valUpdate;
+                    }
+                }
+            });
+        });
+
+        return dataObjChange;
+    }
+
+    dataService.getDataArrChange = function(originData, updateData, primaryKey){
+        var dataArrChange = [];
+        var dataObjChange = {};
+
+        $.each(originData, function(originIndex, originItem){
+            dataObjChange = {};
+
+            $.each(originItem, function(keyOrigin, valOrigin){
+                $.each(updateData[originIndex], function(keyUpdate, valUpdate){
+                    if(keyOrigin == keyUpdate){
+                        if(valOrigin != valUpdate){
+                            if(primaryKey != "" && primaryKey != undefined)
+                                dataObjChange["condition"] = primaryKey +" = '"+ updateData[originIndex][primaryKey] +"'";
+
+                            dataObjChange[keyUpdate] = valUpdate;
+                        }
+                    }
+                });
+            });
+            
+            if(!$.isEmptyObject(dataObjChange))
+                dataArrChange.push(dataObjChange);
+        });
+
+        return dataArrChange;
     }
 
     dataService.getCurrentDate = function(){

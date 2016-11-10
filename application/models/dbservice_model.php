@@ -91,7 +91,7 @@
 					$values .= "'$val'";
 					$fieldIndex++;
 				}
-
+				
 				$sqlCmd = "INSERT INTO $tblName($fields) VALUES($values)";
 				$status = $mysqli->query($sqlCmd);
 				$lastInsertID = $mysqli->insert_id;
@@ -107,14 +107,14 @@
 		}
 
 		//--Insert data for sub table
-		public function insertDataSubTable($tblName, $dataArr){
+		public function insertDataSubTable($tblName, $dataList){
 			global $mysqli;
 
-			foreach($dataArr as $data){
+			foreach($dataList as $data){
 				$status = false;
 				$subStatus = false;
-				$fields = '';
-				$values = '';
+				$fields = "";
+				$values = "";
 				$fieldIndex = 1;
 				$subTableList = array();
 
@@ -123,11 +123,11 @@
 						array_push($subTableList, $val);
 					else{
 						if($fieldIndex != 1){
-							$fields .= ', ';
-							$values .= ', ';
+							$fields .= ", ";
+							$values .= ", ";
 						}
-						$fields .= '$key';
-						$values .= '"$val"';
+						$fields .= "$key";
+						$values .= "'$val'";
 						$fieldIndex++;
 					}
 				}
@@ -143,17 +143,17 @@
 						$subDataArr = $subTable['data'];
 
 						foreach($subDataArr as $subData){
-							$subFields = '';
-							$subValues = '';
+							$subFields = "";
+							$subValues = "";
 							$subFieldIndex = 1;
 
 							foreach($subData as $subKey=>$subVal){
 								if($subFieldIndex != 1){
-									$subFields .= ', ';
-									$subValues .= ', ';
+									$subFields .= ", ";
+									$subValues .= ", ";
 								}
-								$subFields .= '$subKey';
-								$subValues .= '"$subVal"';
+								$subFields .= "$subKey";
+								$subValues .= "'$subVal'";
 								$subFieldIndex++;
 							}
 
@@ -178,12 +178,12 @@
 		}
 
 		//--Update data
-		public function updateData($tblName, $dataArr){
+		public function updateData($tblName, $dataList){
 			global $mysqli;
 
-			foreach($dataArr as $data){
+			foreach($dataList as $data){
 				$status = false;
-				$update = '';
+				$update = "";
 				$fieldIndex = 1;
 				
 				foreach($data as $key=>$val){
@@ -191,19 +191,19 @@
 						continue;
 					else{
 						if($fieldIndex != 1)
-							$update .= ', ';
+							$update .= ", ";
 
-						if($key == 'updated')
-							$update .= '$key = CURRENT_TIMESTAMP';
-						else
-							$update .= '$key = "$val"';
-
+						$update .= "$key = '$val'";
 						$fieldIndex++;
 					}
 				}
 
-				$sqlCmd = "UPDATE $tblName SET $update WHERE ".$data['condition'];
-				$status = $mysqli->query($sqlCmd);
+				if(!empty($update)){
+					$update .= ", updated = CURRENT_TIMESTAMP";
+					$sqlCmd = "UPDATE $tblName SET $update WHERE ".$data['condition'];
+					$status = $mysqli->query($sqlCmd);
+				}else
+					$status = true;
 			}
 
 			if($status)
@@ -213,16 +213,15 @@
 		}
 
 		//--Update data for sub table
-		public function updateDataSubTable($tblName, $dataArr){
+		public function updateDataSubTable($tblName, $dataList){
 			global $mysqli;
 
-			foreach($dataArr as $data){
+			foreach($dataList as $data){
 				$status = false;
 				$subStatus = false;
-				$update = '';
+				$update = "";
 				$fieldIndex = 1;
 				$subTableList = array();
-				$pathUpload = '../ActivitiesImages/';
 				
 				foreach($data as $key=>$val){
 					if($key == 'condition')
@@ -232,19 +231,16 @@
 							array_push($subTableList, $val);
 						else{
 							if($fieldIndex != 1)
-								$update .= ', ';
+								$update .= ", ";
 
-							if($key == 'updated')
-								$update .= '$key = CURRENT_TIMESTAMP';
-							else
-								$update .= '$key = "$val"';
-
+							$update .= "$key = '$val'";
 							$fieldIndex++;
 						}
 					}
 				}
 
 				if(!empty($update)){
+					$update .= ", updated = CURRENT_TIMESTAMP";
 					$sqlCmd = "UPDATE $tblName SET $update WHERE ".$data['condition'];
 					$status = $mysqli->query($sqlCmd);
 				}else
@@ -257,7 +253,7 @@
 						$subDataArr = $subTable['data'];
 
 						foreach($subDataArr as $subData){
-							$subUpdate = '';
+							$subUpdate = "";
 							$subFieldIndex = 1;
 
 							foreach($subData as $subKey=>$subVal){
@@ -268,16 +264,20 @@
 										$subUpdate .= ', ';
 
 									if($subKey == 'updated')
-										$subUpdate .= '$subKey = CURRENT_TIMESTAMP';
+										$subUpdate .= "$subKey = CURRENT_TIMESTAMP";
 									else
-										$subUpdate .= '$subKey = "$subVal"';
+										$subUpdate .= "$subKey = '$subVal'";
 									
 									$subFieldIndex++;
 								}
 							}
 
-							$subSqlCmd = "UPDATE $subTblName SET $subUpdate WHERE ".$subData['condition'];
-							$subStatus = $mysqli->query($subSqlCmd);
+							if(!empty($update)){
+								$subUpdate .= ", updated = CURRENT_TIMESTAMP";
+								$subSqlCmd = "UPDATE $subTblName SET $subUpdate WHERE ".$subData['condition'];
+								$subStatus = $mysqli->query($subSqlCmd);
+							}else
+								return true;
 						}
 					}
 				}

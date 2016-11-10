@@ -1,4 +1,4 @@
-<div class="col-md-12 section-userinfo">
+<div class="col-md-12 section-userinfo" data-ng-show="entryUser.user_id">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-user text-indent"></i> ข้อมูลส่วนตัว</p>
 	</div>
@@ -101,3 +101,7 @@
 		</div>
 	</div>
 </div>
+<!--Popup File-->
+<?php
+	$this->load->view('templates/popups/warning_popup');
+?>

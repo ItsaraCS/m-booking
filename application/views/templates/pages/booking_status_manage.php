@@ -1,4 +1,4 @@
-<div class="col-md-12 section-booking-status-manage">
+<div class="col-md-12 section-booking-status-manage" data-ng-show="entryUser.user_id">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-toggle-on text-indent"></i> จัดการสถานะการจอง</p>
 	</div>

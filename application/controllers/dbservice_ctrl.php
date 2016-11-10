@@ -34,7 +34,7 @@
 			$sqlCmd .= "INNER JOIN permission_status ps ";
 			$sqlCmd .= "ON p.permission_status_id = ps.permission_status_id ";
 			$sqlCmd .= "WHERE p.user_id = '".$userID."' ";
-			$sqlCmd .= "ORDER BY permission_id ";
+			$sqlCmd .= "ORDER BY permission_id";
 			$itemList = $this->dbservice_model->getListObj($sqlCmd);
 
 			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
