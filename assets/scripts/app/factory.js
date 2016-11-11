@@ -25,7 +25,7 @@ angular.module('mainApp')
     }
 
     initService.activeMenu = function(){
-        function setActiveMenu(state){
+        function setActiveMenu(state, menuIdx){
             var selectorMenu = '';
             var selectorSubMenu = '';
             var element ='';
@@ -56,7 +56,7 @@ angular.module('mainApp')
     	switch($location.path()){
             //--Menu
             case '/schedule_meeting_use': setActiveMenu('ปฏิทินการใช้ห้องประชุม'); break;
-            case '/booking_add': setActiveMenu('จองห้องประชุม'); break;
+            case '/booking_add': setActiveMenu('จองห้องประชุม', 1); break;
             case '/cancel_booking': setActiveMenu('ยกเลิกการจอง'); break;
             case '/search_booking': setActiveMenu('ค้นหาข้อมูลการจอง'); break;
             case '/booking_status_manage': setActiveMenu('จัดการสถานะการจอง'); break;
@@ -71,9 +71,12 @@ angular.module('mainApp')
 
             //--Menu for working
             case '/cancel_booking/'+ $stateParams['waitStatus']: setActiveMenu('ยกเลิกการจอง'); break; //--จัดการยกเลิกการจอง
-            case '/booking_show': setActiveMenu('ค้นหาข้อมูลการจอง'); break; //--ดูข้อมูลรายการจอง
             case '/booking_edit': setActiveMenu('จองห้องประชุม'); break; //--แก้ไขรายการจอง
-            case '/booking_show/'+ $stateParams['waitStatus']: setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
+            case '/booking_show/waitapprove': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
+            case '/booking_show/waitcancel': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
+            case '/booking_show/showCancelBooking': setActiveMenu('ยกเลิกการจอง'); break; //--จัดการยกเลิกการจอง
+            case '/booking_show/showSearchBooking': setActiveMenu('ค้นหาข้อมูลการจอง'); break; //--ค้นหาข้อมูลการจอง
+            case '/booking_show/showManageStatusBooking': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะการจอง
             case '/permission_manage/'+ $stateParams['userID']: setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break; //--จัดการตั้งค่าสิทธิ์การใช้งาน
             default: setActiveMenu('ปฏิทินการใช้ห้องประชุม');
     	}

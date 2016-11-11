@@ -1,4 +1,4 @@
-<div class="col-md-12 section-schedule-meeting-use">
+<div class="col-md-12 section-schedule-meeting-use" data-ng-show="statusMenu.menu1">
 	<div class="well well-sm well-default">
 		<p>
 			<i class="fa fa-calendar text-indent"></i> ปฏิทินการใช้ห้องประชุม

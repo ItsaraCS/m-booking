@@ -29,6 +29,9 @@ angular.module('mainApp')
 	};
 	$scope.currentLocation = $location.path();
 	$scope.stateParams = $stateParams;
+	$rootScope.$on('$stateChangeSuccess', function(ev, next, nextParams, previous, previousParams){
+	    $rootScope.previousParams = previousParams;
+	});
 
 	//-Function
 	$scope.getSession = function(){

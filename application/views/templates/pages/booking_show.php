@@ -1,26 +1,38 @@
-<div class="col-md-12 section-booking-show" data-ng-show="entryUser.user_id">
+<div class="col-md-12 section-booking-show" data-ng-show="statusMenu.menu3 || statusMenu.menu4 || statusMenu.menu5">
 	<div class="well well-sm well-default">
-		<ol class="breadcrumb" data-ng-if="stateParams.waitStatus == undefined">
+		<ol class="breadcrumb" data-ng-show="stateParams.showStatus == 'showCancelBooking'">
 			<li>
-				<a data-ui-sref="ค้นหาข้อมูลการจอง"><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</a>
+				<a data-ui-sref="ยกเลิกการจอง(previousParams)"><i class="fa fa-ban text-indent"></i> ยกเลิกการจอง</a>
 			</li>
 			<li class="active">รายละเอียดการจอง</li>
 		</ol>
-		<ol class="breadcrumb" data-ng-if="stateParams.waitStatus == 'cancel'">
+		<ol class="breadcrumb" data-ng-show="stateParams.showStatus == 'showSearchBooking'">
 			<li>
-				<a data-ui-sref="ยกเลิกการจอง"><i class="fa fa-ban text-indent"></i> ยกเลิกการจอง</a>
+				<a data-ui-sref="ค้นหาข้อมูลการจอง(previousParams)"><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</a>
+			</li>
+			<li class="active">รายละเอียดการจอง</li>
+		</ol>
+		<ol class="breadcrumb" data-ng-show="stateParams.showStatus == 'showManageStatusBooking'">
+			<li>
+				<a data-ui-sref="จัดการสถานะการจอง(previousParams)"><i class="fa fa-toggle-on text-indent"></i> จัดการสถานะการจอง</a>
+			</li>
+			<li class="active">รายละเอียดการจอง</li>
+		</ol>
+		<ol class="breadcrumb" data-ng-show="stateParams.showStatus == 'cancel'">
+			<li>
+				<a data-ui-sref="ยกเลิกการจอง(previousParams)"><i class="fa fa-ban text-indent"></i> ยกเลิกการจอง</a>
 			</li>
 			<li class="active">รายการจองที่อนุมัติแล้ว</li>
 		</ol>
-		<ol class="breadcrumb" data-ng-if="stateParams.waitStatus == 'waitapprove'">
+		<ol class="breadcrumb" data-ng-show="stateParams.showStatus == 'waitapprove'">
 			<li>
-				<a data-ui-sref="จัดการสถานะการจอง"><i class="fa fa-toggle-on text-indent"></i> จัดการสถานะการจอง</a>
+				<a data-ui-sref="จัดการสถานะการจอง(previousParams)"><i class="fa fa-toggle-on text-indent"></i> จัดการสถานะการจอง</a>
 			</li>
 			<li class="active">รายการจองรออนุมัติ</li>
 		</ol>
-		<ol class="breadcrumb" data-ng-if="stateParams.waitStatus == 'waitcancel'">
+		<ol class="breadcrumb" data-ng-show="stateParams.showStatus == 'waitcancel'">
 			<li>
-				<a data-ui-sref="จัดการสถานะการจอง"><i class="fa fa-toggle-on text-indent"></i> จัดการสถานะการจอง</a>
+				<a data-ui-sref="จัดการสถานะการจอง(previousParams)"><i class="fa fa-toggle-on text-indent"></i> จัดการสถานะการจอง</a>
 			</li>
 			<li class="active">รายการจองรอยกเลิก</li>
 		</ol>
@@ -109,12 +121,14 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="col-md-12 text-right" data-ng-if="stateParams.waitStatus == 'cancel'">
+				<div class="col-md-12 text-right" 
+					data-ng-show="(stateParams.showStatus == 'cancel') && (entryUser.user_id == item.user_id) && (userPermission[2].perm_status == 'R/W')">
 					<button class="btn btn-danger" type="button">
 						<i class="fa fa-ban text-indent"></i> ยกเลิกรายการจอง
 					</button>
 				</div>
-				<div class="col-md-12 text-right" data-ng-if="stateParams.waitStatus == 'waitapprove'">
+				<div class="col-md-12 text-right" 
+					data-ng-show="(stateParams.showStatus == 'waitapprove') && (entryUser.user_id == item.user_id) && (userPermission[4].perm_status == 'R/W')">
 					<button class="btn btn-search" type="button">
 						<i class="fa fa-check text-indent"></i> ยืนยันการอนุมัติการจอง
 					</button>
@@ -122,7 +136,8 @@
 						<i class="fa fa-remove text-indent"></i> ไม่อนุมัติ
 					</button>
 				</div>
-				<div class="col-md-12 text-right" data-ng-if="stateParams.waitStatus == 'waitcancel'">
+				<div class="col-md-12 text-right" 
+					data-ng-show="(stateParams.showStatus == 'waitcancel') && (entryUser.user_id == item.user_id) && (userPermission[4].perm_status == 'R/W')">
 					<button class="btn btn-search" type="button">
 						<i class="fa fa-check text-indent"></i> ยืนยันการยกเลิกการจอง
 					</button>

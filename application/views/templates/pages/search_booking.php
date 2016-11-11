@@ -1,4 +1,4 @@
-<div class="col-md-12 section-search-booking">
+<div class="col-md-12 section-search-booking" data-ng-show="statusMenu.menu4">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</p>
 	</div>
@@ -14,7 +14,7 @@
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">วันที่เริ่ม</span>
-							  	<input type="text" class="form-control datepicker" placeholder="เลือกวันที่เริ่ม"
+							  	<input type="text" class="form-control next-focus datepicker" placeholder="เลือกวันที่เริ่ม"
 							  		data-ng-model="entrySearchBooking.start_date">
 								<span class="input-group-btn">
 						        	<button class="btn" type="button" id="datepicker-from-btn">
@@ -26,7 +26,7 @@
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">วันที่เสร็จสิ้น</span>
-							  	<input type="text" class="form-control datepicker" placeholder="เลือกวันที่เสร็จสิ้น"
+							  	<input type="text" class="form-control next-focus datepicker" placeholder="เลือกวันที่เสร็จสิ้น"
 							  		data-ng-model="entrySearchBooking.end_date">
 								<span class="input-group-btn">
 						        	<button class="btn" type="button" id="datepicker-to-btn">
@@ -42,7 +42,7 @@
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">สถานะ</span>
-							  	<select class="form-control"
+							  	<select class="form-control next-focus"
 							  		data-ng-model="entrySearchBooking.booking_status_id">
 							  		<option value="" selected disabled>เลือกสถานะ</option>
 								    <option data-ng-repeat="item in bookingStatusList"
@@ -54,7 +54,7 @@
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">ห้องประชุม</span>
-							  	<select class="form-control"
+							  	<select class="form-control next-focus"
 							  		data-ng-model="entrySearchBooking.meeting_room_id">
 							  		<option value="" selected disabled>เลือกห้องประชุม</option>
 								    <option data-ng-repeat="item in meetingRoomList"
@@ -66,12 +66,12 @@
 				</div>
 				<div class="col-md-12 form-group text-right">
 					<span class="info booking-info"></span>
-					<button class="btn btn-search" type="button" 
+					<button class="btn btn-search next-focus" type="button" 
 						data-ng-disabled="searchBookingForm.$invalid"
 						data-ng-click="searchBooking()">
 						<i class="fa fa-search text-indent"></i> ค้นหา
 					</button>
-					<a class="btn btn-success" data-ui-sref="เพิ่มรายการจอง">
+					<a class="btn btn-success next-focus" data-ui-sref="เพิ่มรายการจอง">
 						<i class="fa fa-plus-square text-indent"></i> เพิ่มรายการจอง
 					</a>
 				</div>
@@ -99,15 +99,15 @@
 									</td>
 									<td class="col-md-4 vertical-center">ห้องประชุม</td>
 									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
+										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" href="#/booking_show/showSearchBooking">
 											<i class="glyphicon glyphicon-eye-open"></i>
 										</a>
-										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
+										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง"
+											data-ng-show="(entryUser.user_id == item.user_id) && (userPermission[3].perm_status == 'R/W')">
 											<i class="glyphicon glyphicon-edit"></i>
 										</a>
-										<button class="btn btn-sm btn-cancel" type="button" title="ลบ">
-											<!--data-ng-if="entryUser.user_id == item.user_id">-->
+										<button class="btn btn-sm btn-cancel" type="button" title="ลบ"
+											data-ng-show="(entryUser.user_id == item.user_id) && (userPermission[3].perm_status == 'R/W')">
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
 									</td>
@@ -121,7 +121,7 @@
 									</td>
 									<td class="col-md-4 vertical-center">ห้องประชุม</td>
 									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
+										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" href="#/booking_show/showSearchBooking">
 											<i class="glyphicon glyphicon-eye-open"></i>
 										</a>
 										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">
@@ -143,7 +143,7 @@
 									</td>
 									<td class="col-md-4 vertical-center">ห้องประชุม</td>
 									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
+										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" href="#/booking_show/showSearchBooking">
 											<i class="glyphicon glyphicon-eye-open"></i>
 										</a>
 										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">
@@ -165,7 +165,7 @@
 									</td>
 									<td class="col-md-4 vertical-center">ห้องประชุม</td>
 									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
+										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" href="#/booking_show/showSearchBooking">
 											<i class="glyphicon glyphicon-eye-open"></i>
 										</a>
 										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">
@@ -187,7 +187,7 @@
 									</td>
 									<td class="col-md-4 vertical-center">ห้องประชุม</td>
 									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" data-ui-sref="ดูข้อมูลรายการจอง">
+										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" href="#/booking_show/showSearchBooking">
 											<i class="glyphicon glyphicon-eye-open"></i>
 										</a>
 										<a class="btn btn-sm btn-warning" title="แก้ไข" data-ui-sref="แก้ไขรายการจอง">

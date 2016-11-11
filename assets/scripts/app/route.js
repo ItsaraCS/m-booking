@@ -1,7 +1,7 @@
 ﻿angular.module('mainApp')
 .config(function($stateProvider, $urlRouterProvider, $locationProvider){
 	$locationProvider.html5Mode(false);
-
+    
 	$urlRouterProvider.otherwise('/schedule_meeting_use');
 	$stateProvider
 		//--เมนู : รายการจองห้องประชุม
@@ -72,12 +72,12 @@
         
         //--เมนูการทำงาน
         .state('จัดการยกเลิกการจอง', {
-            url: '/cancel_booking/:waitStatus',
+            url: '/cancel_booking/:showStatus',
             controller: 'bookingController',
             templateUrl: 'templates/booking_show.php'
         })
         .state('ดูข้อมูลรายการจอง', {
-            url: '/booking_show',
+            url: '/booking_show/:showStatus',
             controller: 'bookingController',
             templateUrl: 'templates/booking_show.php'
         })
@@ -92,7 +92,7 @@
             templateUrl: 'templates/booking.php'
         })
         .state('จัดการสถานะที่รอให้ดำเนินการ', {
-            url: '/booking_show/:waitStatus',
+            url: '/booking_show/:showStatus',
             controller: 'bookingController',
             templateUrl: 'templates/booking_show.php'
         })

@@ -1,4 +1,4 @@
-<div class="col-md-12 section-detail-meeting">
+<div class="col-md-12 section-detail-meeting" data-ng-show="statusMenu.menu6">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-eye text-indent"></i> รายละเอียดห้องประชุม</p>
 	</div>

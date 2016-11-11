@@ -76,13 +76,34 @@
 		public function insertData($tblName, $dataList, $getLastInsertID = false){
 			global $mysqli;
 
-			foreach($dataList as $data){
+			if(array_key_exists(0, $dataList)){
+				foreach($dataList as $data){
+					$status = false;
+					$fields = "";
+					$values = "";
+					$fieldIndex = 1;
+
+					foreach($data as $key=>$val){
+						if($fieldIndex != 1){
+							$fields .= ", ";
+							$values .= ", ";
+						}
+						$fields .= "$key";
+						$values .= "'$val'";
+						$fieldIndex++;
+					}
+					
+					$sqlCmd = "INSERT INTO $tblName($fields) VALUES($values)";
+					$status = $mysqli->query($sqlCmd);
+					$lastInsertID = $mysqli->insert_id;
+				}
+			}else{
 				$status = false;
 				$fields = "";
 				$values = "";
 				$fieldIndex = 1;
 
-				foreach($data as $key=>$val){
+				foreach($dataList as $key=>$val){
 					if($fieldIndex != 1){
 						$fields .= ", ";
 						$values .= ", ";
@@ -110,7 +131,61 @@
 		public function insertDataSubTable($tblName, $dataList){
 			global $mysqli;
 
-			foreach($dataList as $data){
+			if(array_key_exists(0, $dataList)){
+				foreach($dataList as $data){
+					$status = false;
+					$subStatus = false;
+					$fields = "";
+					$values = "";
+					$fieldIndex = 1;
+					$subTableList = array();
+
+					foreach($data as $key=>$val){
+						if(is_array($val))
+							array_push($subTableList, $val);
+						else{
+							if($fieldIndex != 1){
+								$fields .= ", ";
+								$values .= ", ";
+							}
+							$fields .= "$key";
+							$values .= "'$val'";
+							$fieldIndex++;
+						}
+					}
+
+					$sqlCmd = "INSERT INTO $tblName($fields) VALUES($values)";
+					$status = $mysqli->query($sqlCmd);
+					$lastInsertID = $mysqli->insert_id;
+
+					if(count($subTableList) > 0){
+						foreach($subTableList as $subTable){
+							$subTblName = $subTable['tblName'];
+							$foreignKey = $subTable['foreignKey'];
+							$subDataArr = $subTable['data'];
+
+							foreach($subDataArr as $subData){
+								$subFields = "";
+								$subValues = "";
+								$subFieldIndex = 1;
+
+								foreach($subData as $subKey=>$subVal){
+									if($subFieldIndex != 1){
+										$subFields .= ", ";
+										$subValues .= ", ";
+									}
+									$subFields .= "$subKey";
+									$subValues .= "'$subVal'";
+									$subFieldIndex++;
+								}
+
+								$subSqlCmd = "INSERT INTO $subTblName($subFields, $foreignKey) VALUES($subValues, '$lastInsertID')";
+								$subStatus = $mysqli->query($subSqlCmd);
+							}
+						}
+					}
+				}
+			}else{
 				$status = false;
 				$subStatus = false;
 				$fields = "";
@@ -118,7 +193,7 @@
 				$fieldIndex = 1;
 				$subTableList = array();
 
-				foreach($data as $key=>$val){
+				foreach($dataList as $key=>$val){
 					if(is_array($val))
 						array_push($subTableList, $val);
 					else{
@@ -181,12 +256,37 @@
 		public function updateData($tblName, $dataList){
 			global $mysqli;
 
-			foreach($dataList as $data){
+			if(array_key_exists(0, $dataList)){
+				foreach($dataList as $data){
+					$status = false;
+					$update = "";
+					$fieldIndex = 1;
+					
+					foreach($data as $key=>$val){
+						if($key == 'condition')
+							continue;
+						else{
+							if($fieldIndex != 1)
+								$update .= ", ";
+
+							$update .= "$key = '$val'";
+							$fieldIndex++;
+						}
+					}
+
+					if(!empty($update)){
+						$update .= ", updated = CURRENT_TIMESTAMP";
+						$sqlCmd = "UPDATE $tblName SET $update WHERE ".$data['condition'];
+						$status = $mysqli->query($sqlCmd);
+					}else
+						$status = true;
+				}
+			}else{
 				$status = false;
 				$update = "";
 				$fieldIndex = 1;
-				
-				foreach($data as $key=>$val){
+
+				foreach($dataList as $key=>$val){
 					if($key == 'condition')
 						continue;
 					else{
@@ -200,7 +300,7 @@
 
 				if(!empty($update)){
 					$update .= ", updated = CURRENT_TIMESTAMP";
-					$sqlCmd = "UPDATE $tblName SET $update WHERE ".$data['condition'];
+					$sqlCmd = "UPDATE $tblName SET $update WHERE ".$dataList['condition'];
 					$status = $mysqli->query($sqlCmd);
 				}else
 					$status = true;
@@ -216,14 +316,81 @@
 		public function updateDataSubTable($tblName, $dataList){
 			global $mysqli;
 
-			foreach($dataList as $data){
+			if(array_key_exists(0, $dataList)){
+				foreach($dataList as $data){
+					$status = false;
+					$subStatus = false;
+					$update = "";
+					$fieldIndex = 1;
+					$subTableList = array();
+					
+					foreach($data as $key=>$val){
+						if($key == 'condition')
+							continue;
+						else{
+							if(is_array($val))
+								array_push($subTableList, $val);
+							else{
+								if($fieldIndex != 1)
+									$update .= ", ";
+
+								$update .= "$key = '$val'";
+								$fieldIndex++;
+							}
+						}
+					}
+
+					if(!empty($update)){
+						$update .= ", updated = CURRENT_TIMESTAMP";
+						$sqlCmd = "UPDATE $tblName SET $update WHERE ".$data['condition'];
+						$status = $mysqli->query($sqlCmd);
+					}else
+						$status = true;
+
+					if(count($subTableList) > 0){
+						foreach($subTableList as $subTable){
+							$subTblName = $subTable['tblName'];
+							$foreignKey = $subTable['foreignKey'];
+							$subDataArr = $subTable['data'];
+
+							foreach($subDataArr as $subData){
+								$subUpdate = "";
+								$subFieldIndex = 1;
+
+								foreach($subData as $subKey=>$subVal){
+									if($subKey == 'condition')
+										continue;
+									else{
+										if($subFieldIndex != 1)
+											$subUpdate .= ', ';
+
+										if($subKey == 'updated')
+											$subUpdate .= "$subKey = CURRENT_TIMESTAMP";
+										else
+											$subUpdate .= "$subKey = '$subVal'";
+										
+										$subFieldIndex++;
+									}
+								}
+
+								if(!empty($update)){
+									$subUpdate .= ", updated = CURRENT_TIMESTAMP";
+									$subSqlCmd = "UPDATE $subTblName SET $subUpdate WHERE ".$subData['condition'];
+									$subStatus = $mysqli->query($subSqlCmd);
+								}else
+									return true;
+							}
+						}
+					}
+				}
+			}else{
 				$status = false;
 				$subStatus = false;
 				$update = "";
 				$fieldIndex = 1;
 				$subTableList = array();
 				
-				foreach($data as $key=>$val){
+				foreach($dataList as $key=>$val){
 					if($key == 'condition')
 						continue;
 					else{
@@ -241,7 +408,7 @@
 
 				if(!empty($update)){
 					$update .= ", updated = CURRENT_TIMESTAMP";
-					$sqlCmd = "UPDATE $tblName SET $update WHERE ".$data['condition'];
+					$sqlCmd = "UPDATE $tblName SET $update WHERE ".$dataList['condition'];
 					$status = $mysqli->query($sqlCmd);
 				}else
 					$status = true;

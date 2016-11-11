@@ -13,7 +13,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-confirm-popup" data-dismiss="modal">
+				<button type="button" class="btn btn-confirm-popup next-focus modal-confirm-btn" data-dismiss="modal">
 	  				<i class="fa fa-check text-indent"></i> ตกลง
 	  			</button>
 			</div>

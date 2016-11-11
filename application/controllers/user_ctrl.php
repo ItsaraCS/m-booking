@@ -141,5 +141,44 @@
 
 			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
 		}
+
+		public function updateUserinfo($param){
+			$itemList = array();
+			$status = false;
+
+			$tblName = $param['tblName'];
+			$dataList = $param['data'];
+			$userID = $param['userID'];
+			$status = $this->dbservice_model->updateData($tblName, $dataList);
+
+			if($status){
+				$sqlCmd = "SELECT user_id, email, password, firstname, lastname, ";
+				$sqlCmd .= "department_id, position, phone, local_phone ";
+				$sqlCmd .= "FROM user ";
+				$sqlCmd .= "WHERE user_id = '$userID' ";
+				$sqlCmd .= "ORDER BY user_id";
+				$itemList['userinfoData'] = $this->dbservice_model->getObj($sqlCmd);
+
+				if(!isset($_SESSION))
+					session_start();
+
+				$_SESSION = array(
+					'user_id'=>$itemList['userinfoData']["user_id"],
+					'email'=>$itemList['userinfoData']["email"],
+					'password'=>$itemList['userinfoData']["password"],
+					'firstname'=>$itemList['userinfoData']["firstname"],
+					'lastname'=>$itemList['userinfoData']["lastname"],
+					'department_id'=>$itemList['userinfoData']["department_id"],
+					'position'=>$itemList['userinfoData']["position"],
+					'phone'=>$itemList['userinfoData']["phone"],
+					'local_phone'=>$itemList['userinfoData']["local_phone"]
+				);
+
+				$itemList['statusData'] = $this->dbservice_model->messageInfo('successUpdate');
+			}else
+				$itemList['statusData'] = $this->dbservice_model->messageInfo('errorUpdate');
+
+			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
+		}
 	}
 ?>

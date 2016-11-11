@@ -24,7 +24,6 @@ angular.module('mainApp')
 		'phone': '',
 		'local_phone': ''
 	};
-	$scope.entryRegisterData = [];
 	$scope.entryUserinfo = {
 		'user_id': '',
 		'email': '',
@@ -36,7 +35,7 @@ angular.module('mainApp')
 		'phone': '',
 		'local_phone': ''
 	};
-	$scope.entryUserinfoData = [];
+	$scope.entryUserinfoOrigin = {};
 	$scope.entrySearchUser = {
 		'firstname': '',
 		'email': ''
@@ -64,6 +63,7 @@ angular.module('mainApp')
 
 				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined){
 					angular.copy(sessionData, $rootScope.entryUser);
+					angular.copy(sessionData, $scope.entryUserinfoOrigin);
 					angular.copy(sessionData, $scope.entryUserinfo);
 					$scope.getUserPermissionData();
 				}else
@@ -89,24 +89,22 @@ angular.module('mainApp')
 
 	$scope.register = function(){
 		if(!$.isEmptyObject($scope.entryRegister)){
-			$scope.entryRegisterData = [];
-			$scope.entryRegisterData.push($scope.entryRegister);
-
 			ajaxUrl = 'user_ctrl';
 			param = {
 				'funcName': 'register',
 				'param': {
 					'tblName': 'user',
-					'data': $scope.entryRegisterData
+					'data': $scope.entryRegister
 				}
 			};
 			
 			connectDBService.query(ajaxUrl, param).success(function(response){
-				if(response != "" && response != undefined){
+				console.log(response);
+				if(response != '' && response != undefined){
 					var statusData = response;
 
-					$scope.msgWarningPopup = statusData['msg'];
-					$('.warning-popup').appendTo("body").modal('show');
+					$rootScope.msgWarningPopup = statusData['msg'];
+					$('.warning-popup').modal('show');
 
 					$scope.resetEntry('entryRegister', 'registerForm');
 				}
@@ -163,8 +161,8 @@ angular.module('mainApp')
 				$scope.getUserDataPerPage($stateParams['permissionPage']);
 			}else{
 				$scope.resetEntry('entrySearchUser');
-				$scope.msgWarningPopup = 'ไม่พบข้อมูลผู้ใช้';
-				$('.warning-popup').appendTo("body").modal('show');
+				$rootScope.msgWarningPopup = 'ยังไม่มีการแก้ไขข้อมูล';
+				$('.warning-popup').modal('show');
 			}
 		});
 	}
@@ -207,7 +205,7 @@ angular.module('mainApp')
 			};
 
 			connectDBService.query(ajaxUrl, param).success(function(response){
-				if(response.length != '' && response != undefined){
+				if(response.length != 0){
 					if(response['statusData']['status']){
 						$scope.entryUserPermissionDataOrigin = [];
 						$scope.entryUserPermissionData = [];
@@ -215,10 +213,52 @@ angular.module('mainApp')
 						angular.copy(response['userPermissionData'], $scope.entryUserPermissionData);
 					}
 
-					$scope.msgWarningPopup = response['statusData']['msg'];
-					$('.warning-popup').appendTo("body").modal('show');
+					$rootScope.msgWarningPopup = response['statusData']['msg'];
+					$('.warning-popup').modal('show');
 				}
 			});
+		}else{
+			$rootScope.msgWarningPopup = 'ยังไม่มีการแก้ไขข้อมูล';
+			$('.warning-popup').modal('show');
+		}
+	}
+
+	$scope.updateUserinfo = function(){
+		$scope.entryUserinfoUpdate = {};
+		$scope.entryUserinfoUpdate = dataService.getDataObjChange(
+			$scope.entryUserinfoOrigin,
+			$scope.entryUserinfo,
+			'user_id'
+		);
+
+		if(!$.isEmptyObject($scope.entryUserinfoUpdate)){
+
+			ajaxUrl = 'user_ctrl';
+			param = {
+				'funcName': 'updateUserinfo',
+				'param': {
+					'tblName': 'user',
+					'data': $scope.entryUserinfoUpdate,
+					'userID': $scope.entryUserinfo['user_id'] || '1'
+				}
+			};
+
+			connectDBService.query(ajaxUrl, param).success(function(response){
+				if(response != '' && response != undefined){
+					if(response['statusData']['status']){
+						$scope.entryUserinfoOrigin = {};
+						$scope.entryUserinfo = {};
+						angular.copy(response['userinfoData'], $scope.entryUserinfoOrigin);
+						angular.copy(response['userinfoData'], $scope.entryUserinfo);
+					}
+
+					$rootScope.msgWarningPopup = response['statusData']['msg'];
+					$('.warning-popup').modal('show');
+				}
+			});
+		}else{
+			$rootScope.msgWarningPopup = 'ยังไม่มีการแก้ไขข้อมูล';
+			$('.warning-popup').modal('show');
 		}
 	}
 

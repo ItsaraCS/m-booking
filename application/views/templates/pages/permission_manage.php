@@ -1,4 +1,4 @@
-<div class="col-md-12 section-permission-manage" data-ng-show="entryUser.user_id">
+<div class="col-md-12 section-permission-manage" data-ng-show="statusMenu.menu12">
 	<div class="well well-sm well-default">
 		<ol class="breadcrumb">
 			<li>
@@ -70,7 +70,7 @@
 							<tr data-ng-repeat="permissionItem in entryUserPermissionData | limitTo: 5">
 								<td class="col-md-5 vertical-center">{{ permissionItem.menu_sub_name }}</td>
 								<td class="col-md-4">
-									<select class="form-control" required
+									<select class="form-control next-focus" required
 										data-ng-model="entryUserPermissionData[$index].permission_status_id">
 										<option value="" selected disabled>เลือกสิทธิ์การใช้งาน</option>
 										<option data-ng-repeat="item in permissionStatusList"
@@ -85,7 +85,7 @@
 							<tr data-ng-repeat="permissionItem in entryUserPermissionData | limitTo: 8" data-ng-if="$index >= 5">
 								<td class="col-md-5 vertical-center">{{ permissionItem.menu_sub_name }}</td>
 								<td class="col-md-4">
-									<select class="form-control" required
+									<select class="form-control next-focus" required
 										data-ng-model="entryUserPermissionData[$index].permission_status_id">
 										<option value="" selected disabled>เลือกสิทธิ์การใช้งาน</option>
 										<option data-ng-repeat="item in permissionStatusList"
@@ -99,7 +99,7 @@
 							<tr data-ng-repeat="permissionItem in entryUserPermissionData | limitTo: all" data-ng-if="$index >= 8">
 								<td class="col-md-5 vertical-center">{{ permissionItem.menu_sub_name }}</td>
 								<td class="col-md-4">
-									<select class="form-control" required
+									<select class="form-control next-focus" required
 										data-ng-model="entryUserPermissionData[$index].permission_status_id">
 										<option value="" selected disabled>เลือกสิทธิ์การใช้งาน</option>
 										<option data-ng-repeat="item in permissionStatusList"
@@ -112,7 +112,8 @@
 				</div>
 				<div class="col-md-12 form-group text-right no-margin-bottom">
 					<span class="info permission-manage-info"></span>
-					<button class="btn btn-warning" type="button" 
+					<button class="btn btn-warning next-focus" type="button" 
+						data-ng-show="userPermission[11].perm_status == 'R/W'"
 						data-ng-disabled="permissionManageForm.$invalid"
 						data-ng-click="updateUserPermission()">
 						<i class="fa fa-cog text-indent"></i> บันทึกการเปลี่ยนแปลง
@@ -122,7 +123,3 @@
 		</div>
 	</div>
 </div>
-<!--Popup File-->
-<?php
-	$this->load->view('templates/popups/warning_popup');
-?>

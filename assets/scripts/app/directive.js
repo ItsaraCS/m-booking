@@ -181,10 +181,6 @@ angular.module('mainApp')
 				$(element).parent('ul').closest('li').find('h3').addClass('activeMenu');
 				$('#accordian').children('ul').find('li ul li').removeClass('activeSubMenu');
 				$(element).addClass('activeSubMenu');
-
-				//--Set permission for each matched menu
-				var menuIdx = $(element).find('a').data('menu-index');
-				scope.userPermission = scope.userPermissionData[menuIdx];
 			});
 		}
 	}

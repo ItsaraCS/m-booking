@@ -1,4 +1,4 @@
-<div class="col-md-12 section-permission" data-ng-show="entryUser.user_id">
+<div class="col-md-12 section-permission" data-ng-show="statusMenu.menu12">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-cog text-indent"></i> ตั้งค่าสิทธิ์การใช้งาน</p>
 	</div>
@@ -14,21 +14,21 @@
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">ชื่อ</span>
-							  	<input type="text" class="form-control"
+							  	<input type="text" class="form-control next-focus"
 							  		name="firstname" data-ng-model="entrySearchUser.firstname">
 							</div>
 						</div>
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">อีเมล์</span>
-							  	<input type="email" class="form-control" validate-type
+							  	<input type="email" class="form-control next-focus" validate-type
 							  		name="email" data-ng-model="entrySearchUser.email">
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-12 form-group text-right">
-					<button class="btn btn-search" type="button" 
+					<button class="btn btn-search next-focus" type="button" 
 						data-ng-disabled="searchUserForm.$invalid"
 						data-ng-click="searchUser()">
 		        		<i class="fa fa-search text-indent"></i> ค้นหา
@@ -53,11 +53,13 @@
 									<td class="col-md-4 vertical-center">{{ item.email }}</td>
 									<td class="col-md-3 vertical-center">{{ item.department_name }}</td>
 									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-permission" title="จัดการตั้งค่าสิทธิ์การใช้งาน" 
+										<a class="btn btn-sm btn-permission" title="จัดการตั้งค่าสิทธิ์การใช้งาน"
+											data-ng-show="userPermission[11].perm_status == 'R/W'" 
 											href="#/permission_manage/{{ item.user_id }}">
 											<i class="glyphicon glyphicon-cog"></i>
 										</a>
-										<button class="btn btn-sm btn-cancel" type="button" title="ลบ">
+										<button class="btn btn-sm btn-cancel" type="button" title="ลบ"
+											data-ng-show="userPermission[11].perm_status == 'R/W'">
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
 									</td>
@@ -95,7 +97,3 @@
 		</div>
 	</div>
 </div>
-<!--Popup File-->
-<?php
-	$this->load->view('templates/popups/warning_popup');
-?>

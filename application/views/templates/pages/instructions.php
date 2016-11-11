@@ -1,4 +1,4 @@
-<div class="col-md-12 section-instructions">
+<div class="col-md-12 section-instructions" data-ng-show="statusMenu.menu8">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-question-circle text-indent"></i> คำแนะนำการใช้งานระบบ</p>
 	</div>
