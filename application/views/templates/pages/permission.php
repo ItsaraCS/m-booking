@@ -54,12 +54,15 @@
 									<td class="col-md-3 vertical-center">{{ item.department_name }}</td>
 									<td class="col-md-2 vertical-center text-center">
 										<a class="btn btn-sm btn-permission" title="จัดการตั้งค่าสิทธิ์การใช้งาน"
-											data-ng-show="userPermission[11].perm_status == 'R/W'" 
-											href="#/permission_manage/{{ item.user_id }}">
+											data-ui-sref="จัดการตั้งค่าสิทธิ์การใช้งาน({ 
+									    		'userID': '{{ item.user_id }}'
+								    		})"
+											data-ng-show="userPermission[11].perm_status == 'ADMIN'">
 											<i class="glyphicon glyphicon-cog"></i>
 										</a>
 										<button class="btn btn-sm btn-cancel" type="button" title="ลบ"
-											data-ng-show="userPermission[11].perm_status == 'R/W'">
+											data-ng-show="userPermission[11].perm_status == 'ADMIN'"
+											data-ng-click="deleteUser(item.user_id)">
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
 									</td>
@@ -79,9 +82,10 @@
 							<li data-ng-repeat="item in totalPageList" active-pagination value="{{ item.permissionPage }}" 
 								data-ng-class="item.permissionPage == permissionPage ? 'active' : ''">
 						    	<a data-ui-sref="ตั้งค่าสิทธิ์การใช้งาน({ 
-						    		'permissionPage': '{{ item.permissionPage }}', 
-						    		'firstname': '{{ item.firstname }}', 
-						    		'email': '{{ item.email }}' })">
+							    		'permissionPage': '{{ item.permissionPage }}', 
+							    		'firstname': '{{ item.firstname }}', 
+							    		'email': '{{ item.email }}' 
+						    		})">
 						    		{{ item.permissionPage }}
 						    	</a>
 						    </li>

@@ -57,26 +57,25 @@ angular.module('mainApp')
             //--Menu
             case '/schedule_meeting_use': setActiveMenu('ปฏิทินการใช้ห้องประชุม'); break;
             case '/booking_add': setActiveMenu('จองห้องประชุม', 1); break;
-            case '/cancel_booking': setActiveMenu('ยกเลิกการจอง'); break;
-            case '/search_booking': setActiveMenu('ค้นหาข้อมูลการจอง'); break;
-            case '/booking_status_manage': setActiveMenu('จัดการสถานะการจอง'); break;
+            case '/cancel_booking/': setActiveMenu('ยกเลิกการจอง'); break;
+            case '/search_booking/': setActiveMenu('ค้นหาข้อมูลการจอง'); break;
+            case '/booking_status_manage/': setActiveMenu('จัดการสถานะการจอง'); break;
             case '/meeting_detail': setActiveMenu('รายละเอียดห้องประชุม'); break;
             case '/report': setActiveMenu('รายงานการจอง'); break;
             case '/instructions': setActiveMenu('คำแนะนำการใช้งานระบบ'); break;
             case '/login': setActiveMenu('เข้าสู่ระบบ'); break;
             case '/register': setActiveMenu('สมัครสมาชิก'); break;
             case '/userinfo': setActiveMenu('ข้อมูลส่วนตัว'); break;
-            case '/permission': setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break;
     		case '/permission/': setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break;
 
             //--Menu for working
-            case '/cancel_booking/'+ $stateParams['waitStatus']: setActiveMenu('ยกเลิกการจอง'); break; //--จัดการยกเลิกการจอง
-            case '/booking_edit': setActiveMenu('จองห้องประชุม'); break; //--แก้ไขรายการจอง
-            case '/booking_show/waitapprove': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
-            case '/booking_show/waitcancel': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
-            case '/booking_show/showCancelBooking': setActiveMenu('ยกเลิกการจอง'); break; //--จัดการยกเลิกการจอง
+            case '/booking_show/showCancelBooking': setActiveMenu('ยกเลิกการจอง'); break; //--ยกเลิกการจอง
             case '/booking_show/showSearchBooking': setActiveMenu('ค้นหาข้อมูลการจอง'); break; //--ค้นหาข้อมูลการจอง
             case '/booking_show/showManageStatusBooking': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะการจอง
+            case '/booking_edit/'+ $stateParams['bookingID']: setActiveMenu('จองห้องประชุม'); break; //--แก้ไขรายการจอง
+            case '/cancel_booking/cancel': setActiveMenu('ยกเลิกการจอง'); break; //--จัดการยกเลิกการจอง
+            case '/booking_status_manage/waitapprove': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
+            case '/booking_status_manage/waitcancel': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
             case '/permission_manage/'+ $stateParams['userID']: setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break; //--จัดการตั้งค่าสิทธิ์การใช้งาน
             default: setActiveMenu('ปฏิทินการใช้ห้องประชุม');
     	}
@@ -248,6 +247,24 @@ angular.module('mainApp')
         });
 
         return dataArrChange;
+    }
+
+    dataService.getDateFormateForDB = function(dateOrigin){
+        if(dateOrigin != '' && dateOrigin != undefined){
+            var dateFormateForDB = '';
+
+            dateOrigin = dateOrigin.split('/');
+            dateFormateForDB = dateOrigin[2] +'-'+ dateOrigin[1] +'-'+ dateOrigin[0];
+
+            return dateFormateForDB;
+        }
+
+        var now = new Date();
+        var today = now.getFullYear() + '-';
+        today += (now.getMonth() + 1) + '-';
+        today += (now.getDate().toString().length < 2 ? ('0' + now.getDate()) : now.getDate());
+
+        return today;
     }
 
     dataService.getCurrentDate = function(){

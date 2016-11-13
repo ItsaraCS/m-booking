@@ -16,17 +16,17 @@
             templateUrl: 'templates/booking.php'
         })
         .state('ยกเลิกการจอง', {
-            url: '/cancel_booking',
-            controller: 'bookingController',
+            url: '/cancel_booking/?cancelBookingPage?startDate?endDate?meetingRoomID',
+            controller: 'cancelBookingController',
             templateUrl: 'templates/cancel_booking.php'
         })
         .state('ค้นหาข้อมูลการจอง', {
-            url: '/search_booking',
+            url: '/search_booking/?searchBookingPage?startDate?endDate?bookingStatusID?meetingRoomID',
             controller: 'searchBookingController',
             templateUrl: 'templates/search_booking.php'
         })
         .state('จัดการสถานะการจอง', {
-            url: '/booking_status_manage',
+            url: '/booking_status_manage/?bookingStatusManagePage?startDate?endDate?bookingStatusID?meetingRoomID',
             controller: 'bookingStatusManageController',
             templateUrl: 'templates/booking_status_manage.php'
         })
@@ -71,13 +71,8 @@
         })
         
         //--เมนูการทำงาน
-        .state('จัดการยกเลิกการจอง', {
-            url: '/cancel_booking/:showStatus',
-            controller: 'bookingController',
-            templateUrl: 'templates/booking_show.php'
-        })
         .state('ดูข้อมูลรายการจอง', {
-            url: '/booking_show/:showStatus',
+            url: '/booking_show/:showStatus?bookingID',
             controller: 'bookingController',
             templateUrl: 'templates/booking_show.php'
         })
@@ -87,13 +82,18 @@
             templateUrl: 'templates/booking.php'
         })
         .state('แก้ไขรายการจอง', {
-            url: '/booking_edit',
+            url: '/booking_edit/?bookingID?userID',
             controller: 'bookingController',
             templateUrl: 'templates/booking.php'
         })
+        .state('จัดการยกเลิกการจอง', {
+            url: '/cancel_booking/:showStatus?bookingID',
+            controller: 'cancelBookingController',
+            templateUrl: 'templates/booking_show.php'
+        })
         .state('จัดการสถานะที่รอให้ดำเนินการ', {
-            url: '/booking_show/:showStatus',
-            controller: 'bookingController',
+            url: '/booking_status_manage/:showStatus?bookingID',
+            controller: 'bookingStatusManageController',
             templateUrl: 'templates/booking_show.php'
         })
         .state('จัดการตั้งค่าสิทธิ์การใช้งาน', {

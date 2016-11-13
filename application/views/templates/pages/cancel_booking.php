@@ -15,7 +15,7 @@
 							<div class="input-group">
 							  	<span class="input-group-addon">วันที่เริ่ม</span>
 							  	<input type="text" class="form-control next-focus datepicker" placeholder="เลือกวันที่เริ่ม"
-							  		data-ng-model="entrySearchBooking.start_date">
+							  		name="start_date" data-ng-model="entrySearchBooking.start_date">
 								<span class="input-group-btn">
 						        	<button class="btn" type="button" id="datepicker-from-btn">
 						        		<i class="fa fa-calendar"></i>
@@ -27,7 +27,7 @@
 							<div class="input-group">
 							  	<span class="input-group-addon">วันที่เสร็จสิ้น</span>
 							  	<input type="text" class="form-control next-focus datepicker" placeholder="เลือกวันที่เสร็จสิ้น"
-							  		data-ng-model="entrySearchBooking.end_date">
+							  		name="end_date" data-ng-model="entrySearchBooking.end_date">
 								<span class="input-group-btn">
 						        	<button class="btn" type="button" id="datepicker-to-btn">
 						        		<i class="fa fa-calendar"></i>
@@ -43,7 +43,7 @@
 							<div class="input-group">
 							  	<span class="input-group-addon">ห้องประชุม</span>
 							  	<select class="form-control next-focus"
-							  		data-ng-model="entrySearchBooking.meeting_room_id">
+							  		name="meeting_room_id" data-ng-model="entrySearchBooking.meeting_room_id">
 							  		<option value="" selected disabled>เลือกห้องประชุม</option>
 								    <option data-ng-repeat="item in meetingRoomList"
 								    	value="{{ item.meeting_room_id }}">{{ item.meeting_room_name }}</option>
@@ -79,25 +79,31 @@
 								<th class="text-center text-nowrap">ดำเนินการ</th>
 							</thead>
 							<tbody>
-								<!--<tr data-ng-repeat="item in bookingDetailData">-->
-								<tr>
+								<tr data-ng-repeat="item in bookingData">
 									<td class="col-md-2 vertical-center">
-										<div class="status status-approve">อนุมัติ</div>
+										<div class="status status-{{ item.booking_status_code }}">{{ item.booking_status_name }}</div>
 									</td>
-									<td class="col-md-4 vertical-center">
-										จาก 01-11-59 (08:00) ถีง 01-11-59 (16:00)
-									</td>
-									<td class="col-md-4 vertical-center">ห้องประชุม</td>
+									<td class="col-md-4 vertical-center">{{ item.date_used }}</td>
+									<td class="col-md-4 vertical-center">{{ item.meeting_room_name }}</td>
 									<td class="col-md-2 vertical-center text-center">
-										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" href="#/booking_show/showCancelBooking">
+										<a class="btn btn-sm btn-confirm" title="ดูข้อมูล" 
+											data-ui-sref="ดูข้อมูลรายการจอง({ 
+									    		'showStatus': 'showCancelBooking', 
+									    		'bookingID': '{{ item.booking_id }}'
+								    		})">
 											<i class="glyphicon glyphicon-eye-open"></i>
 										</a>
-										<a class="btn btn-sm btn-logout" title="จัดการยกเลิกการจอง" href="#/cancel_booking/cancel"
-											data-ng-show="(entryUser.user_id == item.user_id) && (userPermission[2].perm_status == 'R/W')">
+										<a class="btn btn-sm btn-logout" title="จัดการยกเลิกการจอง" 
+											data-ui-sref="จัดการยกเลิกการจอง({ 
+									    		'showStatus': 'cancel', 
+									    		'bookingID': '{{ item.booking_id }}'
+								    		})"
+											data-ng-show="(entryUser.user_id == item.user_id && userPermission[2].perm_status == 'R/W') || userPermission[2].perm_status == 'ADMIN'">
 											<i class="glyphicon glyphicon-ban-circle"></i>
 										</a>
 										<button class="btn btn-sm btn-cancel" type="button" title="ลบ"
-											data-ng-show="(entryUser.user_id == item.user_id) && (userPermission[1].perm_status == 'R/W')">
+											data-ng-show="userPermission[2].perm_status == 'ADMIN'"
+											data-ng-click="deleteBooking(item.booking_id)">
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>
 									</td>
@@ -105,6 +111,33 @@
 							</tbody>
 						</table>
 					</div>
+				</div>
+				<div class="col-md-12" data-ng-if="searchBookingData.length">
+					<nav class="text-right">
+					  	<ul class="pagination margin-top no-margin-bottom">
+						    <li active-pagination value="prev">
+						      	<a data-ng-click="getBookingDataPerPage(1)" aria-label="Previous">
+						        	<span aria-hidden="true">&laquo;</span>
+						      	</a>
+						    </li>
+							<li data-ng-repeat="item in totalPageList" active-pagination value="{{ item.cancelBookingPage }}" 
+								data-ng-class="item.cancelBookingPage == cancelBookingPage ? 'active' : ''">
+						    	<a data-ui-sref="ยกเลิกการจอง({ 
+							    		'cancelBookingPage': '{{ item.cancelBookingPage }}', 
+							    		'startDate': '{{ item.startDate }}', 
+							    		'endDate': '{{ item.endDate }}', 
+							    		'meetingRoomID': '{{ item.meetingRoomID }}' 
+						    		})">
+						    		{{ item.cancelBookingPage }}
+						    	</a>
+						    </li>
+						    <li active-pagination value="next">
+						      	<a data-ng-click="getBookingDataPerPage(totalPage)" aria-label="Next">
+						        	<span aria-hidden="true">&raquo;</span>
+						      	</a>
+						    </li>
+					  	</ul>
+					</nav>
 				</div>
 			</form>
 		</div>

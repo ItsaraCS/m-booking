@@ -57,9 +57,10 @@ CREATE TABLE IF NOT EXISTS permission_status(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO permission_status(permission_status_id, permission_status_code, permission_status_name) VALUES
-('1', 'R', 'อ่านอย่างเดียว'),
-('2', 'R/W', 'อ่านและเขียน'),
-('3', 'DN', 'ไม่ให้สิทธิ์');
+('1', 'DN', 'ไม่ให้สิทธิ์'),
+('2', 'R', 'อ่านได้อย่างเดียว'),
+('3', 'R/W', 'อ่านและแก้ไขได้'),
+('4', 'ADMIN', 'ให้สิทธิ์เป็นผู้ดูแลระบบ');
 
 -- --------------------------------------------------
 -- Table structure for: department
@@ -109,7 +110,7 @@ CREATE TABLE IF NOT EXISTS user(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO user(user_id, email, password, firstname, lastname, position, phone, local_phone, department_id) VALUES
-('1', 'itsara.ra.cs@hotmail.com', '1234', 'Itsara', 'Rakchanthuek', 'Admin', '0970125090', '044-000-000', '1');
+('1', 'aa@aa', 'aa', 'Itsara', 'Rakchanthuek', 'Admin', '0970125090', '044-000-000', '1');
 
 -- --------------------------------------------------
 -- Table structure for: permission
@@ -130,18 +131,18 @@ CREATE TABLE IF NOT EXISTS permission(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO permission(permission_id, user_id, menu_id, menu_sub_id, permission_status_id) VALUES
-('1', '1', '1', '1', '2'),
-('2', '1', '1', '2', '2'),
-('3', '1', '1', '3', '2'),
-('4', '1', '1', '4', '2'),
-('5', '1', '1', '5', '2'),
-('6', '1', '2', '6', '2'),
-('7', '1', '2', '7', '2'),
-('8', '1', '2', '8', '2'),
-('9', '1', '3', '9', '2'),
-('10', '1', '3', '10', '2'),
-('11', '1', '3', '11', '2'),
-('12', '1', '3', '12', '2');
+('1', '1', '1', '1', '4'),
+('2', '1', '1', '2', '4'),
+('3', '1', '1', '3', '4'),
+('4', '1', '1', '4', '4'),
+('5', '1', '1', '5', '4'),
+('6', '1', '2', '6', '4'),
+('7', '1', '2', '7', '4'),
+('8', '1', '2', '8', '4'),
+('9', '1', '3', '9', '4'),
+('10', '1', '3', '10', '4'),
+('11', '1', '3', '11', '4'),
+('12', '1', '3', '12', '4');
 
 -- --------------------------------------------------
 -- Table structure for: meeting_room
@@ -257,16 +258,17 @@ INSERT INTO equipment(equipment_id, equipment_name) VALUES
 -- --------------------------------------------------
 CREATE TABLE IF NOT EXISTS booking_status(
 	booking_status_id INT(5) NOT NULL AUTO_INCREMENT COMMENT 'คีย์ของสถานะการจองห้องประชุม',
+	booking_status_code VARCHAR(50) NOT NULL COMMENT 'รหัสสถานะการจองห้องประชุม',
 	booking_status_name VARCHAR(50) NOT NULL COMMENT 'สถานะการจองห้องประชุม',
 	PRIMARY KEY (booking_status_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO booking_status(booking_status_id, booking_status_name) VALUES
-('1', 'อนุมัติ'),
-('2', 'รออนุมัติ'),
-('3', 'ยกเลิก'),
-('4', 'รอยกเลิก'),
-('5', 'ไม่อนุมัติ');
+INSERT INTO booking_status(booking_status_id, booking_status_code, booking_status_name) VALUES
+('1', 'approve', 'อนุมัติ'),
+('2', 'waitapprove', 'รออนุมัติ'),
+('3', 'cancel', 'ยกเลิก'),
+('4', 'waitcancel', 'รอยกเลิก'),
+('5', 'notapprove', 'ไม่อนุมัติ');
 
 -- --------------------------------------------------
 -- Table structure for: booking

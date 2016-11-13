@@ -99,29 +99,16 @@ angular.module('mainApp')
 			};
 			
 			connectDBService.query(ajaxUrl, param).success(function(response){
-				console.log(response);
 				if(response != '' && response != undefined){
 					var statusData = response;
 
+					if(statusData['status'])
+						$scope.resetEntry('entryRegister', 'registerForm');
+
 					$rootScope.msgWarningPopup = statusData['msg'];
 					$('.warning-popup').modal('show');
-
-					$scope.resetEntry('entryRegister', 'registerForm');
 				}
 			});
-		}
-	}
-
-	$scope.getUserDataPerPage = function(page = 1){
-		var perPage = 3;
-		var startPage = ((page - 1) * perPage);
-		
-		$scope.userData = [];
-		for(var i=1; i<=perPage; i++){
-			if(!$.isEmptyObject($scope.searchUserData[startPage]))
-				$scope.userData.push($scope.searchUserData[startPage]);
-
-			startPage++;
 		}
 	}
 
@@ -161,29 +148,49 @@ angular.module('mainApp')
 				$scope.getUserDataPerPage($stateParams['permissionPage']);
 			}else{
 				$scope.resetEntry('entrySearchUser');
-				$rootScope.msgWarningPopup = 'ยังไม่มีการแก้ไขข้อมูล';
+				$scope.userData = [];
+				$rootScope.msgWarningPopup = 'ไม่พบข้อมูล';
 				$('.warning-popup').modal('show');
 			}
 		});
 	}
-	if($location.path() == '/permission/')
+	if($location.path() == '/permission/' && $stateParams['permissionPage'] != undefined)
 		$scope.searchUserByStateParams();
 
-	if($location.path() == '/permission_manage/'+ $stateParams['userID']){
-		ajaxUrl = 'user_ctrl';
-		param = {
-			'funcName': 'getUserPermissionDataForManage',
-			'param': $stateParams['userID']
-		};
+	$scope.getUserDataPerPage = function(page = 1){
+		var perPage = 10;
+		var startPage = ((page - 1) * perPage);
 		
-		connectDBService.query(ajaxUrl, param).success(function(response){
-			if(response != '' && response != undefined){
-				angular.copy(response['userData'], $scope.entryUserData);
-				angular.copy(response['userPermissionData'], $scope.entryUserPermissionDataOrigin);
-				angular.copy(response['userPermissionData'], $scope.entryUserPermissionData);
-			}
-		});
+		$scope.userData = [];
+		for(var i=1; i<=perPage; i++){
+			if(!$.isEmptyObject($scope.searchUserData[startPage]))
+				$scope.userData.push($scope.searchUserData[startPage]);
+
+			startPage++;
+		}
 	}
+
+	$scope.getUserPermissionDetailData = function(){
+		if($stateParams['userID'] != '' && $stateParams['userID'] != undefined){
+			ajaxUrl = 'user_ctrl';
+			param = {
+				'funcName': 'getUserPermissionDetailData',
+				'param': $stateParams['userID']
+			};
+			
+			connectDBService.query(ajaxUrl, param).success(function(response){
+				if(response != '' && response != undefined){
+					var userData = response;
+					
+					angular.copy(userData, $scope.entryUserData);
+					angular.copy(userData['userPermissionData'], $scope.entryUserPermissionDataOrigin);
+					angular.copy(userData['userPermissionData'], $scope.entryUserPermissionData);
+				}
+			});
+		}
+	}
+	if($location.path() == '/permission_manage/'+ $stateParams['userID'])
+		$scope.getUserPermissionDetailData();
 
 	$scope.updateUserPermission = function(){
 		$scope.entryUserPermissionDataUpdate = [];
@@ -259,6 +266,29 @@ angular.module('mainApp')
 		}else{
 			$rootScope.msgWarningPopup = 'ยังไม่มีการแก้ไขข้อมูล';
 			$('.warning-popup').modal('show');
+		}
+	}
+
+	$scope.deleteUser = function(userID){
+		if(userID != '' && userID != undefined){
+			ajaxUrl = 'user_ctrl';
+			param = {
+				'funcName': 'deleteUser',
+				'param': userID
+			};
+			
+			connectDBService.query(ajaxUrl, param).success(function(response){
+				console.log(response);
+				if(response != '' && response != undefined){
+					var statusData = response;
+
+					$rootScope.msgWarningPopup = statusData['msg'];
+					$('.warning-popup').modal('show');
+
+					if(statusData['status'])
+						$scope.searchUserByStateParams();
+				}
+			});
 		}
 	}
 

@@ -16,9 +16,9 @@
 		public function getMeetingDetailData(){
 			$itemList = array();
 
-			$sqlCmd = "SELECT meeting_room_id, meeting_room_name, meeting_room_size, meeting_room_location, meeting_room_detail ";
-			$sqlCmd .= "FROM meeting_room ";
-			$sqlCmd .= "ORDER BY meeting_room_id";
+			$sqlCmd = "SELECT meeting_room_id, meeting_room_name, meeting_room_size, meeting_room_location, meeting_room_detail 
+						FROM meeting_room 
+						ORDER BY meeting_room_id";
 			$itemList['meetingDetailData'] = $this->dbservice_model->getListObj($sqlCmd);
 
 			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);

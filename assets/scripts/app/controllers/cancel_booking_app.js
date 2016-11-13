@@ -1,11 +1,11 @@
 angular.module('mainApp')
-.controller('searchBookingController', function($scope, $rootScope, $location, $state, $stateParams, initService, connectDBService, dataService){
+.controller('cancelBookingController', function($scope, $rootScope, $location, $state, $stateParams, initService, connectDBService, dataService){
 	//--Set initials
-	console.log('This is Ctrl of page: searchBookingController');
+	console.log('This is Ctrl of page: cancelBookingController');
 	initService.activeMenu();
 
 	//--Declar variables
-	var ajaxUrl = 'search_booking_ctrl';
+	var ajaxUrl = 'cancel_booking_ctrl';
 	var param = {
 		'funcName': '',
 		'param': ''
@@ -13,11 +13,10 @@ angular.module('mainApp')
 	$scope.entrySearchBooking = {
 		'start_date': '',
 		'end_date': '',
-		'booking_status_id': '',
-		'metting_room_id': ''
+		'meeting_room_id': ''
 	};
 	$scope.stateParams = $stateParams;
-	$scope.searchBookingPage = $stateParams['searchBookingPage'] || '1';
+	$scope.cancelBookingPage = $stateParams['cancelBookingPage'] || '1';
 	$rootScope.$on('$stateChangeSuccess', function(ev, next, nextParams, previous, previousParams){
 	    $rootScope.previousParams = previousParams;
 	});
@@ -55,7 +54,7 @@ angular.module('mainApp')
 			angular.copy(response, $rootScope.userPermissionData);
 		});
 	}
-	
+
 	$scope.searchBooking = function(){
 		var searchStartDate = '';
 		var searchEndDate = '';
@@ -66,44 +65,41 @@ angular.module('mainApp')
 			var searchEndDate = dataService.getDateFormateForDB($scope.entrySearchBooking['end_date']);
 
 		var stateParams = { 
-			'searchBookingPage': '1', 
+			'cancelBookingPage': '1', 
 			'startDate': searchStartDate || '', 
 			'endDate': searchEndDate || '',
-			'bookingStatusID': $scope.entrySearchBooking['booking_status_id'] || '',
 			'meetingRoomID': $scope.entrySearchBooking['meeting_room_id'] || ''
 		};
-		$state.go('ค้นหาข้อมูลการจอง', stateParams);
+		$state.go('ยกเลิกการจอง', stateParams);
 	}
 
 	$scope.searchBookingByStateParams = function(){
-		ajaxUrl = 'search_booking_ctrl';
+		ajaxUrl = 'cancel_booking_ctrl';
 		param = {
 			'funcName': 'searchBooking',
 			'param': {
 				'startDate': $stateParams['startDate'] || '',
 				'endDate': $stateParams['endDate'] || '',
-				'bookingStatusID': $stateParams['bookingStatusID'] || '',
 				'meetingRoomID': $stateParams['meetingRoomID'] || ''
 			}
 		};
 		
 		connectDBService.query(ajaxUrl, param).success(function(response){
 			$scope.searchBookingData = response['bookingData'];
-			
+
 			if($scope.searchBookingData.length != 0){
 				$scope.totalPage = response['totalPage'];
 				$scope.totalPageList = [];
 				for(var i=1; i<=$scope.totalPage; i++){
 					$scope.totalPageList.push({
-						'searchBookingPage': i,
+						'cancelBookingPage': i,
 						'startDate': $stateParams['startDate'] || '',
 						'endDate': $stateParams['endDate'] || '',
-						'bookingStatusID': $stateParams['bookingStatusID'] || '',
 						'meetingRoomID': $stateParams['meetingRoomID'] || ''
 					});
 				}
 
-				$scope.getBookingDataPerPage($stateParams['searchBookingPage']);
+				$scope.getBookingDataPerPage($stateParams['cancelBookingPage']);
 			}else{
 				$scope.resetEntry('entrySearchBooking');
 				$scope.bookingData = [];
@@ -112,7 +108,7 @@ angular.module('mainApp')
 			}
 		});
 	}
-	if($stateParams['searchBookingPage'] != undefined)
+	if($location.path() == '/cancel_booking/' && $stateParams['cancelBookingPage'] != undefined)
 		$scope.searchBookingByStateParams();
 
 	$scope.getBookingDataPerPage = function(page = 1){
@@ -125,6 +121,47 @@ angular.module('mainApp')
 				$scope.bookingData.push($scope.searchBookingData[startPage]);
 
 			startPage++;
+		}
+	}
+
+	$scope.getBookingDetailData = function(){
+		if($stateParams['bookingID'] != '' && $stateParams['bookingID'] != undefined){
+			ajaxUrl = 'booking_ctrl';
+			param = {
+				'funcName': 'getBookingDetailData',
+				'param': $stateParams['bookingID']
+			};
+			
+			connectDBService.query(ajaxUrl, param).success(function(response){
+				if(response != '' && response != undefined){
+					$scope.bookingDetailData = {};
+					angular.copy(response, $scope.bookingDetailData);
+				}
+			});
+		}
+	}
+	if($location.path() == '/cancel_booking/cancel')
+		$scope.getBookingDetailData();
+
+	$scope.cancelBooking = function(bookingID){
+		if(bookingID != '' && bookingID != undefined){
+			ajaxUrl = 'cancel_booking_ctrl';
+			param = {
+				'funcName': 'cancelBooking',
+				'param': bookingID
+			};
+			
+			connectDBService.query(ajaxUrl, param).success(function(response){
+				if(response != '' && response != undefined){
+					var statusData = response;
+
+					$rootScope.msgWarningPopup = statusData['msg'];
+					$('.warning-popup').modal('show');
+					console.log($rootScope.previousParams);
+					if(statusData['status'])
+						$state.go('ยกเลิกการจอง', $rootScope.previousParams);
+				}
+			});
 		}
 	}
 
@@ -153,10 +190,8 @@ angular.module('mainApp')
 	$scope.getDropdownList = function(){
 		//--Get default dropdown list
 		$scope.meetingRoomList = [];
-		$scope.bookingStatusList = [];
 		dataService.getDropdownList($scope, [
-			'meetingRoomList',
-			'bookingStatusList'
+			'meetingRoomList'
 		]);
 	}
 	$scope.getDropdownList();
@@ -169,7 +204,7 @@ angular.module('mainApp')
         	$scope[form].$setPristine();
     }
 
-	//--Function, Event on page load
+    //--Function, Event on page load
 	$(document).ready(function(){
 		//--Datepicker
 		$('.datepicker').datepicker({ 

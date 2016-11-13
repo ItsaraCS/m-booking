@@ -113,7 +113,7 @@
 				<div class="col-md-12 form-group text-right no-margin-bottom">
 					<span class="info permission-manage-info"></span>
 					<button class="btn btn-warning next-focus" type="button" 
-						data-ng-show="userPermission[11].perm_status == 'R/W'"
+						data-ng-show="userPermission[11].perm_status == 'ADMIN'"
 						data-ng-disabled="permissionManageForm.$invalid"
 						data-ng-click="updateUserPermission()">
 						<i class="fa fa-cog text-indent"></i> บันทึกการเปลี่ยนแปลง

@@ -153,7 +153,7 @@
 							<div class="input-group">
 							  	<span class="input-group-addon">สิ่งที่ต้องการ</span>
 							  	<select class="form-control next-focus"
-							  		name="required_id" data-ng-model="entryBooking.required_id">
+							  		name="meeting_required_id" data-ng-model="entryBooking.meeting_required_id">
 								    <option value="" selected disabled>เลือกสิ่งที่ต้องการ</option>
 								    <option data-ng-repeat="item in meetingRequiredList"
 								    	value="{{ item.meeting_required_id }}">{{ item.meeting_required_name }}</option>
@@ -186,9 +186,9 @@
 													<div class="col-md-4" data-ng-repeat="item in equipmentList">
 														<div class="checkbox">
 														  	<label>
-														  		<input type="checkbox" class="next-focus" value="{{ item.equipment_id }}"
-														  			name="equipment_list" data-ng-model="entryBooking.equipment_list[($index + 1)]"
-							  										data-ng-disabled="entryDisabled">{{ item.equipment_name }}
+														  		<input type="checkbox" class="next-focus" value="{{ item.equipment_id }}" 
+														  			name="equipment_list" data-ng-model="entryBooking.entryBookingEquipment[($index + 1)]">
+														  			{{ item.equipment_name }}
 														  	</label>
 														</div>
 													</div>
@@ -203,15 +203,15 @@
 				</div>
 				<div class="col-md-12 form-group text-right no-margin-bottom">
 					<button class="btn btn-success next-focus" type="button"
-						data-ng-show="currentLocation == '/booking_add' && (userPermission[1].perm_status == 'R/W')"
+						data-ng-show="currentLocation == '/booking_add' && (userPermission[1].perm_status == 'R/W' || userPermission[1].perm_status == 'ADMIN')"
 						data-ng-disabled="bookingForm.$invalid"
-						data-ng-click="insertData()">
+						data-ng-click="insertBooking()">
 						<i class="fa fa-plus-square text-indent"></i> บันทึกการจอง
 					</button>
 					<button class="btn btn-warning next-focus" type="button"
-						data-ng-show="currentLocation == '/booking_edit' && (userPermission[1].perm_status == 'R/W')"
+						data-ng-show="currentLocation == '/booking_edit/' && entryUser.user_id == stateParams.userID && (userPermission[1].perm_status == 'R/W' || userPermission[1].perm_status == 'ADMIN')"
 						data-ng-disabled="bookingForm.$invalid"
-						data-ng-click="updateData()">
+						data-ng-click="updateBooking()">
 						<i class="fa fa-pencil-square-o text-indent"></i> แก้ไขการจอง
 					</button>
 					<button class="btn btn-cancel next-focus" type="button" 

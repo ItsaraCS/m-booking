@@ -88,7 +88,7 @@
 				</div>
 				<div class="col-md-12 form-group text-right no-margin-bottom">
 					<button class="btn btn-warning next-focus" type="button"
-						data-ng-show="userPermission[10].perm_status == 'R/W'"
+						data-ng-show="userPermission[10].perm_status == 'R/W' || userPermission[1].perm_status == 'ADMIN'"
 						data-ng-disabled="userinfoForm.$invalid"
 						data-ng-click="updateUserinfo()">
 						<i class="fa fa-edit text-indent"></i> บันทึกการเปลี่ยนแปลง

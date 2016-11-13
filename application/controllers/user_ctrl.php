@@ -23,9 +23,9 @@
 			$statusInsertUser = $this->dbservice_model->insertData($tblName, $dataList, true);
 			
 			if($statusInsertUser['status']){
-				$sqlCmd = "SELECT menu_sub_id, menu_sub_name, menu_id ";
-				$sqlCmd .= "FROM menu_sub ";
-				$sqlCmd .= "ORDER BY menu_sub_id";
+				$sqlCmd = "SELECT menu_sub_id, menu_sub_name, menu_id  
+							FROM menu_sub  
+							ORDER BY menu_sub_id";
 				$menuSubData = array();
 				$menuSubData = $this->dbservice_model->getListObj($sqlCmd);
 
@@ -34,9 +34,9 @@
 					if($menuSub['menu_sub_name'] == 'จัดการสถานะการจอง' ||
 						$menuSub['menu_sub_name'] == 'ตั้งค่าสิทธิ์การใช้งาน'){
 
-						$permission_status_id = '3' ;
+						$permission_status_id = '1' ;
 					}else
-						$permission_status_id = '2' ;
+						$permission_status_id = '3' ;
 
 					$item = array(
 						'user_id'=>$statusInsertUser['lastInsertID'],
@@ -60,56 +60,60 @@
 		}
 
 		public function searchUser($param){
-			$item = array();
 			$itemList = array();
 
 			$firstname = $param['firstname'];
 			$email = $param['email'];
 
-			$sqlCmd = "SELECT user_id, email, firstname, lastname, ";
-			$sqlCmd .= "d.department_name, position, phone, local_phone ";
-			$sqlCmd .= "FROM user u ";
-			$sqlCmd .= "INNER JOIN department d ";
-			$sqlCmd .= "ON u.department_id = d.department_id ";
-			$sqlCmd .= "WHERE firstname LIKE '%$firstname%' ";
-			$sqlCmd .= "OR email = '$email' ";
-			$sqlCmd .= "ORDER BY user_id";
+			$sqlCmd = "SELECT user_id, email, firstname, lastname, 
+							d.department_name, position, phone, local_phone 
+						FROM user u 
+							INNER JOIN department d 
+							ON u.department_id = d.department_id 
+						WHERE 1 ";
+
+			if($firstname != '')
+				$sqlCmd .= "AND firstname LIKE '$firstname%' ";
+
+			if($email != '')
+				$sqlCmd .= "AND email = '$email' ";
+
+			$sqlCmd .= "ORDER BY user_id DESC";
 			$itemList['userData'] = $this->dbservice_model->getListObj($sqlCmd);
 
-			$item = count($itemList['userData']);
-			$perPage = 3;
-			$itemList['totalPage'] = ceil($item / $perPage);
-
+			$itemCount = count($itemList['userData']);
+			$perPage = 10;
+			$itemList['totalPage'] = ceil($itemCount / $perPage);
 
 			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
 		}
 
-		public function getUserPermissionDataForManage($userID){
-			$itemList = array();
+		public function getUserPermissionDetailData($userID){
+			$item = array();
 
-			$sqlCmd = "SELECT user_id, email, firstname, lastname, ";
-			$sqlCmd .= "d.department_name, position, phone, local_phone ";
-			$sqlCmd .= "FROM user u ";
-			$sqlCmd .= "INNER JOIN department d ";
-			$sqlCmd .= "ON u.department_id = d.department_id ";
-			$sqlCmd .= "WHERE user_id = '$userID' ";
-			$sqlCmd .= "ORDER BY user_id";
-			$itemList['userData'] = $this->dbservice_model->getObj($sqlCmd);
+			$sqlCmd = "SELECT user_id, email, firstname, lastname, 
+							d.department_name, position, phone, local_phone 
+						FROM user u 
+							INNER JOIN department d 
+							ON u.department_id = d.department_id 
+						WHERE user_id = '$userID' 
+						ORDER BY user_id";
+			$item = $this->dbservice_model->getObj($sqlCmd);
 
-			$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, ";
-			$sqlCmd .= "m.menu_name, ms.menu_sub_name, ps.permission_status_code AS perm_status ";
-			$sqlCmd .= "FROM permission p ";
-			$sqlCmd .= "INNER JOIN menu_sub ms ";
-			$sqlCmd .= "ON p.menu_sub_id = ms.menu_sub_id ";
-			$sqlCmd .= "INNER JOIN menu m ";
-			$sqlCmd .= "ON ms.menu_id = m.menu_id ";
-			$sqlCmd .= "INNER JOIN permission_status ps ";
-			$sqlCmd .= "ON p.permission_status_id = ps.permission_status_id ";
-			$sqlCmd .= "WHERE p.user_id = '".$userID."' ";
-			$sqlCmd .= "ORDER BY permission_id";
-			$itemList['userPermissionData'] = $this->dbservice_model->getListObj($sqlCmd);
+			$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, 
+							m.menu_name, ms.menu_sub_name, ps.permission_status_code AS perm_status 
+						FROM permission p 
+							INNER JOIN menu_sub ms 
+								ON p.menu_sub_id = ms.menu_sub_id 
+							INNER JOIN menu m 
+								ON ms.menu_id = m.menu_id 
+							INNER JOIN permission_status ps 
+								ON p.permission_status_id = ps.permission_status_id 
+						WHERE p.user_id = '$userID' 
+						ORDER BY permission_id";
+			$item['userPermissionData'] = $this->dbservice_model->getListObj($sqlCmd);
 
-			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
+			echo json_encode($item, JSON_UNESCAPED_UNICODE);
 		}
 
 		public function updateUserPermission($param){
@@ -122,17 +126,17 @@
 			$status = $this->dbservice_model->updateData($tblName, $dataList);
 
 			if($status){
-				$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, ";
-				$sqlCmd .= "m.menu_name, ms.menu_sub_name, ps.permission_status_code AS perm_status ";
-				$sqlCmd .= "FROM permission p ";
-				$sqlCmd .= "INNER JOIN menu_sub ms ";
-				$sqlCmd .= "ON p.menu_sub_id = ms.menu_sub_id ";
-				$sqlCmd .= "INNER JOIN menu m ";
-				$sqlCmd .= "ON ms.menu_id = m.menu_id ";
-				$sqlCmd .= "INNER JOIN permission_status ps ";
-				$sqlCmd .= "ON p.permission_status_id = ps.permission_status_id ";
-				$sqlCmd .= "WHERE p.user_id = '".$userID."' ";
-				$sqlCmd .= "ORDER BY permission_id";
+				$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, 
+								m.menu_name, ms.menu_sub_name, ps.permission_status_code AS perm_status 
+							FROM permission p 
+								INNER JOIN menu_sub ms 
+									ON p.menu_sub_id = ms.menu_sub_id 
+								INNER JOIN menu m 
+									ON ms.menu_id = m.menu_id 
+								INNER JOIN permission_status ps 
+									ON p.permission_status_id = ps.permission_status_id 
+							WHERE p.user_id = '$userID' 
+							ORDER BY permission_id";
 				$itemList['userPermissionData'] = $this->dbservice_model->getListObj($sqlCmd);
 
 				$itemList['statusData'] = $this->dbservice_model->messageInfo('successUpdate');
@@ -152,11 +156,11 @@
 			$status = $this->dbservice_model->updateData($tblName, $dataList);
 
 			if($status){
-				$sqlCmd = "SELECT user_id, email, password, firstname, lastname, ";
-				$sqlCmd .= "department_id, position, phone, local_phone ";
-				$sqlCmd .= "FROM user ";
-				$sqlCmd .= "WHERE user_id = '$userID' ";
-				$sqlCmd .= "ORDER BY user_id";
+				$sqlCmd = "SELECT user_id, email, password, firstname, lastname, 
+								department_id, position, phone, local_phone 
+							FROM user 
+							WHERE user_id = '$userID' 
+							ORDER BY user_id";
 				$itemList['userinfoData'] = $this->dbservice_model->getObj($sqlCmd);
 
 				if(!isset($_SESSION))
@@ -177,6 +181,32 @@
 				$itemList['statusData'] = $this->dbservice_model->messageInfo('successUpdate');
 			}else
 				$itemList['statusData'] = $this->dbservice_model->messageInfo('errorUpdate');
+
+			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
+		}
+
+		public function deleteUser($userID){
+			$itemList = array();
+			$status = false;
+
+			$sqlCmd = "DELETE FROM booking_equipment 
+						WHERE booking_id = (
+							SELECT booking_id 
+							FROM booking 
+							WHERE user_id = '$userID'
+						); ";		
+			$sqlCmd .= "DELETE FROM booking 
+						WHERE user_id = '$userID'; ";
+			$sqlCmd .= "DELETE FROM permission 
+						WHERE user_id = '$userID'; ";
+			$sqlCmd .= "DELETE FROM user 
+						WHERE user_id = '$userID'";
+			$status = $this->dbservice_model->getQuery($sqlCmd);
+
+			if($status)
+				$itemList = $this->dbservice_model->messageInfo('successDelete');
+			else
+				$itemList = $this->dbservice_model->messageInfo('errorDelete');
 
 			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
 		}

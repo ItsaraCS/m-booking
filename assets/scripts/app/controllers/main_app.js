@@ -85,20 +85,20 @@ angular.module('mainApp')
 		
 		connectDBService.query(ajaxUrl, param).success(function(response){
 			angular.copy(response, $rootScope.userPermissionData);
-
+			
 			$rootScope.statusMenu = {
 				'menu1': ($rootScope.userPermissionData[0]['perm_status'] != 'DN'),
 				'menu2': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[1]['perm_status'] != 'DN')),
 				'menu3': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[2]['perm_status'] != 'DN')),
 				'menu4': ($rootScope.userPermissionData[3]['perm_status'] != 'DN'),
-				'menu5': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[4]['perm_status'] == 'R/W')),
+				'menu5': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[4]['perm_status'] == 'ADMIN')),
 				'menu6': ($rootScope.userPermissionData[5]['perm_status'] != 'DN'),
 				'menu7': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[6]['perm_status'] != 'DN')),
 				'menu8': ($rootScope.userPermissionData[7]['perm_status'] != 'DN'),
 				'menu9': (!$rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[8]['perm_status'] != 'DN')),
 				'menu10': (!$rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[9]['perm_status'] != 'DN')),
 				'menu11': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[10]['perm_status'] != 'DN')),
-				'menu12': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[11]['perm_status'] == 'R/W'))
+				'menu12': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[11]['perm_status'] == 'ADMIN'))
 			};
 
 			$.each($rootScope.userPermissionData, function(idx, item){
