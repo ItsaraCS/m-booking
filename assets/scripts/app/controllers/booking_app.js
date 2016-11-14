@@ -1,5 +1,5 @@
 angular.module('mainApp')
-.controller('bookingController', function($scope, $rootScope, $location, $state, $stateParams, initService, connectDBService, dataService){
+.controller('bookingController', function($scope, $rootScope, $location, $state, $stateParams, $timeout, initService, connectDBService, dataService){
 	//--Set initials
 	console.log('This is Ctrl of page: bookingController');
 	initService.activeMenu();
@@ -25,10 +25,14 @@ angular.module('mainApp')
 		'meeting_table_type_id': '',
 		'meeting_required_id': '',
 		'budget_type_id': '',
-		'entryBookingEquipment': {}
+		'entryBookingEquipment': {
+			'tblName': 'booking_equipment',
+			'foreignKey': 'booking_id',
+			'data': []
+		}
 	};
+	$scope.entryBookingOrigin = {};
 	$scope.currentLocation = $location.path();
-	console.log($scope.currentLocation);
 	$scope.stateParams = $stateParams;
 	$rootScope.$on('$stateChangeSuccess', function(ev, next, nextParams, previous, previousParams){
 	    $rootScope.previousParams = previousParams;
@@ -76,25 +80,20 @@ angular.module('mainApp')
 			$scope.entryBooking['user_id'] = $rootScope.entryUser['user_id'];
 
 			var entryBookingEquipmentList = [];
-			$.each($scope.entryBooking['entryBookingEquipment'], function(key, value){
-				if(value == true){
-					entryBookingEquipmentList.push({
-						'equipment_id': key
-					});
+			$.each($scope.entryBooking['entryBookingEquipment']['data'], function(key, value){
+				if(value != undefined){
+					if(value['equipment_id'] != 0){
+						entryBookingEquipmentList.push({
+							'equipment_id': value['equipment_id']
+						});
+					}
 				}
 			});
 
-			if(entryBookingEquipmentList.length != 0){
-				$scope.entryBooking['entryBookingEquipment'] = {
-					'tblName': 'booking_equipment',
-					'foreignKey': 'booking_id',
-					'data': entryBookingEquipmentList
-				};
-			}else{
-				$scope.entryBooking = dataService.filterObjNoUsed($scope.entryBooking, [
-					'entryBookingEquipment'
-				]);
-			}
+			if(entryBookingEquipmentList.length != 0)
+				$scope.entryBooking['entryBookingEquipment']['data'] = entryBookingEquipmentList;
+			else
+				delete $scope.entryBooking['entryBookingEquipment'];
 
 			ajaxUrl = 'booking_ctrl';
 			param = {
@@ -116,6 +115,89 @@ angular.module('mainApp')
 					$('.warning-popup').modal('show');
 				}
 			});
+		}
+	}
+
+	$scope.getBookingData = function(){
+		if($stateParams['bookingID'] != '' && $stateParams['bookingID'] != undefined){
+			ajaxUrl = 'booking_ctrl';
+			param = {
+				'funcName': 'getBookingData',
+				'param': $stateParams['bookingID']
+			};
+			
+			connectDBService.query(ajaxUrl, param).success(function(response){
+				console.log(response);
+				if(response != '' && response != undefined){
+					$scope.entryBookingOrigin = {};
+					$scope.entryBooking = {};
+					angular.copy(response, $scope.entryBookingOrigin);
+					angular.copy(response, $scope.entryBooking);
+				}
+			});
+		}
+	}
+	if($location.path() == '/booking_edit/')
+		$scope.getBookingData();
+
+	$scope.updateBooking = function(){
+		$scope.entryBookingUpdate = {};
+
+	    var detectEntryBookingEquipment = dataService.detectDataArrChange(
+			$scope.entryBookingOrigin['entryBookingEquipment']['data'],
+			$scope.entryBooking['entryBookingEquipment']['data'],
+			'equipment_id',
+			'booking_equipment_id'
+		);
+
+		if(!$.isEmptyObject(detectEntryBookingEquipment)){
+			$scope.entryBooking['entryBookingEquipment']['data'] = detectEntryBookingEquipment;
+
+			$scope.entryBookingUpdate = dataService.getDataObjChange(
+				$scope.entryBookingOrigin,
+				$scope.entryBooking,
+				'booking_id'
+			);
+		}else{
+			delete $scope.entryBookingOrigin['entryBookingEquipment'];
+			delete $scope.entryBooking['entryBookingEquipment'];
+			
+			$scope.entryBookingUpdate = dataService.getDataObjChange(
+				$scope.entryBookingOrigin,
+				$scope.entryBooking,
+				'booking_id'
+			);
+		}
+
+		if(!$.isEmptyObject($scope.entryBookingUpdate)){
+			ajaxUrl = 'booking_ctrl';
+			param = {
+				'funcName': 'updateBooking',
+				'param': {
+					'tblName': 'booking',
+					'data': $scope.entryBookingUpdate,
+					'bookingID': $scope.entryBooking['booking_id'] || '1'
+				}
+			};
+			console.log(param);
+
+			connectDBService.query(ajaxUrl, param).success(function(response){
+				console.log(response);
+				if(response != '' && response != undefined){
+					$rootScope.msgWarningPopup = response['msg'];
+					$('.warning-popup').modal('show');
+					
+					if(response['status']){
+						$timeout(function(){
+							$scope.getBookingData();
+						}, 500);
+					}
+				}
+			});
+		}else{
+			$scope.getBookingData();
+			$rootScope.msgWarningPopup = 'ยังไม่มีการแก้ไขข้อมูล';
+			$('.warning-popup').modal('show');
 		}
 	}
 

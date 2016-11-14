@@ -72,7 +72,7 @@ angular.module('mainApp')
             case '/booking_show/showCancelBooking': setActiveMenu('ยกเลิกการจอง'); break; //--ยกเลิกการจอง
             case '/booking_show/showSearchBooking': setActiveMenu('ค้นหาข้อมูลการจอง'); break; //--ค้นหาข้อมูลการจอง
             case '/booking_show/showManageStatusBooking': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะการจอง
-            case '/booking_edit/'+ $stateParams['bookingID']: setActiveMenu('จองห้องประชุม'); break; //--แก้ไขรายการจอง
+            case '/booking_edit/': setActiveMenu('ค้นหาข้อมูลการจอง'); break; //--แก้ไขรายการจอง
             case '/cancel_booking/cancel': setActiveMenu('ยกเลิกการจอง'); break; //--จัดการยกเลิกการจอง
             case '/booking_status_manage/waitapprove': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
             case '/booking_status_manage/waitcancel': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะที่รอให้ดำเนินการ
@@ -210,8 +210,8 @@ angular.module('mainApp')
             $.each(updateData, function(keyUpdate, valUpdate){
                 if(keyOrigin == keyUpdate){
                     if(valOrigin != valUpdate){
-                        if(primaryKey != "" && primaryKey != undefined)
-                            dataObjChange["condition"] = primaryKey +" = '"+ updateData[primaryKey] +"'";
+                        if(primaryKey != '' && primaryKey != undefined)
+                            dataObjChange['condition'] = primaryKey +" = '"+ updateData[primaryKey] +"'";
 
                         dataObjChange[keyUpdate] = valUpdate;
                     }
@@ -233,8 +233,8 @@ angular.module('mainApp')
                 $.each(updateData[originIndex], function(keyUpdate, valUpdate){
                     if(keyOrigin == keyUpdate){
                         if(valOrigin != valUpdate){
-                            if(primaryKey != "" && primaryKey != undefined)
-                                dataObjChange["condition"] = primaryKey +" = '"+ updateData[originIndex][primaryKey] +"'";
+                            if(primaryKey != '' && primaryKey != undefined)
+                                dataObjChange['condition'] = primaryKey +" = '"+ updateData[originIndex][primaryKey] +"'";
 
                             dataObjChange[keyUpdate] = valUpdate;
                         }
@@ -247,6 +247,37 @@ angular.module('mainApp')
         });
 
         return dataArrChange;
+    }
+
+    dataService.detectDataArrChange = function(originData, updateData, detectKey, primaryKey){
+        var dataArrChange = {
+            'insertData': [],
+            'deleteData': []
+        };
+
+        $.each(originData, function(originIndex, originItem){
+            $.each(originItem, function(keyOrigin, valOrigin){
+                if(keyOrigin == detectKey){
+                    $.each(updateData[originIndex], function(keyUpdate, valUpdate){
+                        if(keyUpdate == detectKey){
+                            if(valOrigin != valUpdate){
+                                if(valUpdate != 0)
+                                    dataArrChange['insertData'].push(updateData[originIndex]);
+                                else{
+                                    updateData[originIndex]['condition'] = primaryKey +" = '"+ updateData[originIndex][primaryKey] +"'";
+                                    dataArrChange['deleteData'].push(updateData[originIndex]);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        if((dataArrChange['insertData'].length != 0) || (dataArrChange['deleteData'].length != 0))
+            return dataArrChange;
+        else
+            return {}
     }
 
     dataService.getDateFormateForDB = function(dateOrigin){

@@ -353,33 +353,14 @@
 							$foreignKey = $subTable['foreignKey'];
 							$subDataArr = $subTable['data'];
 
-							foreach($subDataArr as $subData){
-								$subUpdate = "";
-								$subFieldIndex = 1;
-
-								foreach($subData as $subKey=>$subVal){
-									if($subKey == 'condition')
-										continue;
-									else{
-										if($subFieldIndex != 1)
-											$subUpdate .= ', ';
-
-										if($subKey == 'updated')
-											$subUpdate .= "$subKey = CURRENT_TIMESTAMP";
-										else
-											$subUpdate .= "$subKey = '$subVal'";
-										
-										$subFieldIndex++;
-									}
-								}
-
-								if(!empty($update)){
-									$subUpdate .= ", updated = CURRENT_TIMESTAMP";
-									$subSqlCmd = "UPDATE $subTblName SET $subUpdate WHERE ".$subData['condition'];
-									$subStatus = $mysqli->query($subSqlCmd);
-								}else
-									return true;
-							}
+							if(array_key_exists(0, $subDataArr))
+								$this->$subStatus = updateData($subTblName, $subDataArr);
+							
+							if(array_key_exists('insertData', $subDataArr))
+								$this->$subStatus = insertData($subTblName, $subDataArr['insertData']);
+							
+							if(array_key_exists('deleteData', $subDataArr))
+								$this->$subStatus = deleteDataList($subTblName, $subDataArr['deleteData']);
 						}
 					}
 				}
@@ -418,34 +399,15 @@
 						$subTblName = $subTable['tblName'];
 						$foreignKey = $subTable['foreignKey'];
 						$subDataArr = $subTable['data'];
+						
+						if(array_key_exists(0, $subDataArr))
+							$subStatus = $this->updateData($subTblName, $subDataArr);
 
-						foreach($subDataArr as $subData){
-							$subUpdate = "";
-							$subFieldIndex = 1;
+						if(array_key_exists('insertData', $subDataArr))
+							$subStatus = $this->insertData($subTblName, $subDataArr['insertData']);
 
-							foreach($subData as $subKey=>$subVal){
-								if($subKey == 'condition')
-									continue;
-								else{
-									if($subFieldIndex != 1)
-										$subUpdate .= ', ';
-
-									if($subKey == 'updated')
-										$subUpdate .= "$subKey = CURRENT_TIMESTAMP";
-									else
-										$subUpdate .= "$subKey = '$subVal'";
-									
-									$subFieldIndex++;
-								}
-							}
-
-							if(!empty($update)){
-								$subUpdate .= ", updated = CURRENT_TIMESTAMP";
-								$subSqlCmd = "UPDATE $subTblName SET $subUpdate WHERE ".$subData['condition'];
-								$subStatus = $mysqli->query($subSqlCmd);
-							}else
-								return true;
-						}
+						if(array_key_exists('deleteData', $subDataArr))
+							$subStatus = $this->deleteDataList($subTblName, $subDataArr['deleteData']);
 					}
 				}
 			}
@@ -463,7 +425,7 @@
 			}
 		}
 
-		//--Delete data function
+		//--Delete data
 		public function deleteData($tblName, $condition){
 			global $mysqli;
 
@@ -473,6 +435,25 @@
 				return true;
 			else
 				return false;
+		}
+
+		//--Delete data for 
+		public function deleteDataList($tblName, $dataList){
+			global $mysqli;
+			$sqlCmd = "";
+
+			if(count($dataList) != 0){
+				foreach($dataList as $data){
+					$condition = $data['condition'];
+					$sqlCmd .= "DELETE FROM $tblName WHERE $condition; ";
+				}
+
+				if($mysqli->multi_query($sqlCmd))
+					return true;
+				else
+					return false;
+			}else
+				return true;
 		}
 
 		//--Delete file in folder

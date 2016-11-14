@@ -239,7 +239,6 @@ angular.module('mainApp')
 		);
 
 		if(!$.isEmptyObject($scope.entryUserinfoUpdate)){
-
 			ajaxUrl = 'user_ctrl';
 			param = {
 				'funcName': 'updateUserinfo',

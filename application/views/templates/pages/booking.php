@@ -1,10 +1,21 @@
 <div class="col-md-12 section-booking" data-ng-show="statusMenu.menu2">
 	<div class="well well-sm well-default">
-		<p><i class="fa fa-plus-square text-indent"></i> จองห้องประชุม</p>
+		<p data-ng-show="currentLocation == '/booking_add'">
+			<i class="fa fa-plus-square text-indent"></i> จองห้องประชุม
+		</p>
+		<ol class="breadcrumb" data-ng-show="currentLocation == '/booking_edit/'">
+			<li>
+				<a data-ui-sref="ค้นหาข้อมูลการจอง(previousParams)"><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</a>
+			</li>
+			<li class="active">แก้ไขรายการจอง</li>
+		</ol>
 	</div>
 	<div class="panel panel-default">
-		<div class="panel-heading">
+		<div class="panel-heading" data-ng-show="currentLocation == '/booking_add'">
 			<i class="fa fa-bars text-indent"></i> จองห้องประชุม
+		</div>
+		<div class="panel-heading" data-ng-show="currentLocation == '/booking_edit/'">
+			<i class="fa fa-bars text-indent"></i> แก้ไขรายการจอง
 		</div>
 		<div class="panel-body margin-top">
 			<!--Main content-->
@@ -186,8 +197,11 @@
 													<div class="col-md-4" data-ng-repeat="item in equipmentList">
 														<div class="checkbox">
 														  	<label>
-														  		<input type="checkbox" class="next-focus" value="{{ item.equipment_id }}" 
-														  			name="equipment_list" data-ng-model="entryBooking.entryBookingEquipment[($index + 1)]">
+														  		<input type="checkbox" class="next-focus" name="entryBookingEquipment" 
+														  			data-ng-checked="item.equipment_id == entryBooking.entryBookingEquipment.data[$index].equipment_id"
+														  			data-ng-true-value="{{ item.equipment_id }}"
+														  			data-ng-false-value="0"
+														  			data-ng-model="entryBooking.entryBookingEquipment.data[$index].equipment_id">
 														  			{{ item.equipment_name }}
 														  	</label>
 														</div>
@@ -209,7 +223,8 @@
 						<i class="fa fa-plus-square text-indent"></i> บันทึกการจอง
 					</button>
 					<button class="btn btn-warning next-focus" type="button"
-						data-ng-show="currentLocation == '/booking_edit/' && entryUser.user_id == stateParams.userID && (userPermission[1].perm_status == 'R/W' || userPermission[1].perm_status == 'ADMIN')"
+						data-ng-show="(currentLocation == '/booking_edit/' && entryUser.user_id == stateParams.user_id && userPermission[1].perm_status == 'R/W') || 
+							(currentLocation == '/booking_edit/' && userPermission[1].perm_status == 'ADMIN')"
 						data-ng-disabled="bookingForm.$invalid"
 						data-ng-click="updateBooking()">
 						<i class="fa fa-pencil-square-o text-indent"></i> แก้ไขการจอง

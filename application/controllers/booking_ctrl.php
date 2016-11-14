@@ -30,6 +30,72 @@
 			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
 		}
 
+		public function updateBooking($param){
+			$itemList = array();
+			$status = false;
+
+			$tblName = $param['tblName'];
+			$dataList = $param['data'];
+			$bookingID = $param['bookingID'];
+
+			$status = $this->dbservice_model->updateDataSubTable($tblName, $dataList);
+
+			if($status)
+				$itemList = $this->dbservice_model->messageInfo('successInsert');
+			else
+				$itemList = $this->dbservice_model->messageInfo('errorInsert');
+
+			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
+		}
+
+		public function getBookingData($bookingID){
+			$item = array();
+
+			$sqlCmd = "SELECT booking_id, user_id, meeting_room_id, meeting_type_id, 
+							CONCAT(DATE_FORMAT(start_date, '%d/'), 
+								DATE_FORMAT(start_date, '%m/'), 
+								DATE_FORMAT(start_date, '%Y')
+							) AS start_date, 
+							TIME_FORMAT(start_time, '%H:%i') AS start_time, 
+							CONCAT(DATE_FORMAT(end_date, '%d/'), 
+								DATE_FORMAT(end_date, '%m/'), 
+								DATE_FORMAT(end_date, '%Y')
+							) AS end_date, 
+							TIME_FORMAT(end_time, '%H:%i') AS end_time, meeting_topic, meeting_number, meeting_detail, department_id, 
+							meeting_table_type_id, meeting_required_id, budget_type_id
+						FROM booking	
+						WHERE booking_id = '$bookingID'";
+			$item = $this->dbservice_model->getObj($sqlCmd);
+
+			$sqlCmd = "SELECT equipment_id 
+						FROM equipment";
+			$equipmentList = array();
+			$equipmentList = $this->dbservice_model->getListObj($sqlCmd);
+
+			$sqlCmd = "SELECT booking_equipment_id, equipment_id, booking_id
+						FROM booking_equipment
+						WHERE booking_id = '$bookingID'";
+			$bookingEquipmentList = array();
+			$bookingEquipmentList = $this->dbservice_model->getListObj($sqlCmd);
+
+			$item['entryBookingEquipment']['tblName'] = 'booking_equipment';
+			$item['entryBookingEquipment']['foreignKey'] = 'booking_id';
+			$item['entryBookingEquipment']['data'] = array();
+			foreach($equipmentList as $key=>$equipment){
+				$item['entryBookingEquipment']['data'][$key]['equipment_id'] = 0;
+				$item['entryBookingEquipment']['data'][$key]['booking_id'] = $bookingID;
+
+				foreach($bookingEquipmentList as $bookingEquipment){
+					if($equipment['equipment_id'] == $bookingEquipment['equipment_id']){
+						$item['entryBookingEquipment']['data'][$key]['booking_equipment_id'] = $bookingEquipment['booking_equipment_id'];
+						$item['entryBookingEquipment']['data'][$key]['equipment_id'] = ($key + 1);
+					}
+				}
+			}
+
+			echo json_encode($item, JSON_UNESCAPED_UNICODE);
+		}
+
 		public function getBookingDetailData($bookingID){
 			$item = array();
 			$itemList = array();
