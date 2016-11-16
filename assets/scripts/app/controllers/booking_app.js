@@ -67,19 +67,23 @@ angular.module('mainApp')
 			$scope.entryBooking['user_id'] = $rootScope.entryUser['user_id'];
 
 			var entryBookingEquipmentList = [];
-			$.each($scope.entryBooking['entryBookingEquipment']['data'], function(key, value){
-				if(value != undefined){
-					if(value['equipment_id'] != 0){
-						entryBookingEquipmentList.push({
-							'equipment_id': value['equipment_id']
-						});
+			if($scope.entryBooking['entryBookingEquipment'] != undefined){
+				$.each($scope.entryBooking['entryBookingEquipment']['data'], function(key, value){
+					if(value != undefined){
+						if(value['equipment_id'] != 0){
+							entryBookingEquipmentList.push({
+								'equipment_id': value['equipment_id']
+							});
+						}
 					}
-				}
-			});
+				});
+			}
 
-			if(entryBookingEquipmentList.length != 0)
+			if(entryBookingEquipmentList.length != 0){
+				$scope.entryBooking['entryBookingEquipment']['tblName'] = 'booking_equipment';
+				$scope.entryBooking['entryBookingEquipment']['foreignKey'] = 'booking_id';
 				$scope.entryBooking['entryBookingEquipment']['data'] = entryBookingEquipmentList;
-			else
+			}else
 				delete $scope.entryBooking['entryBookingEquipment'];
 
 			ajaxUrl = 'booking_ctrl';
@@ -90,16 +94,18 @@ angular.module('mainApp')
 					'data': $scope.entryBooking
 				}
 			};
+			console.log(param['param']['data']);
 			
 			connectDBService.query(ajaxUrl, param).success(function(response){
+				console.log(response);
 				if(response != '' && response != undefined){
 					var statusData = response;
 
-					if(statusData['status'])
-						$scope.resetEntry('entryBooking', 'bookingForm');
-
 					$rootScope.msgWarningPopup = statusData['msg'];
 					$('.warning-popup').modal('show');
+
+					if(statusData['status'])
+						$scope.resetEntry('entryBooking', 'bookingForm');
 				}
 			});
 		}
@@ -242,11 +248,15 @@ angular.module('mainApp')
     //--Function, Event on page load
 	$(document).ready(function(){
 		//--Datepicker
-		$('.datepicker').datepicker({ 
-			dateFormat: 'dd/mm/yy',
+		$.datepicker.regional['th'] = {
+	        dateFormat: 'dd/mm/yy',
 			changeMonth: true,
-	    	changeYear: true
-		});
+	    	changeYear: true,
+	    	yearOffSet: 543
+	    };
+		$.datepicker.setDefaults($.datepicker.regional['th']);
+		$('.datepicker').datepicker($.datepicker.regional["th"]);
+		$('.datepicker').datepicker("setDate", new Date());
 
 		$(document).on('click', '#datepicker-from-btn, #datepicker-to-btn', function(e){
 			$(this).closest('.input-group').find('input').focus();

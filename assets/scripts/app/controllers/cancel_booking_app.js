@@ -144,7 +144,7 @@ angular.module('mainApp')
 
 					$rootScope.msgWarningPopup = statusData['msg'];
 					$('.warning-popup').modal('show');
-					console.log($rootScope.previousParams);
+					
 					if(statusData['status'])
 						$state.go('ยกเลิกการจอง', $rootScope.previousParams);
 				}
@@ -194,11 +194,15 @@ angular.module('mainApp')
     //--Function, Event on page load
 	$(document).ready(function(){
 		//--Datepicker
-		$('.datepicker').datepicker({ 
-			dateFormat: 'dd/mm/yy',
+		$.datepicker.regional['th'] = {
+	        dateFormat: 'dd/mm/yy',
 			changeMonth: true,
-	    	changeYear: true
-		});
+	    	changeYear: true,
+	    	yearOffSet: 543
+	    };
+		$.datepicker.setDefaults($.datepicker.regional['th']);
+		$('.datepicker').datepicker($.datepicker.regional["th"]);
+		$('.datepicker').datepicker("setDate", new Date());
 
 		$(document).on('click', '#datepicker-from-btn, #datepicker-to-btn', function(e){
 			$(this).closest('.input-group').find('input').focus();

@@ -9645,10 +9645,11 @@ function Datepicker() {
 	this._dayOverClass = "ui-datepicker-days-cell-over"; // The name of the day hover marker class
 	this.regional = []; // Available regional settings, indexed by language code
 	this.regional[ "" ] = { // Default regional settings
+		//--Custom datepicker
+		/*
 		closeText: "Done", // Display text for close link
 		prevText: "Prev", // Display text for previous month link
 		nextText: "Next", // Display text for next month link
-		/*
 		currentText: "Today", // Display text for current month link
 		monthNames: [ "January","February","March","April","May","June",
 			"July","August","September","October","November","December" ], // Names of months for drop-down and formatting
@@ -9657,6 +9658,9 @@ function Datepicker() {
 		dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ], // For formatting
 		dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ], // Column headings for days starting at Sunday
 		*/
+		closeText: "เลือก", // Display text for close link
+		prevText: "ก่อนหน้า", // Display text for previous month link
+		nextText: "ถัดไป", // Display text for next month link
 		currentText: "วันนี้", // Display text for current month link
 		monthNames: [ "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
 			"กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม" ], // Names of months for drop-down and formatting
@@ -10810,7 +10814,9 @@ $.extend( Datepicker.prototype, {
 						month = getName( "M", monthNamesShort, monthNames );
 						break;
 					case "y":
-						year = getNumber( "y" );
+						//--Custom datepicker
+						//year = getNumber( "y" );
+						year = getNumber("y")-this._defaults.yearOffSet;
 						break;
 					case "@":
 						date = new Date( getNumber( "@" ) );
@@ -10981,8 +10987,11 @@ $.extend( Datepicker.prototype, {
 							output += formatName( "M", date.getMonth(), monthNamesShort, monthNames );
 							break;
 						case "y":
-							output += ( lookAhead( "y" ) ? date.getFullYear() :
-								( date.getFullYear() % 100 < 10 ? "0" : "" ) + date.getFullYear() % 100 );
+							//--Custom datepicker
+							/*output += ( lookAhead( "y" ) ? date.getFullYear() :
+								( date.getFullYear() % 100 < 10 ? "0" : "" ) + date.getFullYear() % 100 );*/
+							output += (lookAhead("y") ? date.getFullYear()+this._defaults.yearOffSet :
+								(date.getYear() % 100 < 10 ? "0" : "") + date.getYear() % 100);
 							break;
 						case "@":
 							output += date.getTime();
@@ -11075,7 +11084,11 @@ $.extend( Datepicker.prototype, {
 		}
 		inst.selectedDay = date.getDate();
 		inst.drawMonth = inst.selectedMonth = date.getMonth();
-		inst.drawYear = inst.selectedYear = date.getFullYear();
+		//--Custom datepicker
+		//inst.drawYear = inst.selectedYear = date.getFullYear();
+		if(inst.input.val() != "")
+        	inst.drawYear = inst.selectedYear = (date.getFullYear()) ;
+
 		inst.currentDay = ( dates ? date.getDate() : 0 );
 		inst.currentMonth = ( dates ? date.getMonth() : 0 );
 		inst.currentYear = ( dates ? date.getFullYear() : 0 );
@@ -11445,8 +11458,7 @@ $.extend( Datepicker.prototype, {
 		if ( !inst.yearshtml ) {
 			inst.yearshtml = "";
 			if ( secondary || !changeYear ) {
-				//html += "<span class='ui-datepicker-year'>" + drawYear + "</span>";
-				html += "<span class='ui-datepicker-year'>" + (drawYear + 543) + "</span>";
+				html += "<span class='ui-datepicker-year'>" + drawYear + "</span>";
 			} else {
 
 				// determine range of years to display
@@ -11466,8 +11478,9 @@ $.extend( Datepicker.prototype, {
 				for ( ; year <= endYear; year++ ) {
 					inst.yearshtml += "<option value='" + year + "'" +
 						( year === drawYear ? " selected='selected'" : "" ) +
+						//--Custom datepicker
 						//">" + year + "</option>";
-						">" + (year + 543) + "</option>";
+						">" + (year + this._get(inst, "yearOffSet")) + "</option>";
 				}
 				inst.yearshtml += "</select>";
 
@@ -11596,6 +11609,8 @@ $.extend( Datepicker.prototype, {
 		var date = ( day ? ( typeof day === "object" ? day :
 			this._daylightSavingAdjust( new Date( year, month, day ) ) ) :
 			this._daylightSavingAdjust( new Date( inst.currentYear, inst.currentMonth, inst.currentDay ) ) );
+			//--Custom datepicker
+			date.setFullYear(date.getFullYear());
 		return this.formatDate( this._get( inst, "dateFormat" ), date, this._getFormatConfig( inst ) );
 	}
 } );

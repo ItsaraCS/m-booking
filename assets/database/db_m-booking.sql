@@ -216,7 +216,7 @@ INSERT INTO budget_type(budget_type_id, budget_type_name) VALUES
 -- --------------------------------------------------
 CREATE TABLE IF NOT EXISTS meeting_required(
 	meeting_required_id INT(5) NOT NULL AUTO_INCREMENT COMMENT 'คีย์ของสิ่งที่ต้องการในการประชุม',
-	meeting_required_name VARCHAR(50) NOT NULL COMMENT 'สิ่งที่ต้องการในการประชุม',
+	meeting_required_name VARCHAR(200) NOT NULL COMMENT 'สิ่งที่ต้องการในการประชุม',
 	PRIMARY KEY (meeting_required_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

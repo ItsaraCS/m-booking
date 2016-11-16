@@ -6541,13 +6541,14 @@ DayGrid.mixin({
 		var view = this.view;
 		var isTheme = view.opt('theme');
 		var title = this.getCellDate(row, col).format(view.opt('dayPopoverFormat'));
+		title = title.split(' ')[0] +' '+ title.split(' ')[1] +' '+ (Number(title.split(' ')[2]) + 543);
 		var content = $(
 			'<div class="fc-header ' + view.widgetHeaderClass + '">' +
 				'<span class="fc-close ' +
 					(isTheme ? 'ui-icon ui-icon-closethick' : 'fc-icon fc-icon-x') +
 				'"></span>' +
 				'<span class="fc-title">' +
-					htmlEscape(title) +
+					htmlEscape(title) + 
 				'</span>' +
 				'<div class="fc-clear"/>' +
 			'</div>' +

@@ -285,7 +285,7 @@ angular.module('mainApp')
             var dateFormateForDB = '';
 
             dateOrigin = dateOrigin.split('/');
-            dateFormateForDB = dateOrigin[2] +'-'+ dateOrigin[1] +'-'+ dateOrigin[0];
+            dateFormateForDB = (Number(dateOrigin[2]) - 543) +'-'+ dateOrigin[1] +'-'+ dateOrigin[0];
 
             return dateFormateForDB;
         }
