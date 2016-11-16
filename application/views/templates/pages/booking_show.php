@@ -1,5 +1,11 @@
 <div class="col-md-12 section-booking-show" data-ng-show="statusMenu.menu3 || statusMenu.menu4 || statusMenu.menu5">
 	<div class="well well-sm well-default">
+		<ol class="breadcrumb" data-ng-show="stateParams.showStatus == 'showScheduleMeetingUse'">
+			<li>
+				<a data-ui-sref="ปฏิทินการใช้ห้องประชุม(previousParams)"><i class="fa fa-calendar text-indent"></i> ปฏิทินการใช้ห้องประชุม</a>
+			</li>
+			<li class="active">รายละเอียดการจอง</li>
+		</ol>
 		<ol class="breadcrumb" data-ng-show="stateParams.showStatus == 'showCancelBooking'">
 			<li>
 				<a data-ui-sref="ยกเลิกการจอง(previousParams)"><i class="fa fa-ban text-indent"></i> ยกเลิกการจอง</a>

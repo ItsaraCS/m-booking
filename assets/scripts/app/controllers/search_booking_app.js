@@ -34,27 +34,14 @@ angular.module('mainApp')
 			if(response != '' && response != undefined){
 				var sessionData = response;
 
-				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined){
+				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined)
 					angular.copy(sessionData, $rootScope.entryUser);
-					$scope.getUserPermissionData();
-				}else
+				else
 					$location.path('/login');
 			}
 		});
 	}
 	$scope.getSession();
-
-	$scope.getUserPermissionData = function(){
-		ajaxUrl = 'dbservice_ctrl';
-		param = {
-			'funcName': 'getUserPermissionData',
-			'param': $rootScope.entryUser['user_id']
-		};
-		
-		connectDBService.query(ajaxUrl, param).success(function(response){
-			angular.copy(response, $rootScope.userPermissionData);
-		});
-	}
 	
 	$scope.searchBooking = function(){
 		var searchStartDate = '';

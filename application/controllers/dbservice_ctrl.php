@@ -14,35 +14,15 @@
 		}
 
 		public function getSession(){
-			$itemList = array();
+			$item = array();
 
-			$itemList = $this->dbservice_model->getSession();
+			$item = $this->dbservice_model->getSession();
 
-			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
-		}
-
-		public function getUserPermissionData($userID){
-			$itemList = array();
-
-			$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, 
-							m.menu_name, ms.menu_sub_name, ps.permission_status_code AS perm_status 
-						FROM permission p 
-							INNER JOIN menu_sub ms 
-								ON p.menu_sub_id = ms.menu_sub_id 
-							INNER JOIN menu m 
-								ON ms.menu_id = m.menu_id 
-							INNER JOIN permission_status ps 
-								ON p.permission_status_id = ps.permission_status_id 
-						WHERE p.user_id = '$userID' 
-						ORDER BY permission_id";
-			$itemList = $this->dbservice_model->getListObj($sqlCmd);
-
-			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
+			echo json_encode($item, JSON_UNESCAPED_UNICODE);
 		}
 
 		public function login($param){
 			$item = array();
-			$itemList = array();
 
 			$email = $param['email'];
 			$password = $param['password'];
@@ -59,22 +39,35 @@
 					session_start();
 
 				$_SESSION = array(
-					'user_id'=>$item["user_id"],
-					'email'=>$item["email"],
-					'password'=>$item["password"],
-					'firstname'=>$item["firstname"],
-					'lastname'=>$item["lastname"],
-					'department_id'=>$item["department_id"],
-					'position'=>$item["position"],
-					'phone'=>$item["phone"],
-					'local_phone'=>$item["local_phone"]
+					'user_id'=>$item['user_id'],
+					'email'=>$item['email'],
+					'password'=>$item['password'],
+					'firstname'=>$item['firstname'],
+					'lastname'=>$item['lastname'],
+					'department_id'=>$item['department_id'],
+					'position'=>$item['position'],
+					'phone'=>$item['phone'],
+					'local_phone'=>$item['local_phone']
 				);
 
-				$itemList = $this->dbservice_model->messageInfo('successLogin');
-			}else
-				$itemList = $this->dbservice_model->messageInfo('errorLogin');
+				$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, 
+								m.menu_name, ms.menu_sub_name, ps.permission_status_code AS perm_status 
+							FROM permission p 
+								INNER JOIN menu_sub ms 
+									ON p.menu_sub_id = ms.menu_sub_id 
+								INNER JOIN menu m 
+									ON ms.menu_id = m.menu_id 
+								INNER JOIN permission_status ps 
+									ON p.permission_status_id = ps.permission_status_id 
+							WHERE p.user_id = '".$item["user_id"]."' 
+							ORDER BY permission_id";
+				$item['userPermissionData'] = $this->dbservice_model->getListObj($sqlCmd);
 
-			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
+				$item['statusData'] = $this->dbservice_model->messageInfo('successLogin');
+			}else
+				$item['statusData'] = $this->dbservice_model->messageInfo('errorLogin');
+
+			echo json_encode($item, JSON_UNESCAPED_UNICODE);
 		}
 
 		public function logout(){

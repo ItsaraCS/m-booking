@@ -77,50 +77,47 @@
 					      		<h3><span class="fa fa-address-book"></span>รายการจองห้องประชุม</h3>
 					      		<ul>
 							        <li active-menu data-ng-show="statusMenu.menu1">
-							        	<a data-ui-sref="ปฏิทินการใช้ห้องประชุม" data-menu-index="0"><i class="fa fa-calendar text-indent"></i> ปฏิทินการใช้ห้องประชุม</a>
+							        	<a data-ui-sref="ปฏิทินการใช้ห้องประชุม"><i class="fa fa-calendar text-indent"></i> ปฏิทินการใช้ห้องประชุม</a>
 							        </li>
 							        <li active-menu data-ng-show="statusMenu.menu2">
-							        	<a data-ui-sref="จองห้องประชุม" data-menu-index="1"><i class="fa fa-plus-square text-indent"></i> จองห้องประชุม</a>
+							        	<a data-ui-sref="จองห้องประชุม"><i class="fa fa-plus-square text-indent"></i> จองห้องประชุม</a>
 							        </li>
 							        <li active-menu data-ng-show="statusMenu.menu3">
-							        	<a data-ui-sref="ยกเลิกการจอง" data-menu-index="2"><i class="fa fa-ban text-indent"></i> ยกเลิกการจอง</a>
+							        	<a data-ui-sref="ยกเลิกการจอง"><i class="fa fa-ban text-indent"></i> ยกเลิกการจอง</a>
 							        </li>
 							        <li active-menu data-ng-show="statusMenu.menu4">
-							        	<a data-ui-sref="ค้นหาข้อมูลการจอง" data-menu-index="3"><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</a>
+							        	<a data-ui-sref="ค้นหาข้อมูลการจอง"><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</a>
 							        </li>
 							        <li active-menu data-ng-show="statusMenu.menu5">
-							        	<a data-ui-sref="จัดการสถานะการจอง" data-menu-index="4"><i class="fa fa-toggle-on text-indent"></i>จัดการสถานะการจอง</a>
+							        	<a data-ui-sref="จัดการสถานะการจอง"><i class="fa fa-toggle-on text-indent"></i>จัดการสถานะการจอง</a>
 							        </li>
 					      		</ul>
 					    	</li>
-					    	<li data-ng-show="statusMenu.menu6 || statusMenu.menu7 || statusMenu.menu8">
+					    	<li data-ng-show="statusMenu.menu6 || statusMenu.menu7">
 					      		<h3><span class="fa fa-book"></span>เกี่ยวกับห้องประชุม</h3>
 						      	<ul>
 							        <li active-menu data-ng-show="statusMenu.menu6">
-							        	<a data-ui-sref="รายละเอียดห้องประชุม" data-menu-index="5"><i class="fa fa-eye text-indent"></i> รายละเอียดห้องประชุม</a>
+							        	<a data-ui-sref="รายละเอียดห้องประชุม"><i class="fa fa-eye text-indent"></i> รายละเอียดห้องประชุม</a>
 							        </li>
 							        <li active-menu data-ng-show="statusMenu.menu7">
-							        	<a data-ui-sref="รายงานการจอง" data-menu-index="6"><i class="fa fa-bar-chart text-indent"></i> รายงานการจอง</a>
-							        </li>
-							        <li active-menu data-ng-show="statusMenu.menu8">
-							        	<a data-ui-sref="คำแนะนำการใช้งานระบบ" data-menu-index="7"><i class="fa fa-question-circle text-indent"></i> คำแนะนำการใช้งานระบบ</a>
+							        	<a data-ui-sref="คำแนะนำการใช้งานระบบ"><i class="fa fa-question-circle text-indent"></i> คำแนะนำการใช้งานระบบ</a>
 							        </li>
 						      	</ul>
 					    	</li>
-					    	<li data-ng-show="statusMenu.menu9 || statusMenu.menu10 || statusMenu.menu11 || statusMenu.menu12">
+					    	<li data-ng-show="statusMenu.menu8 || statusMenu.menu9 || statusMenu.menu10 || statusMenu.menu11">
 					      		<h3><span class="fa fa-user-circle"></span>ผู้ใช้ระบบ</h3>
 						      	<ul>
+							        <li active-menu data-ng-show="statusMenu.menu8">
+							        	<a data-ui-sref="เข้าสู่ระบบ"><i class="fa fa-lock text-indent"></i> เข้าสู่ระบบ</a>
+							        </li>
 							        <li active-menu data-ng-show="statusMenu.menu9">
-							        	<a data-ui-sref="เข้าสู่ระบบ" data-menu-index="8"><i class="fa fa-lock text-indent"></i> เข้าสู่ระบบ</a>
+							        	<a data-ui-sref="สมัครสมาชิก"><i class="fa fa-refresh text-indent"></i> สมัครสมาชิก</a>
 							        </li>
 							        <li active-menu data-ng-show="statusMenu.menu10">
-							        	<a data-ui-sref="สมัครสมาชิก" data-menu-index="9"><i class="fa fa-refresh text-indent"></i> สมัครสมาชิก</a>
+							        	<a data-ui-sref="ข้อมูลส่วนตัว"><i class="fa fa-user text-indent"></i> ข้อมูลส่วนตัว</a>
 							        </li>
 							        <li active-menu data-ng-show="statusMenu.menu11">
-							        	<a data-ui-sref="ข้อมูลส่วนตัว" data-menu-index="10"><i class="fa fa-user text-indent"></i> ข้อมูลส่วนตัว</a>
-							        </li>
-							        <li active-menu data-ng-show="statusMenu.menu12">
-							        	<a data-ui-sref="ตั้งค่าสิทธิ์การใช้งาน" data-menu-index="11"><i class="fa fa-cog text-indent"></i> ตั้งค่าสิทธิ์การใช้งาน</a>
+							        	<a data-ui-sref="ตั้งค่าสิทธิ์การใช้งาน" ><i class="fa fa-cog text-indent"></i> ตั้งค่าสิทธิ์การใช้งาน</a>
 							        </li>
 						      	</ul>
 					    	</li>
@@ -143,60 +140,57 @@
 					    </div>
 					    <div class="collapse navbar-collapse" id="accordian-resize">
 					      	<ul class="nav navbar-nav">
-					        	<li class="active dropdown">
+					        	<li class="active dropdown" data-ng-show="statusMenu.menu1 || statusMenu.menu2 || statusMenu.menu3 || statusMenu.menu4 || statusMenu.menu5">
 									<a href="" class="dropdown-toggle" data-toggle="dropdown">
 										<i class="fa fa-address-book text-indent"></i> รายการจองห้องประชุม <span class="caret"></span>
 									</a>
 									<ul class="dropdown-menu">
-										<li>
-								        	<a data-ui-sref="ปฏิทินการใช้ห้องประชุม" data-menu-index="0"><i class="fa fa-calendar text-indent"></i> ปฏิทินการใช้ห้องประชุม</a>
+										<li data-ng-show="statusMenu.menu1">
+								        	<a data-ui-sref="ปฏิทินการใช้ห้องประชุม"><i class="fa fa-calendar text-indent"></i> ปฏิทินการใช้ห้องประชุม</a>
 								        </li>
-								        <li data-ng-show="entryUser.user_id">
-								        	<a data-ui-sref="จองห้องประชุม" data-menu-index="1"><i class="fa fa-plus-square text-indent"></i> จองห้องประชุม</a>
+								        <li data-ng-show="statusMenu.menu2">
+								        	<a data-ui-sref="จองห้องประชุม"><i class="fa fa-plus-square text-indent"></i> จองห้องประชุม</a>
 								        </li>
-								        <li active-menu data-ng-show="entryUser.user_id">
-								        	<a data-ui-sref="ยกเลิกการจอง" data-menu-index="2"><i class="fa fa-ban text-indent"></i> ยกเลิกการจอง</a>
+								        <li data-ng-show="statusMenu.menu3">
+								        	<a data-ui-sref="ยกเลิกการจอง"><i class="fa fa-ban text-indent"></i> ยกเลิกการจอง</a>
 								        </li>
-								        <li>
-								        	<a data-ui-sref="ค้นหาข้อมูลการจอง" data-menu-index="3"><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</a>
+								        <li data-ng-show="statusMenu.menu4">
+								        	<a data-ui-sref="ค้นหาข้อมูลการจอง"><i class="fa fa-search text-indent"></i> ค้นหาข้อมูลการจอง</a>
 								        </li>
-								        <li data-ng-show="entryUser.user_id && (userPermissionData[4].perm_status == 'R/W')">
-								        	<a data-ui-sref="จัดการสถานะการจอง" data-menu-index="4"><i class="fa fa-toggle-on text-indent"></i>จัดการสถานะการจอง</a>
+								        <li data-ng-show="statusMenu.menu5">
+								        	<a data-ui-sref="จัดการสถานะการจอง"><i class="fa fa-toggle-on text-indent"></i>จัดการสถานะการจอง</a>
 								        </li>
 									</ul>
 								</li>
-								<li class="dropdown">
+								<li class="dropdown" data-ng-show="statusMenu.menu6 || statusMenu.menu7">
 									<a href="" class="dropdown-toggle" data-toggle="dropdown">
 										<i class="fa fa-book text-indent"></i> เกี่ยวกับห้องประชุม <span class="caret"></span>
 									</a>
 									<ul class="dropdown-menu">
-										<li>
-								        	<a data-ui-sref="รายละเอียดห้องประชุม" data-menu-index="5"><i class="fa fa-eye text-indent"></i> รายละเอียดห้องประชุม</a>
+										<li data-ng-show="statusMenu.menu6">
+								        	<a data-ui-sref="รายละเอียดห้องประชุม"><i class="fa fa-eye text-indent"></i> รายละเอียดห้องประชุม</a>
 								        </li>
-								        <li data-ng-show="entryUser.user_id">
-								        	<a data-ui-sref="รายงานการจอง" data-menu-index="6"><i class="fa fa-bar-chart text-indent"></i> รายงานการจอง</a>
-								        </li>
-								        <li>
-								        	<a data-ui-sref="คำแนะนำการใช้งานระบบ" data-menu-index="7"><i class="fa fa-question-circle text-indent"></i> คำแนะนำการใช้งานระบบ</a>
+								        <li data-ng-show="statusMenu.menu7">
+								        	<a data-ui-sref="คำแนะนำการใช้งานระบบ"><i class="fa fa-question-circle text-indent"></i> คำแนะนำการใช้งานระบบ</a>
 								        </li>
 									</ul>
 								</li>
-								<li class="dropdown">
+								<li class="dropdown" data-ng-show="statusMenu.menu8 || statusMenu.menu9 || statusMenu.menu10 || statusMenu.menu11">
 									<a href="" class="dropdown-toggle" data-toggle="dropdown">
 										<i class="fa fa-user-circle text-indent"></i> ผู้ใช้ระบบ <span class="caret"></span>
 									</a>
 									<ul class="dropdown-menu">
-										<li data-ng-show="!entryUser.user_id">
-								        	<a data-ui-sref="เข้าสู่ระบบ" data-menu-index="8"><i class="fa fa-lock text-indent"></i> เข้าสู่ระบบ</a>
+										<li data-ng-show="statusMenu.menu8">
+								        	<a data-ui-sref="เข้าสู่ระบบ"><i class="fa fa-lock text-indent"></i> เข้าสู่ระบบ</a>
 								        </li>
-								        <li data-ng-show="!entryUser.user_id">
-								        	<a data-ui-sref="สมัครสมาชิก" data-menu-index="9"><i class="fa fa-refresh text-indent"></i> สมัครสมาชิก</a>
+								        <li data-ng-show="statusMenu.menu9">
+								        	<a data-ui-sref="สมัครสมาชิก"><i class="fa fa-refresh text-indent"></i> สมัครสมาชิก</a>
 								        </li>
-								        <li data-ng-show="entryUser.user_id">
-								        	<a data-ui-sref="ข้อมูลส่วนตัว" data-menu-index="10"><i class="fa fa-user text-indent"></i> ข้อมูลส่วนตัว</a>
+								        <li data-ng-show="statusMenu.menu10">
+								        	<a data-ui-sref="ข้อมูลส่วนตัว"><i class="fa fa-user text-indent"></i> ข้อมูลส่วนตัว</a>
 								        </li>
-								        <li data-ng-show="entryUser.user_id && (userPermissionData[4].perm_status == 'R/W')">
-								        	<a data-ui-sref="ตั้งค่าสิทธิ์การใช้งาน" data-menu-index="11"><i class="fa fa-cog text-indent"></i> ตั้งค่าสิทธิ์การใช้งาน</a>
+								        <li data-ng-show="statusMenu.menu11">
+								        	<a data-ui-sref="ตั้งค่าสิทธิ์การใช้งาน" ><i class="fa fa-cog text-indent"></i> ตั้งค่าสิทธิ์การใช้งาน</a>
 								        </li>
 									</ul>
 								</li>

@@ -97,10 +97,19 @@ body{
 	padding: 0 15px;
 }
 .status-label-approve{
-	background-color: #3A87AD;
+	background-color: #4D90FD;
+}
+.status-label-waitapprove{
+	background-color: #dfa63b;
+}
+.status-label-cancel{
+	background-color: #B3624D;
+}
+.status-label-waitcancel{
+	background-color: #a44769;
 }
 .status-label-notapprove{
-	background-color: #E04343;
+	background-color: #ED5B56;
 }
 ul.pagination li a{
 	cursor: pointer;

@@ -7,31 +7,32 @@ angular.module('mainApp')
 	//--Function, Event on page load
 	$(document).ready(function(){
 		//--Schedule of booking
-		$scope.today = dataService.getCurrentDate();
-		
 		$('#calendar').fullCalendar({
 			header: {
 				left: 'prev,next today',
 				center: 'title',
 				right: 'month,basicWeek,basicDay'
 			},
-			defaultDate: $scope.today,
+			defaultDate: dataService.getCurrentDate(),
+			defaultView: 'month',
 			navLinks: true, 
-			editable: true,
+			editable: false,
 			eventLimit: true, 
 			height: 500,
 			fixedWeekCount: false,
-			events: [
-				{
-					title: 'การประชุม',
-					start: '2016-11-01'
-				},
-				{
-					title: 'การประชุมยาว',
-					start: '2016-11-07',
-					end: '2016-11-10'
-				}
-			]
-		});
+			events: {
+				url: 'schedule_meeting_use_ctrl'
+			},
+			eventRender: function(event, element) {
+		      	$(element).tooltip({
+		      		title: event.detail,
+		      		container: 'body',
+		      		placement: 'top',
+		      	});
+		  	},
+		  	eventClick: function(event, element){
+	            $('.tooltip').hide();    
+	        }  
+		});  
 	});
 });

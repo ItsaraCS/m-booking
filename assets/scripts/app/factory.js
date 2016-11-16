@@ -61,7 +61,6 @@ angular.module('mainApp')
             case '/search_booking/': setActiveMenu('ค้นหาข้อมูลการจอง'); break;
             case '/booking_status_manage/': setActiveMenu('จัดการสถานะการจอง'); break;
             case '/meeting_detail': setActiveMenu('รายละเอียดห้องประชุม'); break;
-            case '/report': setActiveMenu('รายงานการจอง'); break;
             case '/instructions': setActiveMenu('คำแนะนำการใช้งานระบบ'); break;
             case '/login': setActiveMenu('เข้าสู่ระบบ'); break;
             case '/register': setActiveMenu('สมัครสมาชิก'); break;
@@ -69,6 +68,7 @@ angular.module('mainApp')
     		case '/permission/': setActiveMenu('ตั้งค่าสิทธิ์การใช้งาน'); break;
 
             //--Menu for working
+            case '/booking_show/showScheduleMeetingUse': setActiveMenu('ปฏิทินการใช้ห้องประชุม'); break; //--ปฏิทินการใช้ห้องประชุม
             case '/booking_show/showCancelBooking': setActiveMenu('ยกเลิกการจอง'); break; //--ยกเลิกการจอง
             case '/booking_show/showSearchBooking': setActiveMenu('ค้นหาข้อมูลการจอง'); break; //--ค้นหาข้อมูลการจอง
             case '/booking_show/showManageStatusBooking': setActiveMenu('จัดการสถานะการจอง'); break; //--จัดการสถานะการจอง

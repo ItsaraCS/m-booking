@@ -1,4 +1,4 @@
-<div class="col-md-12 section-login" data-ng-show="statusMenu.menu9">
+<div class="col-md-12 section-login" data-ng-show="statusMenu.menu8">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-lock text-indent"></i> เข้าสู่ระบบ</p>
 	</div>

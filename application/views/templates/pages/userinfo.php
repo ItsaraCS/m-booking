@@ -1,4 +1,4 @@
-<div class="col-md-12 section-userinfo" data-ng-show="entryUser.user_id" data-ng-show="statusMenu.menu11">
+<div class="col-md-12 section-userinfo" data-ng-show="statusMenu.menu10">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-user text-indent"></i> ข้อมูลส่วนตัว</p>
 	</div>
@@ -88,7 +88,7 @@
 				</div>
 				<div class="col-md-12 form-group text-right no-margin-bottom">
 					<button class="btn btn-warning next-focus" type="button"
-						data-ng-show="userPermission[10].perm_status == 'R/W' || userPermission[1].perm_status == 'ADMIN'"
+						data-ng-show="userPermission[9].perm_status == 'R/W' || userPermission[9].perm_status == 'ADMIN'"
 						data-ng-disabled="userinfoForm.$invalid"
 						data-ng-click="updateUserinfo()">
 						<i class="fa fa-edit text-indent"></i> บันทึกการเปลี่ยนแปลง

@@ -526,34 +526,47 @@
 
 		//--Create and get session
 		public function getSession(){
-			$sessionData = array();
+			$item = array();
 
 			if(!isset($_SESSION))
 				session_start();
 
 			if(isset($_SESSION['user_id'])){
-				$sessionData['user_id'] = $_SESSION['user_id'];
-				$sessionData['email'] = $_SESSION['email'];
-				$sessionData['password'] = $_SESSION['password'];
-				$sessionData['firstname'] = $_SESSION['firstname'];
-				$sessionData['lastname'] = $_SESSION['lastname'];
-				$sessionData['department_id'] = $_SESSION['department_id'];
-				$sessionData['position'] = $_SESSION['position'];
-				$sessionData['phone'] = $_SESSION['phone'];
-				$sessionData['local_phone'] = $_SESSION['local_phone'];
+				$item['user_id'] = $_SESSION['user_id'];
+				$item['email'] = $_SESSION['email'];
+				$item['password'] = $_SESSION['password'];
+				$item['firstname'] = $_SESSION['firstname'];
+				$item['lastname'] = $_SESSION['lastname'];
+				$item['department_id'] = $_SESSION['department_id'];
+				$item['position'] = $_SESSION['position'];
+				$item['phone'] = $_SESSION['phone'];
+				$item['local_phone'] = $_SESSION['local_phone'];
+
+				$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, 
+								m.menu_name, ms.menu_sub_name, ps.permission_status_code AS perm_status 
+							FROM permission p 
+								INNER JOIN menu_sub ms 
+									ON p.menu_sub_id = ms.menu_sub_id 
+								INNER JOIN menu m 
+									ON ms.menu_id = m.menu_id 
+								INNER JOIN permission_status ps 
+									ON p.permission_status_id = ps.permission_status_id 
+							WHERE p.user_id = '".$_SESSION['user_id']."' 
+							ORDER BY permission_id";
+				$item['userPermissionData'] = $this->getListObj($sqlCmd);
 			}else{
-				$sessionData['user_id'] = '';
-				$sessionData['email'] = '';
-				$sessionData['password'] = '';
-				$sessionData['firstname'] = '';
-				$sessionData['lastname'] = '';
-				$sessionData['department_id'] = '';
-				$sessionData['position'] = '';
-				$sessionData['phone'] = '';
-				$sessionData['local_phone'] = '';
+				$item['user_id'] = '';
+				$item['email'] = '';
+				$item['password'] = '';
+				$item['firstname'] = '';
+				$item['lastname'] = '';
+				$item['department_id'] = '';
+				$item['position'] = '';
+				$item['phone'] = '';
+				$item['local_phone'] = '';
 			}
 
-			return $sessionData;
+			return $item;
 		}
 
 		//--Destroy session

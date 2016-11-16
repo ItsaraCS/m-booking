@@ -1,4 +1,4 @@
-<div class="col-md-12 section-register" data-ng-show="statusMenu.menu10">
+<div class="col-md-12 section-register" data-ng-show="statusMenu.menu9">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-refresh text-indent"></i> สมัครสมาชิก</p>
 	</div>

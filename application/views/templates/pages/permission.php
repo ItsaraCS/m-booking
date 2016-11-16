@@ -1,4 +1,4 @@
-<div class="col-md-12 section-permission" data-ng-show="statusMenu.menu12">
+<div class="col-md-12 section-permission" data-ng-show="statusMenu.menu11">
 	<div class="well well-sm well-default">
 		<p><i class="fa fa-cog text-indent"></i> ตั้งค่าสิทธิ์การใช้งาน</p>
 	</div>
@@ -57,11 +57,11 @@
 											data-ui-sref="จัดการตั้งค่าสิทธิ์การใช้งาน({ 
 									    		'userID': '{{ item.user_id }}'
 								    		})"
-											data-ng-show="userPermission[11].perm_status == 'ADMIN'">
+											data-ng-show="userPermission[10].perm_status == 'ADMIN'">
 											<i class="glyphicon glyphicon-cog"></i>
 										</a>
 										<button class="btn btn-sm btn-cancel" type="button" title="ลบ"
-											data-ng-show="userPermission[11].perm_status == 'ADMIN'"
+											data-ng-show="userPermission[10].perm_status == 'ADMIN'"
 											data-ng-click="deleteUser(item.user_id)">
 											<i class="glyphicon glyphicon-trash"></i>
 										</button>

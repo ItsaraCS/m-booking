@@ -24,17 +24,7 @@ angular.module('mainApp')
 		'phone': '',
 		'local_phone': ''
 	};
-	$scope.entryUserinfo = {
-		'user_id': '',
-		'email': '',
-		'password': '',
-		'firstname': '',
-		'lastname': '',
-		'department_id': '',
-		'position': '',
-		'phone': '',
-		'local_phone': ''
-	};
+	$scope.entryUserinfo = {};
 	$scope.entryUserinfoOrigin = {};
 	$scope.entrySearchUser = {
 		'firstname': '',
@@ -65,27 +55,16 @@ angular.module('mainApp')
 					angular.copy(sessionData, $rootScope.entryUser);
 					angular.copy(sessionData, $scope.entryUserinfoOrigin);
 					angular.copy(sessionData, $scope.entryUserinfo);
-					$scope.getUserPermissionData();
-				}else
+				}else{
 					if($location.path() == '/userinfo' || $location.path() == '/permission' ||
-						$location.path() == '/permission/' || $location.path() == '/permission_manage/'+ $stateParams['userID'])
+						$location.path() == '/permission/' || $location.path() == '/permission_manage/'+ $stateParams['userID']){
 						$location.path('/login');
+					}
+				}
 			}
 		});
 	}
 	$scope.getSession();
-
-	$scope.getUserPermissionData = function(){
-		ajaxUrl = 'dbservice_ctrl';
-		param = {
-			'funcName': 'getUserPermissionData',
-			'param': $rootScope.entryUser['user_id']
-		};
-		
-		connectDBService.query(ajaxUrl, param).success(function(response){
-			angular.copy(response, $rootScope.userPermissionData);
-		});
-	}
 
 	$scope.register = function(){
 		if(!$.isEmptyObject($scope.entryRegister)){
@@ -232,6 +211,15 @@ angular.module('mainApp')
 
 	$scope.updateUserinfo = function(){
 		$scope.entryUserinfoUpdate = {};
+
+		$scope.entryUserinfoOrigin = dataService.filterObjNoUsed(
+			$scope.entryUserinfoOrigin, ['userPermissionData']
+		);
+
+		$scope.entryUserinfo = dataService.filterObjNoUsed(
+			$scope.entryUserinfo, ['userPermissionData']
+		);
+
 		$scope.entryUserinfoUpdate = dataService.getDataObjChange(
 			$scope.entryUserinfoOrigin,
 			$scope.entryUserinfo,

@@ -50,27 +50,14 @@ angular.module('mainApp')
 			if(response != '' && response != undefined){
 				var sessionData = response;
 
-				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined){
+				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined)
 					angular.copy(sessionData, $rootScope.entryUser);
-					$scope.getUserPermissionData();
-				}else
+				else
 					$location.path('/login');
 			}
 		});
 	}
 	$scope.getSession();
-
-	$scope.getUserPermissionData = function(){
-		ajaxUrl = 'dbservice_ctrl';
-		param = {
-			'funcName': 'getUserPermissionData',
-			'param': $rootScope.entryUser['user_id']
-		};
-		
-		connectDBService.query(ajaxUrl, param).success(function(response){
-			angular.copy(response, $rootScope.userPermissionData);
-		});
-	}
 
 	$scope.insertBooking = function(){
 		if(!$.isEmptyObject($scope.entryBooking)){
@@ -127,7 +114,6 @@ angular.module('mainApp')
 			};
 			
 			connectDBService.query(ajaxUrl, param).success(function(response){
-				console.log(response);
 				if(response != '' && response != undefined){
 					$scope.entryBookingOrigin = {};
 					$scope.entryBooking = {};
@@ -179,10 +165,8 @@ angular.module('mainApp')
 					'bookingID': $scope.entryBooking['booking_id'] || '1'
 				}
 			};
-			console.log(param);
 
 			connectDBService.query(ajaxUrl, param).success(function(response){
-				console.log(response);
 				if(response != '' && response != undefined){
 					$rootScope.msgWarningPopup = response['msg'];
 					$('.warning-popup').modal('show');
@@ -190,7 +174,7 @@ angular.module('mainApp')
 					if(response['status']){
 						$timeout(function(){
 							$scope.getBookingData();
-						}, 500);
+						});
 					}
 				}
 			});
@@ -217,7 +201,8 @@ angular.module('mainApp')
 			});
 		}
 	}
-	if($location.path() == '/booking_show/showCancelBooking' || 
+	if($location.path() == '/booking_show/showScheduleMeetingUse' || 
+		$location.path() == '/booking_show/showCancelBooking' || 
 		$location.path() == '/booking_show/showSearchBooking' || 
 		$location.path() == '/booking_show/showManageStatusBooking'){
 		$scope.getBookingDetailData();

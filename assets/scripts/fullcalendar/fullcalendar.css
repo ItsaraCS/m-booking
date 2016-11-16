@@ -387,6 +387,10 @@ hr.fc-divider {
 	color: #FFFFFF;
 }
 
+.fc th a{
+	color: #FFFFFF;
+}
+
 .fc td {
 	background-color: #F5F5F5;
 }

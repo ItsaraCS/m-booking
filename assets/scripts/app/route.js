@@ -37,11 +37,6 @@
             controller: 'meetingDetailController',
             templateUrl: 'templates/meeting_detail.php'
         })
-        .state('รายงานการจอง', {
-            url: '/report',
-            controller: 'reportController',
-            templateUrl: 'templates/report.php'
-        })
         .state('คำแนะนำการใช้งานระบบ', {
             url: '/instructions',
             controller: 'instructionsController',

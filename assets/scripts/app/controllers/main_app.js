@@ -1,7 +1,7 @@
 angular.module('mainApp', ['ui.router']);
 
 angular.module('mainApp')
-.controller('mainController', function($scope, $rootScope, $location, initService, connectDBService){
+.controller('mainController', function($scope, $rootScope, $location, $timeout, initService, connectDBService){
 	//--Set initials
 	console.log('This is Ctrl of page: mainController');
 	initService.activeMenu();
@@ -24,7 +24,6 @@ angular.module('mainApp')
 		'local_phone': ''
 	};
 	$rootScope.userPermission = {};
-	$rootScope.userPermissionData = [];
 	
 	//-Function
 	$scope.getSession = function(){
@@ -40,21 +39,25 @@ angular.module('mainApp')
 
 				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined){
 					angular.copy(sessionData, $rootScope.entryUser);
+					angular.copy(sessionData['userPermissionData'], $rootScope.userPermissionData);
+
 					$rootScope.statusMenu = {
-						'menu1': false,
-						'menu2': false,
-						'menu3': false,
-						'menu4': false,
-						'menu5': false,
-						'menu6': false,
-						'menu7': false,
-						'menu8': false,
-						'menu9': false,
-						'menu10': false,
-						'menu11': false,
-						'menu12': false
+						'menu1': ($rootScope.entryUser['userPermissionData'][0]['perm_status'] != 'DN') || false,
+						'menu2': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][1]['perm_status'] != 'DN')) || false,
+						'menu3': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][2]['perm_status'] != 'DN')) || false,
+						'menu4': ($rootScope.entryUser['userPermissionData'][3]['perm_status'] != 'DN') || false,
+						'menu5': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][4]['perm_status'] == 'ADMIN')) || false,
+						'menu6': ($rootScope.entryUser['userPermissionData'][5]['perm_status'] != 'DN') || false,
+						'menu7': ($rootScope.entryUser['userPermissionData'][6]['perm_status'] != 'DN') || false,
+						'menu8': (!$rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][7]['perm_status'] != 'DN')) || false,
+						'menu9': (!$rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][8]['perm_status'] != 'DN')) || false,
+						'menu10': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][9]['perm_status'] != 'DN')) || false,
+						'menu11': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][10]['perm_status'] == 'ADMIN')) || false
 					};
-					$scope.getUserPermissionData();
+
+					$.each($rootScope.entryUser['userPermissionData'], function(idx, item){
+						$rootScope.userPermission[idx] = item;
+					});
 				}else{
 					$rootScope.statusMenu = {
 						'menu1': true,
@@ -63,49 +66,17 @@ angular.module('mainApp')
 						'menu4': true,
 						'menu5': false,
 						'menu6': true,
-						'menu7': false,
+						'menu7': true,
 						'menu8': true,
 						'menu9': true,
-						'menu10': true,
-						'menu11': false,
-						'menu12': false
+						'menu10': false,
+						'menu11': false
 					};
 				}
 			}
 		});
 	}
 	$scope.getSession();
-
-	$scope.getUserPermissionData = function(){
-		ajaxUrl = 'dbservice_ctrl';
-		param = {
-			'funcName': 'getUserPermissionData',
-			'param': $rootScope.entryUser['user_id']
-		};
-		
-		connectDBService.query(ajaxUrl, param).success(function(response){
-			angular.copy(response, $rootScope.userPermissionData);
-			
-			$rootScope.statusMenu = {
-				'menu1': ($rootScope.userPermissionData[0]['perm_status'] != 'DN'),
-				'menu2': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[1]['perm_status'] != 'DN')),
-				'menu3': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[2]['perm_status'] != 'DN')),
-				'menu4': ($rootScope.userPermissionData[3]['perm_status'] != 'DN'),
-				'menu5': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[4]['perm_status'] == 'ADMIN')),
-				'menu6': ($rootScope.userPermissionData[5]['perm_status'] != 'DN'),
-				'menu7': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[6]['perm_status'] != 'DN')),
-				'menu8': ($rootScope.userPermissionData[7]['perm_status'] != 'DN'),
-				'menu9': (!$rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[8]['perm_status'] != 'DN')),
-				'menu10': (!$rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[9]['perm_status'] != 'DN')),
-				'menu11': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[10]['perm_status'] != 'DN')),
-				'menu12': ($rootScope.entryUser['user_id'] && ($rootScope.userPermissionData[11]['perm_status'] == 'ADMIN'))
-			};
-
-			$.each($rootScope.userPermissionData, function(idx, item){
-				$rootScope.userPermission[idx] = item;
-			});
-		});
-	}
 
 	$scope.login = function(){
 		if(!$.isEmptyObject($scope.entryLogin)){
@@ -117,15 +88,34 @@ angular.module('mainApp')
 
 			connectDBService.query(ajaxUrl, param).success(function(response){
 				if(response != "" && response != undefined){
-					var statusData = response;
-
+					var loginData = response;
 					$scope.resetEntry('entryLogin', 'loginForm');
 					
-					if(statusData['status']){
-						$scope.getSession();
-						$location.path('/schedule_meeting_use');
+					if(loginData['statusData']['status']){
+						angular.copy(loginData, $rootScope.entryUser);
+	
+						$rootScope.statusMenu = {
+							'menu1': ($rootScope.entryUser['userPermissionData'][0]['perm_status'] != 'DN') || false,
+							'menu2': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][1]['perm_status'] != 'DN')) || false,
+							'menu3': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][2]['perm_status'] != 'DN')) || false,
+							'menu4': ($rootScope.entryUser['userPermissionData'][3]['perm_status'] != 'DN') || false,
+							'menu5': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][4]['perm_status'] == 'ADMIN')) || false,
+							'menu6': ($rootScope.entryUser['userPermissionData'][5]['perm_status'] != 'DN') || false,
+							'menu7': ($rootScope.entryUser['userPermissionData'][6]['perm_status'] != 'DN') || false,
+							'menu8': (!$rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][7]['perm_status'] != 'DN')) || false,
+							'menu9': (!$rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][8]['perm_status'] != 'DN')) || false,
+							'menu10': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][9]['perm_status'] != 'DN')) || false,
+							'menu11': ($rootScope.entryUser['user_id'] && ($rootScope.entryUser['userPermissionData'][10]['perm_status'] == 'ADMIN')) || false
+						};
+
+						$.each($rootScope.entryUser['userPermissionData'], function(idx, item){
+							$rootScope.userPermission[idx] = item;
+						});
+
+						if($rootScope.statusMenu['menu1'])
+							$location.path('/schedule_meeting_use');
 					}else{
-						$rootScope.msgWarningPopup = statusData['msg'];
+						$rootScope.msgWarningPopup = loginData['statusData']['msg'];
 						$('.warning-popup').modal('show');
 					}
 				}
