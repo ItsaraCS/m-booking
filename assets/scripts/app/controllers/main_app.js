@@ -12,6 +12,10 @@ angular.module('mainApp')
 		'funcName': '',
 		'param': ''
 	};
+	$scope.entryLogin = {
+		'email': '',
+		'password': ''
+	};
 	$rootScope.entryUser = {
 		'user_id': '',
 		'email': '',

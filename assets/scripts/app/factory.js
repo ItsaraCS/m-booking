@@ -282,12 +282,16 @@ angular.module('mainApp')
 
     dataService.getDateFormateForDB = function(dateOrigin){
         if(dateOrigin != '' && dateOrigin != undefined){
-            var dateFormateForDB = '';
+            var dateRegExp = /^\d{4}\-\d{2}\-\d{2}$/;
 
-            dateOrigin = dateOrigin.split('/');
-            dateFormateForDB = (Number(dateOrigin[2]) - 543) +'-'+ dateOrigin[1] +'-'+ dateOrigin[0];
+            if(!dateRegExp.test(dateOrigin)){
+                var dateFormateForDB = '';
+            
+                dateOrigin = dateOrigin.split('/');
+                dateFormateForDB = (Number(dateOrigin[2]) - 543) +'-'+ dateOrigin[1] +'-'+ dateOrigin[0];
 
-            return dateFormateForDB;
+                return dateFormateForDB;
+            }
         }
 
         var now = new Date();

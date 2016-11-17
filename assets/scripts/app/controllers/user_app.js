@@ -10,10 +10,6 @@ angular.module('mainApp')
 		'funcName': '',
 		'param': ''
 	};
-	$scope.entryLogin = {
-		'email': '',
-		'password': ''
-	};
 	$scope.entryRegister = {
 		'email': '',
 		'password': '',

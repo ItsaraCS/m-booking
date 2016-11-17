@@ -171,6 +171,84 @@ angular.module('mainApp')
 		}
 	}
 })
+.directive('validateStartDateTime', function($compile, dataService){
+	return {
+		restrict: 'A',
+		require: 'ngModel',
+		link: function(scope, element, attrs, ngModel){
+			var selector = $(element).parent().parent();
+			var label = ($(element).parent('.input-group').find('span:eq(0)').text()).replace(' *', '');
+			var labelError = $(element).data('label-error') || 'ต้องไม่เกินวันที่เสร็จสิ้นประชุม';
+			var errorContent = '<span class="text-error" data-ng-show="';
+			errorContent += ngModel.$$parentForm.$name +'.'+ attrs['name'] +'.$dirty && ';
+			errorContent += ngModel.$$parentForm.$name +'.'+ attrs['name'] +'.$error.startDateTime">';
+			errorContent += '<i class="fa fa-exclamation-circle"></i> '+ label +' '+ labelError;
+			errorContent += '</span>';
+
+			$(selector).append($compile(errorContent)(scope));
+
+			element.bind('blur', function(){
+				var endDate = $(element).closest('form').find('input[name="end_date"]').val();
+				var endTime = $(element).closest('form').find('input[name="end_time"]').val() || '00:00';
+				
+				if(endDate != '' && endDate != undefined){
+					scope.$watchCollection('[entryBooking.start_date, entryBooking.start_time]', function(startDateTime){
+						if(startDateTime[0] != '' && startDateTime[0] != undefined){
+							newStartDateTime = new Date(dataService.getDateFormateForDB(startDateTime[0]) +' '+ (startDateTime[1] || '00:00'));
+							newEndDateTime = new Date(dataService.getDateFormateForDB(endDate) +' '+ endTime);
+							
+							if(newStartDateTime > newEndDateTime)
+								ngModel.$setValidity('startDateTime', false);
+							else
+								ngModel.$setValidity('startDateTime', true);
+						}
+					});
+				}
+
+				scope.$digest();
+			});
+		}
+	}
+})
+.directive('validateEndDateTime', function($compile, dataService){
+	return {
+		restrict: 'A',
+		require: 'ngModel',
+		link: function(scope, element, attrs, ngModel){
+			var selector = $(element).parent().parent();
+			var label = ($(element).parent('.input-group').find('span:eq(0)').text()).replace(' *', '');
+			var labelError = $(element).data('label-error') || 'ต้องไม่น้อยกว่าวันที่เริ่มประชุม';
+			var errorContent = '<span class="text-error" data-ng-show="';
+			errorContent += ngModel.$$parentForm.$name +'.'+ attrs['name'] +'.$dirty && ';
+			errorContent += ngModel.$$parentForm.$name +'.'+ attrs['name'] +'.$error.endDateTime">';
+			errorContent += '<i class="fa fa-exclamation-circle"></i> '+ label +' '+ labelError;
+			errorContent += '</span>';
+
+			$(selector).append($compile(errorContent)(scope));
+
+			element.bind('blur', function(){
+				var startDate = $(element).closest('form').find('input[name="start_date"]').val();
+				var startTime = $(element).closest('form').find('input[name="start_time"]').val() || '00:00';
+				
+				if(startDate != '' && startDate != undefined){
+					scope.$watchCollection('[entryBooking.end_date, entryBooking.end_time]', function(endDateTime){
+						if(endDateTime[0] != '' && endDateTime[0] != undefined){
+							newStartDateTime = new Date(dataService.getDateFormateForDB(startDate) +' '+ startTime);
+							newEndDateTime = new Date(dataService.getDateFormateForDB(endDateTime[0]) +' '+ (endDateTime[1] || '23:59'));
+
+							if(newEndDateTime < newStartDateTime)
+								ngModel.$setValidity('endDateTime', false);
+							else
+								ngModel.$setValidity('endDateTime', true);
+						}
+					});
+				}
+
+				scope.$digest();
+			});
+		}
+	}
+})
 .directive('activeMenu', function(){
 	return {
 		restrict: 'A',

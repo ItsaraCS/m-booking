@@ -51,7 +51,7 @@
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">วันที่เริ่ม</span>
-							  	<input type="text" class="form-control next-focus datepicker" placeholder="เลือกวันที่เริ่ม" required
+							  	<input type="text" class="form-control next-focus datepicker" placeholder="เลือกวันที่เริ่ม" required validate-start-date-time
 							  		name="start_date" data-ng-model="entryBooking.start_date">
 								<span class="input-group-btn">
 						        	<button class="btn" type="button" id="datepicker-from-btn">
@@ -63,7 +63,7 @@
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">เวลาที่เริ่ม</span>
-							  	<input type="text" class="form-control next-focus timepicker" placeholder="เลือกเวลาที่เริ่ม" required
+							  	<input type="text" class="form-control next-focus timepicker" placeholder="เลือกเวลาที่เริ่ม" required validate-start-date-time
 							  		name="start_time" data-ng-model="entryBooking.start_time">
 								<span class="input-group-btn">
 						        	<button class="btn" type="button" id="timepicker-from-btn">
@@ -79,7 +79,7 @@
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">วันที่เสร็จสิ้น</span>
-							  	<input type="text" class="form-control next-focus datepicker" placeholder="เลือกวันที่เสร็จสิ้น" required
+							  	<input type="text" class="form-control next-focus datepicker" placeholder="เลือกวันที่เสร็จสิ้น" required validate-end-date-time
 							  		name="end_date" data-ng-model="entryBooking.end_date">
 								<span class="input-group-btn">
 						        	<button class="btn" type="button" id="datepicker-to-btn">
@@ -91,7 +91,7 @@
 						<div class="col-md-6 form-group col-inline">
 							<div class="input-group">
 							  	<span class="input-group-addon">เวลาที่เสร็จสิ้น</span>
-							  	<input type="text" class="form-control next-focus timepicker" placeholder="เลือกเวลาที่เสร็จสิ้น" required
+							  	<input type="text" class="form-control next-focus timepicker" placeholder="เลือกเวลาที่เสร็จสิ้น" required validate-end-date-time
 							  		name="end_time" data-ng-model="entryBooking.end_time">
 								<span class="input-group-btn">
 						        	<button class="btn" type="button" id="timepicker-from-btn">

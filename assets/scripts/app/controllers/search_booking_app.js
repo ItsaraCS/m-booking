@@ -36,8 +36,6 @@ angular.module('mainApp')
 
 				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined)
 					angular.copy(sessionData, $rootScope.entryUser);
-				else
-					$location.path('/login');
 			}
 		});
 	}
