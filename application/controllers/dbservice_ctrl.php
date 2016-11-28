@@ -30,24 +30,25 @@
 			$sqlCmd = "SELECT user_id, email, password, firstname, lastname, 
 							department_id, position, phone, local_phone 
 						FROM user 
-						WHERE email = '$email' 
-						AND password = '$password'";
-			$item = $this->dbservice_model->getObj($sqlCmd);
-
-			if(count($item) != 0){
+						WHERE email = ? 
+						AND password = ?";
+			$query = $this->db->query($sqlCmd, array($email, $password));
+			$item = $query->row();
+			
+			if(isset($item)){
 				if(!isset($_SESSION))
 					session_start();
 
 				$_SESSION = array(
-					'user_id'=>$item['user_id'],
-					'email'=>$item['email'],
-					'password'=>$item['password'],
-					'firstname'=>$item['firstname'],
-					'lastname'=>$item['lastname'],
-					'department_id'=>$item['department_id'],
-					'position'=>$item['position'],
-					'phone'=>$item['phone'],
-					'local_phone'=>$item['local_phone']
+					'user_id'=>$item->user_id,
+					'email'=>$item->email,
+					'password'=>$item->password,
+					'firstname'=>$item->firstname,
+					'lastname'=>$item->lastname,
+					'department_id'=>$item->department_id,
+					'position'=>$item->position,
+					'phone'=>$item->phone,
+					'local_phone'=>$item->local_phone
 				);
 
 				$sqlCmd = "SELECT permission_id, p.user_id, p.menu_id, p.menu_sub_id, p.permission_status_id, 
@@ -59,13 +60,14 @@
 									ON ms.menu_id = m.menu_id 
 								INNER JOIN permission_status ps 
 									ON p.permission_status_id = ps.permission_status_id 
-							WHERE p.user_id = '".$item["user_id"]."' 
+							WHERE p.user_id = '".$item->user_id."' 
 							ORDER BY permission_id";
-				$item['userPermissionData'] = $this->dbservice_model->getListObj($sqlCmd);
+				$item->userPermissionData = $this->dbservice_model->getListObj($sqlCmd);
 
-				$item['statusData'] = $this->dbservice_model->messageInfo('successLogin');
-			}else
+				$item->statusData = $this->dbservice_model->messageInfo('successLogin');
+			}else{
 				$item['statusData'] = $this->dbservice_model->messageInfo('errorLogin');
+			}
 
 			echo json_encode($item, JSON_UNESCAPED_UNICODE);
 		}

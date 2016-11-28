@@ -5,6 +5,7 @@
 		public function __construct(){
 			parent::__construct();
 
+			$this->load->library('email');
 			$this->load->model('dbservice_model');
 		}
 
@@ -80,6 +81,107 @@
 							updated = CURRENT_TIMESTAMP 
 						WHERE booking_id = '$bookingID'";
 			$status = $this->dbservice_model->getQuery($sqlCmd);
+
+			if($status){
+				$sqlCmd = "SELECT u.email, u.firstname, u.lastname, d.department_name, b.meeting_topic, mr.meeting_room_name, mt.meeting_type_name,
+								CONCAT(
+									'วันที่ ', 
+									CASE SUBSTRING(DATE_FORMAT(b.start_date, '%d'), 1, 1) 
+								       WHEN '0' THEN SUBSTRING(DATE_FORMAT(b.start_date, '%d'), 2, 1)
+								       ELSE DATE_FORMAT(b.start_date, '%d')
+								       END, ' ', 
+									CASE DATE_FORMAT(b.start_date, '%m') 
+										WHEN '01' THEN 'ม.ค.' 
+										WHEN '02' THEN 'ก.พ.' 
+										WHEN '03' THEN 'มี.ค.' 
+										WHEN '04' THEN 'เม.ย.' 
+										WHEN '05' THEN 'พ.ค.' 
+										WHEN '06' THEN 'มิ.ย.' 
+										WHEN '07' THEN 'ก.ค.' 
+										WHEN '08' THEN 'ส.ค.' 
+										WHEN '09' THEN 'ก.ย.' 
+										WHEN '10' THEN 'ต.ค.' 
+										WHEN '11' THEN 'พ.ย.' 
+										WHEN '12' THEN 'ธ.ค.' 
+										END, ' ', 
+									(DATE_FORMAT(b.start_date, '%Y')+543), 
+									' เวลา ', TIME_FORMAT(b.start_time, '%H:%i'), ' น.'
+									' ถึง ', 
+									CASE SUBSTRING(DATE_FORMAT(b.end_date, '%d'), 1, 1) 
+								       WHEN '0' THEN SUBSTRING(DATE_FORMAT(end_date, '%d'), 2, 1)
+								       ELSE DATE_FORMAT(end_date, '%d')
+								       END, ' ', 
+									CASE DATE_FORMAT(b.end_date, '%m') 
+										WHEN '01' THEN 'ม.ค.' 
+										WHEN '02' THEN 'ก.พ.' 
+										WHEN '03' THEN 'มี.ค.' 
+										WHEN '04' THEN 'เม.ย.' 
+										WHEN '05' THEN 'พ.ค.' 
+										WHEN '06' THEN 'มิ.ย.' 
+										WHEN '07' THEN 'ก.ค.' 
+										WHEN '08' THEN 'ส.ค.' 
+										WHEN '09' THEN 'ก.ย.' 
+										WHEN '10' THEN 'ต.ค.' 
+										WHEN '11' THEN 'พ.ย.' 
+										WHEN '12' THEN 'ธ.ค.' 
+										END, ' ', 
+									(DATE_FORMAT(b.end_date, '%Y')+543), 
+									' เวลา ', TIME_FORMAT(b.end_time, '%H:%i'), ' น.'
+								) AS date_used
+							FROM user u
+                            INNER JOIN booking b
+                                ON u.department_id = b.department_id
+                            INNER JOIN meeting_room mr
+                            	ON b.meeting_room_id = mr.meeting_room_id
+                            INNER JOIN meeting_type mt
+                            	ON b.meeting_type_id = mt.meeting_type_id
+                            INNER JOIN department d 
+								ON u.department_id = d.department_id
+                            WHERE u.department_id = (
+                            	SELECT u.department_id 
+                                FROM booking b
+                                INNER JOIN user u
+                                	ON u.user_id = b.user_id
+                                WHERE booking_id = '$bookingID'
+                            )
+                            AND b.booking_id = '$bookingID'
+							ORDER BY u.user_id";
+				$userData = $this->dbservice_model->getListObj($sqlCmd);
+
+				/*$config['useragent'] = 'Eiamheng';
+		        $config['protocol'] = 'smtp';
+		        $config['smtp_host'] = 'smtp-relay.gmail.com';  
+		        $config['smtp_user'] = 'itsara.ra.cs@gmail.com';  
+		        $config['smtp_pass'] = 'IT1501033a';  
+		        $config['smtp_port'] = '25';  
+		        $config['smtp_crypto'] = 'tls';*/
+		        $config['mailtype'] = 'html';
+	            $config['wordwrap'] = true;
+	            $config['newline'] = "\r\n";
+		        $this->email->initialize($config);
+
+				foreach($userData as $user){
+					$emailTo = $user['email'];
+					$emailSubject = 'ขอเชิญเข้าร่วม'.$user['meeting_type_name'].'เรื่อง "'.$user['meeting_topic'].'"';
+					$emailHeader = 'eiamheng-support@gmail.com';
+					$emailMessage = '<b>เรียนคุณ '.$user['firstname'].'</b><br><br> ';
+					$emailMessage .= 'ขอเชิญคุณ '.$user['firstname'].' '.$user['lastname'].' ';
+					$emailMessage .= 'แผนก '.$user['department_name'].' ';
+					$emailMessage .= 'เข้าร่วมประชุมในหัวข้อเรื่อง "'.$user['meeting_topic'].'" ';
+					$emailMessage .= 'ใน'.$user['date_used'].' ';
+					$emailMessage .= 'ณ '.$user['meeting_room_name'].' ';
+					$emailMessage .= '<br><br>จึงเรียนมาเพื่อทราบ<br><b>ขอบคุณค่ะ<b>';
+
+					$this->email->from($emailHeader, 'Eiamheng');   
+		        	$this->email->to($emailTo, $user['firstname']); //$this->email->to('demo@localhost.com', 'Demo User');
+		        	$this->email->subject($emailSubject); 
+		        	$this->email->message($emailMessage);  
+		        	$emailStatus = $this->email->send();
+					
+					if(!$emailStatus)
+						$status = false;
+				}
+			}
 
 			if($status)
 				$itemList = $this->dbservice_model->messageInfo('successUpdate');

@@ -20,7 +20,7 @@ angular.module('mainApp')
 			errorContent += '</span>';
 
 			$(selector).append($compile(errorContent)(scope));
-
+            
 			element.bind('blur', function(){
 				scope.$digest();
 			});

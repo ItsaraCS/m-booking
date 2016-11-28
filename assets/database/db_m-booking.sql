@@ -177,7 +177,7 @@ INSERT INTO meeting_type(meeting_type_id, meeting_type_name) VALUES
 ('1', 'ประชุม'),
 ('2', 'อบรม'),
 ('3', 'สัมมนา'),
-('4', 'คณะศึกษาดูงาน');
+('4', 'ศึกษาดูงาน');
 
 -- --------------------------------------------------
 -- Table structure for: meeting_table_type
