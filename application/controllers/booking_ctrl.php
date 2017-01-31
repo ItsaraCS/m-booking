@@ -40,26 +40,27 @@
 
 			$status = $this->dbservice_model->updateDataSubTable($tblName, $dataList);
 
-			if($status)
-				$itemList = $this->dbservice_model->messageInfo('successInsert');
-			else
-				$itemList = $this->dbservice_model->messageInfo('errorInsert');
+			if($status){
+				$itemList['bookingData'] = $this->getBookingData($bookingID, false);
+				$itemList['info'] = $this->dbservice_model->messageInfo('successInsert');
+			}else
+				$itemList['info'] = $this->dbservice_model->messageInfo('errorInsert');
 
 			echo json_encode($itemList, JSON_UNESCAPED_UNICODE);
 		}
 
-		public function getBookingData($bookingID){
+		public function getBookingData($bookingID, $returnJSON = true){
 			$item = array();
-
+			
 			$sqlCmd = "SELECT booking_id, user_id, meeting_room_id, meeting_type_id, 
 							CONCAT(DATE_FORMAT(start_date, '%d/'), 
 								DATE_FORMAT(start_date, '%m/'), 
-								DATE_FORMAT(start_date, '%Y')
+								(DATE_FORMAT(start_date, '%Y') + 543)
 							) AS start_date, 
 							TIME_FORMAT(start_time, '%H:%i') AS start_time, 
 							CONCAT(DATE_FORMAT(end_date, '%d/'), 
 								DATE_FORMAT(end_date, '%m/'), 
-								DATE_FORMAT(end_date, '%Y')
+								(DATE_FORMAT(end_date, '%Y') + 543)
 							) AS end_date, 
 							TIME_FORMAT(end_time, '%H:%i') AS end_time, meeting_topic, meeting_number, meeting_detail, department_id, 
 							meeting_table_type_id, meeting_required_id, budget_type_id
@@ -92,7 +93,10 @@
 					}
 				}
 			}
-
+			
+			if(!$returnJSON)
+				return $item;
+			
 			echo json_encode($item, JSON_UNESCAPED_UNICODE);
 		}
 

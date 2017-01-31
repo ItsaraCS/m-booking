@@ -150,8 +150,8 @@
 							  	<span class="input-group-addon">รูปแบบการจัดโต๊ะ</span>
 							  	<select class="form-control next-focus"
 							  		name="meeting_table_type_id" data-ng-model="entryBooking.meeting_table_type_id">
-								    <option value="" selected disabled>เลือกรูปแบบการจัดโต๊ะ</option>
-								    <option data-ng-repeat="item in meetingTableTypeList"
+								    <option value="0" selected>เลือกรูปแบบการจัดโต๊ะ</option>
+								    <option data-ng-repeat="item in meetingTableTypeList" data-ng-if="$index > 0"
 								    	value="{{ item.meeting_table_type_id }}">{{ item.meeting_table_type_name }}</option>
 								</select>
 							</div>
@@ -165,8 +165,8 @@
 							  	<span class="input-group-addon">สิ่งที่ต้องการ</span>
 							  	<select class="form-control next-focus"
 							  		name="meeting_required_id" data-ng-model="entryBooking.meeting_required_id">
-								    <option value="" selected disabled>เลือกสิ่งที่ต้องการ</option>
-								    <option data-ng-repeat="item in meetingRequiredList"
+								    <option value="0" selected>เลือกสิ่งที่ต้องการ</option>
+								    <option data-ng-repeat="item in meetingRequiredList" data-ng-if="$index > 0"
 								    	value="{{ item.meeting_required_id }}">{{ item.meeting_required_name }}</option>
 								</select>
 							</div>

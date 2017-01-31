@@ -22,8 +22,8 @@ angular.module('mainApp')
 		'meeting_number': '',
 		'meeting_detail': '',
 		'department_id': '',
-		'meeting_table_type_id': '',
-		'meeting_required_id': '',
+		'meeting_table_type_id': '0',
+		'meeting_required_id': '0',
 		'budget_type_id': '',
 		'entryBookingEquipment': {
 			'tblName': 'booking_equipment',
@@ -96,18 +96,19 @@ angular.module('mainApp')
 					'data': $scope.entryBooking
 				}
 			};
-			console.log(param['param']['data']);
 			
 			connectDBService.query(ajaxUrl, param).success(function(response){
-				console.log(response);
 				if(response != '' && response != undefined){
 					var statusData = response;
 
 					$rootScope.msgWarningPopup = statusData['msg'];
 					$('.warning-popup').modal('show');
 
-					if(statusData['status'])
+					if(statusData['status']){
 						$scope.resetEntry('entryBooking', 'bookingForm');
+						$scope.entryBooking['meeting_table_type_id'] = '0';
+						$scope.entryBooking['meeting_required_id'] = '0';
+					}
 				}
 			});
 		}
@@ -127,6 +128,7 @@ angular.module('mainApp')
 					$scope.entryBooking = {};
 					angular.copy(response, $scope.entryBookingOrigin);
 					angular.copy(response, $scope.entryBooking);
+					console.log($scope.entryBooking);
 				}
 			});
 		}
@@ -175,14 +177,16 @@ angular.module('mainApp')
 			};
 
 			connectDBService.query(ajaxUrl, param).success(function(response){
+				console.log(response);
 				if(response != '' && response != undefined){
-					$rootScope.msgWarningPopup = response['msg'];
+					$rootScope.msgWarningPopup = response['info']['msg'];
 					$('.warning-popup').modal('show');
 					
-					if(response['status']){
-						$timeout(function(){
-							$scope.getBookingData();
-						});
+					if(response['info']['status']){
+						$scope.entryBookingOrigin = {};
+						$scope.entryBooking = {};
+						angular.copy(response['bookingData'], $scope.entryBookingOrigin);
+						angular.copy(response['bookingData'], $scope.entryBooking);
 					}
 				}
 			});

@@ -189,6 +189,7 @@ CREATE TABLE IF NOT EXISTS meeting_table_type(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO meeting_table_type(meeting_table_type_id, meeting_table_type_name) VALUES
+('0', ''),
 ('1', 'แบบ U shape (จัดแบบตัว U)'),
 ('2', 'แบบ Boardroom (จัดแบบประชุมคณะกรรมการ)'),
 ('3', 'แบบ Clusters (จัดแบบกลุ่ม/หมู่คณะ)'),
@@ -221,6 +222,7 @@ CREATE TABLE IF NOT EXISTS meeting_required(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO meeting_required(meeting_required_id, meeting_required_name) VALUES
+('0', ''),
 ('1', 'จัดเครื่องดื่ม(น้ำเปล่า) 1 รอบเบรค'),
 ('2', 'จัดเครื่องดื่ม(น้ำเปล่า) 2 รอบเบรค'),
 ('3', 'จัดเครื่องดื่ม(น้ำเปล่า) 3 รอบเบรค'),

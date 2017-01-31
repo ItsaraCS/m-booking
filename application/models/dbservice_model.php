@@ -441,9 +441,10 @@
 		public function deleteDataList($tblName, $dataList){
 			global $mysqli;
 			$sqlCmd = "";
+			$status = false;
 
 			if(count($dataList) != 0){
-				foreach($dataList as $data){
+				/*foreach($dataList as $data){
 					$condition = $data['condition'];
 					$sqlCmd .= "DELETE FROM $tblName WHERE $condition; ";
 				}
@@ -451,7 +452,15 @@
 				if($mysqli->multi_query($sqlCmd))
 					return true;
 				else
-					return false;
+					return false;*/
+				
+				foreach($dataList as $data){
+					$condition = $data['condition'];
+					$sqlCmd = "DELETE FROM $tblName WHERE $condition";
+					$status = $mysqli->query($sqlCmd);
+				}
+
+				return $status;
 			}else
 				return true;
 		}

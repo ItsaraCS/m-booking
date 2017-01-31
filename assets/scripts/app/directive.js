@@ -133,7 +133,7 @@ angular.module('mainApp')
 			});
 
 			var keyDownFunc = function(e){
-				if((ctrlDown && (e.keyCode == cKey)) || (ctrlDown && (e.keyCode == vKey))){
+				if((ctrlDown && (e.which == cKey)) || (ctrlDown && (e.which == vKey))){
 					ngModel.$setValidity('numbered', true);
 
 					if(isNaN(element.val())){
@@ -147,8 +147,9 @@ angular.module('mainApp')
 			}
 
 			element.bind('keypress', function(e){
-				if(e.keyCode != 8 && isNaN(String.fromCharCode(e.keyCode))){
+				if(e.which != 8 && isNaN(String.fromCharCode(e.which))){
 		            e.preventDefault();
+					
 		            ngModel.$dirty = true;
 		            ngModel.$setValidity('numbered', false);
 
@@ -189,9 +190,9 @@ angular.module('mainApp')
 
 			element.bind('blur', function(){
 				var endDate = $(element).closest('form').find('input[name="end_date"]').val();
-				var endTime = $(element).closest('form').find('input[name="end_time"]').val() || '00:00';
+				var endTime = $(element).closest('form').find('input[name="end_time"]').val();
 				
-				if(endDate != '' && endDate != undefined){
+				if((endDate != '' && endDate != undefined) && (endTime != '' && endTime != undefined)){
 					scope.$watchCollection('[entryBooking.start_date, entryBooking.start_time]', function(startDateTime){
 						if(startDateTime[0] != '' && startDateTime[0] != undefined){
 							newStartDateTime = new Date(dataService.getDateFormateForDB(startDateTime[0]) +' '+ (startDateTime[1] || '00:00'));
@@ -228,9 +229,9 @@ angular.module('mainApp')
 
 			element.bind('blur', function(){
 				var startDate = $(element).closest('form').find('input[name="start_date"]').val();
-				var startTime = $(element).closest('form').find('input[name="start_time"]').val() || '00:00';
+				var startTime = $(element).closest('form').find('input[name="start_time"]').val();
 				
-				if(startDate != '' && startDate != undefined){
+				if((startDate != '' && startDate != undefined) && (startTime != '' && startTime != undefined)){
 					scope.$watchCollection('[entryBooking.end_date, entryBooking.end_time]', function(endDateTime){
 						if(endDateTime[0] != '' && endDateTime[0] != undefined){
 							newStartDateTime = new Date(dataService.getDateFormateForDB(startDate) +' '+ startTime);

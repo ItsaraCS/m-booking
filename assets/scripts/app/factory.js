@@ -213,6 +213,9 @@ angular.module('mainApp')
                         if(primaryKey != '' && primaryKey != undefined)
                             dataObjChange['condition'] = primaryKey +" = '"+ updateData[primaryKey] +"'";
 
+                        if((/^\d{2}\/\d{2}\/\d{4}$/).test(valUpdate))
+                            valUpdate = dataService.getDateFormateForDB(valUpdate);
+
                         dataObjChange[keyUpdate] = valUpdate;
                     }
                 }
@@ -235,6 +238,9 @@ angular.module('mainApp')
                         if(valOrigin != valUpdate){
                             if(primaryKey != '' && primaryKey != undefined)
                                 dataObjChange['condition'] = primaryKey +" = '"+ updateData[originIndex][primaryKey] +"'";
+                            
+                            if((/^\d{2}\/\d{2}\/\d{4}$/).test(valUpdate))
+                                valUpdate = dataService.getDateFormateForDB(valUpdate);
 
                             dataObjChange[keyUpdate] = valUpdate;
                         }
