@@ -33,6 +33,6 @@ angular.module('mainApp')
 		  	eventClick: function(event, element){
 	            $('.tooltip').hide();    
 	        }  
-		});  
+		});
 	});
 });

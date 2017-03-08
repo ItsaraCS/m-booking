@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS user(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO user(user_id, email, password, firstname, lastname, position, phone, local_phone, department_id) VALUES
-('1', 'aa@aa', 'aa', 'Admin', 'Admin', 'Admin', '011111111', '044-000-000', '1');
+('1', 'admin@admin.com', 'admin', 'Admin', 'Admin', 'Admin', '011111111', '044-000-000', '1');
 
 -- --------------------------------------------------
 -- Table structure for: permission
@@ -157,12 +157,12 @@ CREATE TABLE IF NOT EXISTS meeting_room(
 	PRIMARY KEY (meeting_room_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO meeting_room(meeting_room_id, meeting_room_code, meeting_room_name) VALUES
-('1', '101', 'ห้องประชุมใหม่เอี่ยมเฮง'),
-('2', '201', 'ห้องประชุมโมดิฟาย'),
-('3', '102', 'ห้องประชุมสุดาวรรณ'),
-('4', '103', 'ห้องประชุมอู่เงินอู่ทอง'),
-('5', '104', 'ห้องประชุมฝ่ายบุคคล');
+INSERT INTO meeting_room(meeting_room_id, meeting_room_code, meeting_room_name, meeting_room_size, meeting_room_location, meeting_room_detail) VALUES
+('1', '101', 'ห้องประชุมใหม่เอี่ยมเฮง', '40', 'อาคาร 1 ชั้น 2', 'สำหรับประชุมเรื่องทั่วไป'),
+('2', '201', 'ห้องประชุมโมดิฟาย', '40', 'อาคาร 1 ชั้น 3', 'สำหรับประชุมเรื่องทั่วไป'),
+('3', '102', 'ห้องประชุมสุดาวรรณ', '20', 'อาคาร 1 ชั้น 1', 'สำหรับประชุมหัวหน้าแผนก'),
+('4', '103', 'ห้องประชุมอู่เงินอู่ทอง', '40', 'อาคาร 1 ชั้น 3', 'สำหรับประชุมเรื่องทั่วไป'),
+('5', '104', 'ห้องประชุมฝ่ายบุคคล', '20', 'อาคาร 1 ชั้น 1', 'สำหรับประชุมฝ่าย');
 
 -- --------------------------------------------------
 -- Table structure for: meeting_type
