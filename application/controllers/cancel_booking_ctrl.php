@@ -49,10 +49,10 @@
 						WHERE b.booking_status_id = '1' ";
 
 			if($startDate != '')
-				$sqlCmd .= "AND '$startDate' >= start_date ";
+				$sqlCmd .= "AND start_date >= '$startDate' ";
 
 			if($endDate != '')
-				$sqlCmd .= "AND '$endDate' <= end_date ";
+				$sqlCmd .= "AND end_date <= '$endDate' ";
 
 			if($meetingRoomID != '')
 				$sqlCmd .= "AND b.meeting_room_id = '$meetingRoomID' ";

@@ -311,7 +311,7 @@ angular.module('mainApp')
     dataService.getCurrentDate = function(){
         var now = new Date();
         var today = now.getFullYear() + '-';
-        today += (now.getMonth() + 1) + '-';
+        today += ((now.getMonth() + 1).toString().length < 2 ? ('0' + (now.getMonth() + 1)) : (now.getMonth() + 1))  + '-';
         today += (now.getDate().toString().length < 2 ? ('0' + now.getDate()) : now.getDate());
 
         return today;

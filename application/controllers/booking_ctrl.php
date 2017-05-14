@@ -160,7 +160,7 @@
 									END, 
 								')'
 							) AS booking_user, 
-							mtt.meeting_table_type_name, bt.budget_type_name, mr.meeting_required_name 
+							mtt.meeting_table_type_name, bt.budget_type_name, mr.meeting_required_name, m.meeting_room_img 
 						FROM booking b 
 							INNER JOIN booking_status bs 
 								ON b.booking_status_id = bs.booking_status_id 

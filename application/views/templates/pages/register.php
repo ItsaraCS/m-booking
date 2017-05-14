@@ -15,7 +15,7 @@
 							<div class="input-group">
 								<span class="input-group-addon">อีเมล์</span>
 								<input type="email" class="form-control next-focus" placeholder="กรอกอีเมล์" required validate-type validate-unique
-									data-unique-table="user" data-unique-field="email" data-label-error="นี้ถูกใช้งานแล้ว"
+									data-unique-table="user" data-unique-field="email"
 									name="email" data-ng-model="entryRegister.email">
 							</div>
 						</div>

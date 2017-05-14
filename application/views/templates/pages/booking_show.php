@@ -52,7 +52,7 @@
 			<div class="col-md-12">
 				<div class="col-md-3">
 					<div class="thumbnail center-block">
-						<img src="<?php echo image_asset('meeting.jpg'); ?>" class="img-responsive" style="width: 100%; height: 150px;">
+						<img src="assets/images/{{ bookingDetailData.meeting_room_img }}" class="img-responsive" style="width: 100%; height: 150px;">
 					</div>
 				</div>
 				<div class="col-md-9">

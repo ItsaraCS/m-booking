@@ -53,7 +53,7 @@ angular.module('mainApp')
 				if(sessionData['user_id'] != '' && sessionData['user_id'] != undefined)
 					angular.copy(sessionData, $rootScope.entryUser);
 				else{
-					if($location.path() != '/booking_show/showSearchBooking')
+					if($location.path() != '/booking_show/showSearchBooking' && $location.path() != '/booking_show/showScheduleMeetingUse')
 						$location.path('/login');
 				}
 			}

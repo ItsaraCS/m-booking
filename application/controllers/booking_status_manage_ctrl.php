@@ -51,10 +51,10 @@
 						WHERE b.booking_status_id IN ('2', '4') ";
 
 			if($startDate != '')
-				$sqlCmd .= "AND '$startDate' >= start_date ";
+				$sqlCmd .= "AND start_date >= '$startDate' ";
 
 			if($endDate != '')
-				$sqlCmd .= "AND '$endDate' <= end_date ";
+				$sqlCmd .= "AND end_date <= '$endDate' ";
 
 			if($bookingStatusID != '')
 				$sqlCmd .= "AND b.booking_status_id = '$bookingStatusID' ";

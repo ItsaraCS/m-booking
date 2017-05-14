@@ -71,7 +71,9 @@
 						data-ng-click="searchBooking()">
 						<i class="fa fa-search text-indent"></i> ค้นหา
 					</button>
-					<a class="btn btn-success next-focus" data-ui-sref="เพิ่มรายการจอง">
+					<a class="btn btn-success next-focus" 
+						data-ng-show="entryUser.user_id != ''"
+						data-ui-sref="เพิ่มรายการจอง">
 						<i class="fa fa-plus-square text-indent"></i> เพิ่มรายการจอง
 					</a>
 				</div>
